@@ -1,0 +1,10 @@
+[user]
+	name = Johnson Denen
+	email = johnson.denen@gmail.com
+[push]
+	default = simple
+[core]
+	excludesfile = /Users/$USER/.gitignore_global
+[alias]
+	root = rev-parse --show-toplevel
+	log = log --graph
