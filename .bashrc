@@ -7,25 +7,10 @@ function docker_machine_env() {
     eval "$(docker-machine env default)"
 }
 
-#################################
-# Print context with task list. #
-#################################
-function task_warrior_status() {
-    if [[ $1 ]]; then
-	task "$@"
-    else
-	echo ""
-	echo "CONTEXT: $(task _get rc.context)"
-	task
-    fi
-}
-
 alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
 alias be='bundle exec'
 alias ls='ls -lF'
-alias t='task_warrior_status'
 alias root='cd $(git rev-parse --show-toplevel)'
-alias nix='nix-env'
 alias src='source /Users/$USER/.bashrc'
 alias dm='docker-machine'
 alias dmenv='docker_machine_env'
