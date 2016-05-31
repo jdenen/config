@@ -1,5 +1,0 @@
-# Taskwarrior program configuration file.
-
-data.location=~/.task
-include /usr/local/Cellar/task/2.4.4/share/doc/task/rc/no-color.theme
-journal.info=yes
