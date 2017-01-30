@@ -6,136 +6,135 @@
   My dotfiles
 ** Usage
    This file was written within the literate programming paradigm. I use Emacs (spacemacs) and org-mode to accomplish it.
-   Basically, I just =tangle= this README file and my machine will be set up.
+   I just =tangle= this README file and my machine will be set up. Execute this code block to get it done.
 
-   #+BEGIN_SRC sh :results silent :eval no
-     C-c C-v f README.org
+   #+BEGIN_SRC emacs-lisp :results silent :eval query
+     (org-babel-lob-ingest "~/vc-docs/scratch.org")
+     (org-babel-tangle-file (buffer-file-name))
    #+END_SRC
-** Source
-*** .bashrc
-**** Functions
-     I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
+** bashrc
+*** Functions
+    I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
 
-     #+NAME: bashrc-function-changelog
-     #+BEGIN_SRC sh :results silent
-       function changelog() {
-           git changelog ${1} ${2} | grep -vE 'Bump|Squashed'
-       }
-     #+END_SRC
-
-     For whatever reason, I have to constantly restart my =docker-machine=. I use the =dmenv= function to do it.
-
-     #+NAME: bashrc-function-dmenv
-     #+BEGIN_SRC sh :results silent
-       function dmenv() {
-           docker-machine start default
-           docker-machine regenerate-certs default
-           eval "$(docker-machine env default)"
-       }
-     #+END_SRC
-
-**** Aliases
-     This changes =ls= so that it actually lists the contents of a directory (one per line) and appends a slash to subdirectories.
-     I don't know why this isn't default =ls= behavior.
-
-     #+NAME: bashrc-alias-ls
-     #+BEGIN_SRC sh :results silent
-       alias ls='ls -lF'
-     #+END_SRC
-
-     I'm trying to replace all =shell= interaction with built-in Emacs functionality. To do so, I first need to record my most used
-     shell commands. This =freq= command does just that. It's very useful to improving efficiency.
-
-     #+NAME: bashrc-alias-freq
-     #+BEGIN_SRC sh :results silent
-       alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
-     #+END_SRC
-
-     While I've mostly replaced all =git= usage on the command line with =magit= in Emacs, I still use this alias on occassion.
-     So I'll keep it, for now.
-
-     #+NAME: bashrc-alias-git-root
-     #+BEGIN_SRC sh :results silent
-       alias root='cd $(git rev-parse --show-toplevel)'
-     #+END_SRC
-
-     These are just a few command line shortcuts. Stuff I use frequently enough that it's annoying to type out.
-
-     #+NAME: bashrc-alias-shortcuts
-     #+BEGIN_SRC sh :results silent
-       alias be='bundle exec'
-       alias dm='docker-machine'
-       alias src='source ~/.bashrc'
-     #+END_SRC
-**** Prompt
-     Changes my command line prompt. Day of the week, Month/day, and time on one line. Current directory and prompt on the next.
-     Here's an example:
-
-     #+BEGIN_SRC sh :results silent :eval no
-       Mon Jan 30 12:00:00
-       ~ $
-     #+END_SRC
-
-     #+NAME: bashrc-prompt
-     #+BEGIN_SRC sh :results silent
-       PS1_DATE="\[\033[32m\]\d"
-       PS1_TIME="\[\033[1;36m\]\T"
-       PS1_PWD="\[\033[0;37m\]\W"
-       export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
-     #+END_SRC
-**** sdkman
-     Setup SDKMAN for managing Groovy/Gradle/Maven versions.
-
-     #+NAME: bashrc-setup-sdkman
-     #+BEGIN_SRC sh :results silent
-       export SDKMAN_DIR="~/.sdkman"
-       [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
-     #+END_SRC
-
-**** Tangle
-     #+BEGIN_SRC sh :tangle foobar :export none :noweb yes
-       <<bashrc-function-changelog>>
-
-       <<bashrc-function-dmenv>>
-
-       <<bashrc-alias-ls>>
-       <<bashrc-alias-freq>>
-       <<bashrc-alias-git-root>>
-       <<bashrc-alias-shortcuts>>
-
-       <<bashrc-prompt>>
-
-       <<bashrc-setup-sdkman>>
-     #+END_SRC
-*** .pryrc
-**** Tangle
-     #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :noweb yes
-       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
-       Pry.config.editor = "emacsclient"
-     #+END_SRC
-*** .gitconfig
-    #+NAME: gitconfig-public
-    #+BEGIN_SRC conf :results silent
-      [user]
-        name = Johnson P Denen
-        email = jdenen@cas.org
-      [push]
-        default = simple
-      [core]
-        excludesfile = /Users/$USER/.gitignore_global
-      [alias]
-        root = rev-parse --show-toplevel
-        logg = log --graph
-        update-tools = !cd \"/Users/johnson/.cas-git-tools\" && git fetch && git reset --hard origin/master
-        changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
-      [color]
-        ui = true
-      [diff]
-        renames = true
-      [gerrit]
-        createchangeid = true
+    #+NAME: bashrc-function-changelog
+    #+BEGIN_SRC sh :results silent
+      function changelog() {
+          git changelog ${1} ${2} | grep -vE 'Bump|Squashed'
+      }
     #+END_SRC
-**** Tangle
-     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes
-       <<gitconfig-public>>
-     #+END_SRC
+
+    For whatever reason, I have to constantly restart my =docker-machine=. I use the =dmenv= function to do it.
+
+    #+NAME: bashrc-function-dmenv
+    #+BEGIN_SRC sh :results silent
+      function dmenv() {
+          docker-machine start default
+          docker-machine regenerate-certs default
+          eval "$(docker-machine env default)"
+      }
+    #+END_SRC
+
+*** Aliases
+    This changes =ls= so that it actually lists the contents of a directory (one per line) and appends a slash to subdirectories.
+    I don't know why this isn't default =ls= behavior.
+
+    #+NAME: bashrc-alias-ls
+    #+BEGIN_SRC sh :results silent
+      alias ls='ls -lF'
+    #+END_SRC
+
+    I'm trying to replace all =shell= interaction with built-in Emacs functionality. To do so, I first need to record my most used
+    shell commands. This =freq= command does just that. It's very useful to improving efficiency.
+
+    #+NAME: bashrc-alias-freq
+    #+BEGIN_SRC sh :results silent
+      alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
+    #+END_SRC
+
+    While I've mostly replaced all =git= usage on the command line with =magit= in Emacs, I still use this alias on occassion.
+    So I'll keep it, for now.
+
+    #+NAME: bashrc-alias-git-root
+    #+BEGIN_SRC sh :results silent
+      alias root='cd $(git rev-parse --show-toplevel)'
+    #+END_SRC
+
+    These are just a few command line shortcuts. Stuff I use frequently enough that it's annoying to type out.
+
+    #+NAME: bashrc-alias-shortcuts
+    #+BEGIN_SRC sh :results silent
+      alias be='bundle exec'
+      alias dm='docker-machine'
+      alias src='source ~/.bashrc'
+    #+END_SRC
+*** Prompt
+    Changes my command line prompt. Day of the week, Month/day, and time on one line. Current directory and prompt on the next.
+    Here's an example:
+
+    #+BEGIN_SRC sh :results silent :eval no
+      Mon Jan 30 12:00:00
+      ~ $
+    #+END_SRC
+
+    #+NAME: bashrc-prompt
+    #+BEGIN_SRC sh :results silent
+      PS1_DATE="\[\033[32m\]\d"
+      PS1_TIME="\[\033[1;36m\]\T"
+      PS1_PWD="\[\033[0;37m\]\W"
+      export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
+    #+END_SRC
+*** sdkman
+    Setup SDKMAN for managing Groovy/Gradle/Maven versions.
+
+    #+NAME: bashrc-setup-sdkman
+    #+BEGIN_SRC sh :results silent
+      export SDKMAN_DIR="~/.sdkman"
+      [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
+    #+END_SRC
+*** Tangle
+    #+BEGIN_SRC sh :tangle .bashrc :export none :noweb yes
+      <<bashrc-function-changelog>>
+
+      <<bashrc-function-dmenv>>
+
+      <<bashrc-alias-ls>>
+      <<bashrc-alias-freq>>
+      <<bashrc-alias-git-root>>
+      <<bashrc-alias-shortcuts>>
+
+      <<bashrc-prompt>>
+
+      <<bashrc-setup-sdkman>>
+    #+END_SRC
+** pryrc
+   #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
+     Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+     Pry.config.editor = "emacsclient"
+   #+END_SRC
+** gitconfig
+   #+NAME: gitconfig-public
+   #+BEGIN_SRC conf :results silent
+     [user]
+       name = Johnson P Denen
+       email = jdenen@cas.org
+     [push]
+       default = simple
+     [core]
+       excludesfile = /Users/$USER/.gitignore_global
+     [alias]
+       root = rev-parse --show-toplevel
+       logg = log --graph
+       update-tools = !cd \"/Users/johnson/.cas-git-tools\" && git fetch && git reset --hard origin/master
+       changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
+     [color]
+       ui = true
+     [diff]
+       renames = true
+     [gerrit]
+       createchangeid = true
+   #+END_SRC
+*** Tangle
+    #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
+      <<gitconfig-public>>
+      <<gitconfig-private>>
+    #+END_SRC
