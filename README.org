@@ -3,15 +3,13 @@
 # End:
 
 * Dot
-  My dotfiles
-** Usage
-   This file was written within the literate programming paradigm. I use Emacs (spacemacs) and org-mode to accomplish it.
-   I just =tangle= this README file and my machine will be set up. Execute this code block to get it done.
+  This file was written within the literate programming paradigm. I use Emacs (spacemacs) and org-mode to accomplish it.
+  I just =tangle= this README file and my machine will be set up. Execute this code block to get it done.
 
-   #+BEGIN_SRC emacs-lisp :results silent :eval query
+  #+BEGIN_SRC emacs-lisp :results silent :eval query
      (org-babel-lob-ingest "~/vc-docs/scratch.org")
      (org-babel-tangle-file (buffer-file-name))
-   #+END_SRC
+  #+END_SRC
 ** bashrc
 *** Functions
     I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
