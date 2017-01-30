@@ -104,10 +104,17 @@
 
       <<bashrc-setup-sdkman>>
     #+END_SRC
-** pryrc
-   #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
-     Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
-     Pry.config.editor = "emacsclient"
+** gemrc
+   #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
+     ---
+     :backtrace: false
+     :bulk_threshold: 1000
+     :sources:
+     - https://rubygems.org/
+     :update_sources: true
+     :verbose: true
+     install: "--no-rdoc --no-ri"
+     update: "--no-rdoc --no-ri"
    #+END_SRC
 ** gitconfig
 
@@ -160,3 +167,8 @@
       <<gitconfig-public-misc>>
       <<gitconfig-private>>
     #+END_SRC
+** pryrc
+   #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
+     Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+     Pry.config.editor = "emacsclient"
+   #+END_SRC
