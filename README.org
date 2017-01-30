@@ -44,7 +44,7 @@
     #+END_SRC
 
     I'm trying to replace all =shell= interaction with built-in Emacs functionality. To do so, I first need to record my most used
-    shell commands. This =freq= command does just that. It's very useful to improving efficiency.
+    shell commands. This =freq= command does just that. It's very useful for improving efficiency.
 
     #+NAME: bashrc-alias-freq
     #+BEGIN_SRC sh :results silent
@@ -112,20 +112,41 @@
      Pry.config.editor = "emacsclient"
    #+END_SRC
 ** gitconfig
-   #+NAME: gitconfig-public
-   #+BEGIN_SRC conf :results silent
+
+   Setup my identity with Git using my client email for now.
+
+   #+NAME: gitconfig-public-user
+   #+BEGIN_SRC conf :result silent
      [user]
        name = Johnson P Denen
        email = jdenen@cas.org
+   #+END_SRC
+
+   Set push style and a global ignore list.
+
+   #+NAME: gitconfig-public-push
+   #+BEGIN_SRC conf :result silent
      [push]
        default = simple
      [core]
        excludesfile = /Users/$USER/.gitignore_global
+   #+END_SRC
+
+   I have a few Git aliases. I call some from functions defined in my =.bashrc=. Others are used by private scripts.
+
+   #+NAME: gitconfig-public-alias
+   #+BEGIN_SRC conf :result silent
      [alias]
        root = rev-parse --show-toplevel
        logg = log --graph
-       update-tools = !cd \"/Users/johnson/.cas-git-tools\" && git fetch && git reset --hard origin/master
+       update-tools = !cd \"~/.cas-git-tools\" && git fetch && git reset --hard origin/master
        changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
+   #+END_SRC
+
+   Then, there are some miscellaneous configurations.
+
+   #+NAME: gitconfig-public-misc
+   #+BEGIN_SRC conf :results silent
      [color]
        ui = true
      [diff]
@@ -135,6 +156,9 @@
    #+END_SRC
 *** Tangle
     #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
-      <<gitconfig-public>>
+      <<gitconfig-public-user>>
+      <<gitconfig-public-push>>
+      <<gitconfig-public-alias>>
+      <<gitconfig-public-misc>>
       <<gitconfig-private>>
     #+END_SRC
