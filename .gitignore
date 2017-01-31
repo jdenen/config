@@ -3,3 +3,5 @@
 /.gemrc
 /.pryrc
 /.gitconfig
+/.emacs.notiffany.erb
+/.guard.rb

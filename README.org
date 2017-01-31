@@ -105,6 +105,7 @@
       <<bashrc-setup-sdkman>>
     #+END_SRC
 ** emacs.notiffany.erb
+   Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
    #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
      (progn
        (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
