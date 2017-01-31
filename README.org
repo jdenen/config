@@ -104,6 +104,19 @@
 
       <<bashrc-setup-sdkman>>
     #+END_SRC
+** emacs.notiffany.erb
+   #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
+     (progn
+       (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
+       (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
+       (set-face-attribute 'mode-line nil :background "<%= bgcolor %>" :foreground "<%= color %>")
+       (message "<%= message %>")
+
+       (run-at-time "5 sec" nil (lambda ()
+                                  (set-face-attribute 'mode-line nil
+                                                      :background notiffany-original-background
+                                                      :foreground notiffany-original-foreground))))
+   #+END_SRC
 ** gemrc
    #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
      ---
@@ -115,6 +128,16 @@
      :verbose: true
      install: "--no-rdoc --no-ri"
      update: "--no-rdoc --no-ri"
+   #+END_SRC
+** guard.rb
+   For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
+   #+BEGIN_SRC ruby :tangle .guard.rb :export none :noweb yes
+     notification(:emacs,
+                  elisp_file: '~/.emacs.notiffany.erb',
+                  success:   'ForestGreen',
+                  failed:    'Firebrick',
+                  default:   'Black',
+                  fontcolor: 'White')
    #+END_SRC
 ** gitconfig
 
