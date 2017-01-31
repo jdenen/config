@@ -104,6 +104,33 @@
 
       <<bashrc-setup-sdkman>>
     #+END_SRC
+** capture templates
+*** appt
+    The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
+    #+BEGIN_SRC emacs-lisp :tangle appt.orgcaptmpl :export none :noweb yes
+      * %^{Summary} %^g
+      %^{When}t
+      %?
+    #+END_SRC
+*** note
+    The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
+    #+BEGIN_SRC emacs-lisp :tangle note.orgcaptmpl :export none :noweb yes
+      * %^{Summary} %^g
+      %?
+    #+END_SRC
+*** task
+    The =task= template captures a =TODO= with a deadline.
+    #+BEGIN_SRC emacs-lisp :tangle task.orgcaptmpl :export none :noweb yes
+      * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+      DEADLINE: %^{Due}t
+      %?
+    #+END_SRC
+*** todo
+    The =todo= template captures a =TODO= without a deadline.
+    #+BEGIN_SRC emacs-lisp :tangle todo.orgcaptmpl :export none :noweb yes
+      * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+      %?
+    #+END_SRC
 ** emacs.notiffany.erb
    Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
    #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes

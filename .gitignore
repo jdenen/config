@@ -5,3 +5,4 @@
 /.gitconfig
 /.emacs.notiffany.erb
 /.guard.rb
+/*.orgcaptmpl
