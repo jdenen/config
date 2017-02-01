@@ -3,6 +3,9 @@
 # End:
 
 * Dot
+  Configuration files and software packages that I need to function. They're all wrapped up in a nice, literate README.
+
+  Using this README assumes an installation of Emacs. For now, it will also assume a =darwin= OS.
 ** Configuration
    :PROPERTIES:
    :header-args: :comments link :results silent
@@ -200,6 +203,11 @@
     #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
       Pry.config.editor = "emacsclient"
+    #+END_SRC
+*** ~/.spacemacs.d/init.el
+    This file is too big for the README, so I include it in version control independently. I just need to copy it to the right place.
+    #+BEGIN_SRC sh :eval yes
+      cp .spacemacs ~/.spacemacs.d/init.el
     #+END_SRC
 *** ~/.spacemacs.d/templates
 **** appt
