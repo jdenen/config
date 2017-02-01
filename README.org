@@ -16,216 +16,218 @@
     (org-babel-lob-ingest "~/vc-docs/scratch.org")
     (org-babel-tangle-file (buffer-file-name))
   #+END_SRC
-** bashrc
-*** Functions
-    I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
 
-    #+NAME: bashrc-function-changelog
-    #+BEGIN_SRC sh :results silent
-      function changelog() {
-          git changelog ${1} ${2} | grep -vE 'Bump|Squashed'
-      }
+** Configuration
+*** bashrc
+**** Functions
+     I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
+
+     #+NAME: bashrc-function-changelog
+     #+BEGIN_SRC sh :results silent
+       function changelog() {
+           git changelog ${1} ${2} | grep -vE 'Bump|Squashed'
+       }
+     #+END_SRC
+
+     For whatever reason, I have to constantly restart my =docker-machine=. I use the =dmenv= function to do it.
+
+     #+NAME: bashrc-function-dmenv
+     #+BEGIN_SRC sh :results silent
+       function dmenv() {
+           docker-machine start default
+           docker-machine regenerate-certs default
+           eval "$(docker-machine env default)"
+       }
+     #+END_SRC
+
+**** Aliases
+     This changes =ls= so that it actually lists the contents of a directory (one per line) and appends a slash to subdirectories.
+     I don't know why this isn't default =ls= behavior.
+
+     #+NAME: bashrc-alias-ls
+     #+BEGIN_SRC sh :results silent
+       alias ls='ls -lF'
+     #+END_SRC
+
+     I'm trying to replace all =shell= interaction with built-in Emacs functionality. To do so, I first need to record my most used
+     shell commands. This =freq= command does just that. It's very useful for improving efficiency.
+
+     #+NAME: bashrc-alias-freq
+     #+BEGIN_SRC sh :results silent
+       alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
+     #+END_SRC
+
+     While I've mostly replaced all =git= usage on the command line with =magit= in Emacs, I still use this alias on occassion.
+     So I'll keep it, for now.
+
+     #+NAME: bashrc-alias-git-root
+     #+BEGIN_SRC sh :results silent
+       alias root='cd $(git rev-parse --show-toplevel)'
+     #+END_SRC
+
+     These are just a few command line shortcuts. Stuff I use frequently enough that it's annoying to type out.
+
+     #+NAME: bashrc-alias-shortcuts
+     #+BEGIN_SRC sh :results silent
+       alias be='bundle exec'
+       alias dm='docker-machine'
+       alias src='source ~/.bashrc'
+     #+END_SRC
+**** Prompt
+     Changes my command line prompt. Day of the week, Month/day, and time on one line. Current directory and prompt on the next.
+     Here's an example:
+
+     #+BEGIN_SRC sh :results silent :eval no
+       Mon Jan 30 12:00:00
+       ~ $
+     #+END_SRC
+
+     #+NAME: bashrc-prompt
+     #+BEGIN_SRC sh :results silent
+       PS1_DATE="\[\033[32m\]\d"
+       PS1_TIME="\[\033[1;36m\]\T"
+       PS1_PWD="\[\033[0;37m\]\W"
+       export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
+     #+END_SRC
+**** sdkman
+     Setup SDKMAN for managing Groovy/Gradle/Maven versions.
+
+     #+NAME: bashrc-setup-sdkman
+     #+BEGIN_SRC sh :results silent
+       export SDKMAN_DIR="~/.sdkman"
+       [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
+     #+END_SRC
+**** Tangle
+     #+BEGIN_SRC sh :tangle .bashrc :export none :noweb yes
+       <<bashrc-function-changelog>>
+
+       <<bashrc-function-dmenv>>
+
+       <<bashrc-alias-ls>>
+       <<bashrc-alias-freq>>
+       <<bashrc-alias-git-root>>
+       <<bashrc-alias-shortcuts>>
+
+       <<bashrc-prompt>>
+
+       <<bashrc-setup-sdkman>>
+     #+END_SRC
+*** capture templates
+**** appt
+     The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/appt.orgcaptmpl :export none :noweb yes
+       * %^{Summary} %^g
+       %^{When}t
+       %?
+     #+END_SRC
+**** note
+     The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/note.orgcaptmpl :export none :noweb yes
+       * %^{Summary} %^g
+       %?
+     #+END_SRC
+**** task
+     The =task= template captures a =TODO= with a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/task.orgcaptmpl :export none :noweb yes
+       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+       DEADLINE: %^{Due}t
+       %?
+     #+END_SRC
+**** todo
+     The =todo= template captures a =TODO= without a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/todo.orgcaptmpl :export none :noweb yes
+       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+       %?
+     #+END_SRC
+*** emacs.notiffany.erb
+    Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
+    #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
+      (progn
+        (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
+        (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
+        (set-face-attribute 'mode-line nil :background "<%= bgcolor %>" :foreground "<%= color %>")
+        (message "<%= message %>")
+
+        (run-at-time "5 sec" nil (lambda ()
+                                   (set-face-attribute 'mode-line nil
+                                                       :background notiffany-original-background
+                                                       :foreground notiffany-original-foreground))))
+    #+END_SRC
+*** gemrc
+    #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
+      ---
+      :backtrace: false
+      :bulk_threshold: 1000
+      :sources:
+      - https://rubygems.org/
+      :update_sources: true
+      :verbose: true
+      install: "--no-rdoc --no-ri"
+      update: "--no-rdoc --no-ri"
+    #+END_SRC
+*** guard.rb
+    For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
+    #+BEGIN_SRC ruby :tangle .guard.rb :export none :noweb yes
+      notification(:emacs,
+                   elisp_file: '~/.emacs.notiffany.erb',
+                   success:   'ForestGreen',
+                   failed:    'Firebrick',
+                   default:   'Black',
+                   fontcolor: 'White')
+    #+END_SRC
+*** gitconfig
+
+    Setup my identity with Git using my client email for now.
+
+    #+NAME: gitconfig-public-user
+    #+BEGIN_SRC conf :result silent
+      [user]
+        name = Johnson P Denen
+        email = jdenen@cas.org
     #+END_SRC
 
-    For whatever reason, I have to constantly restart my =docker-machine=. I use the =dmenv= function to do it.
+    Set push style and a global ignore list.
 
-    #+NAME: bashrc-function-dmenv
-    #+BEGIN_SRC sh :results silent
-      function dmenv() {
-          docker-machine start default
-          docker-machine regenerate-certs default
-          eval "$(docker-machine env default)"
-      }
+    #+NAME: gitconfig-public-push
+    #+BEGIN_SRC conf :result silent
+      [push]
+        default = simple
+      [core]
+        excludesfile = /Users/$USER/.gitignore_global
     #+END_SRC
 
-*** Aliases
-    This changes =ls= so that it actually lists the contents of a directory (one per line) and appends a slash to subdirectories.
-    I don't know why this isn't default =ls= behavior.
+    I have a few Git aliases. I call some from functions defined in my =.bashrc=. Others are used by private scripts.
 
-    #+NAME: bashrc-alias-ls
-    #+BEGIN_SRC sh :results silent
-      alias ls='ls -lF'
+    #+NAME: gitconfig-public-alias
+    #+BEGIN_SRC conf :result silent
+      [alias]
+        root = rev-parse --show-toplevel
+        logg = log --graph
+        update-tools = !cd \"~/.cas-git-tools\" && git fetch && git reset --hard origin/master
+        changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
     #+END_SRC
 
-    I'm trying to replace all =shell= interaction with built-in Emacs functionality. To do so, I first need to record my most used
-    shell commands. This =freq= command does just that. It's very useful for improving efficiency.
+    Then, there are some miscellaneous configurations.
 
-    #+NAME: bashrc-alias-freq
-    #+BEGIN_SRC sh :results silent
-      alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
+    #+NAME: gitconfig-public-misc
+    #+BEGIN_SRC conf :results silent
+      [color]
+        ui = true
+      [diff]
+        renames = true
+      [gerrit]
+        createchangeid = true
     #+END_SRC
-
-    While I've mostly replaced all =git= usage on the command line with =magit= in Emacs, I still use this alias on occassion.
-    So I'll keep it, for now.
-
-    #+NAME: bashrc-alias-git-root
-    #+BEGIN_SRC sh :results silent
-      alias root='cd $(git rev-parse --show-toplevel)'
+**** Tangle
+     #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
+       <<gitconfig-public-user>>
+       <<gitconfig-public-push>>
+       <<gitconfig-public-alias>>
+       <<gitconfig-public-misc>>
+       <<gitconfig-private>>
+     #+END_SRC
+*** pryrc
+    #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
+      Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+      Pry.config.editor = "emacsclient"
     #+END_SRC
-
-    These are just a few command line shortcuts. Stuff I use frequently enough that it's annoying to type out.
-
-    #+NAME: bashrc-alias-shortcuts
-    #+BEGIN_SRC sh :results silent
-      alias be='bundle exec'
-      alias dm='docker-machine'
-      alias src='source ~/.bashrc'
-    #+END_SRC
-*** Prompt
-    Changes my command line prompt. Day of the week, Month/day, and time on one line. Current directory and prompt on the next.
-    Here's an example:
-
-    #+BEGIN_SRC sh :results silent :eval no
-      Mon Jan 30 12:00:00
-      ~ $
-    #+END_SRC
-
-    #+NAME: bashrc-prompt
-    #+BEGIN_SRC sh :results silent
-      PS1_DATE="\[\033[32m\]\d"
-      PS1_TIME="\[\033[1;36m\]\T"
-      PS1_PWD="\[\033[0;37m\]\W"
-      export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
-    #+END_SRC
-*** sdkman
-    Setup SDKMAN for managing Groovy/Gradle/Maven versions.
-
-    #+NAME: bashrc-setup-sdkman
-    #+BEGIN_SRC sh :results silent
-      export SDKMAN_DIR="~/.sdkman"
-      [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
-    #+END_SRC
-*** Tangle
-    #+BEGIN_SRC sh :tangle .bashrc :export none :noweb yes
-      <<bashrc-function-changelog>>
-
-      <<bashrc-function-dmenv>>
-
-      <<bashrc-alias-ls>>
-      <<bashrc-alias-freq>>
-      <<bashrc-alias-git-root>>
-      <<bashrc-alias-shortcuts>>
-
-      <<bashrc-prompt>>
-
-      <<bashrc-setup-sdkman>>
-    #+END_SRC
-** capture templates
-*** appt
-    The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
-    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/appt.orgcaptmpl :export none :noweb yes
-      * %^{Summary} %^g
-      %^{When}t
-      %?
-    #+END_SRC
-*** note
-    The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
-    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/note.orgcaptmpl :export none :noweb yes
-      * %^{Summary} %^g
-      %?
-    #+END_SRC
-*** task
-    The =task= template captures a =TODO= with a deadline.
-    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/task.orgcaptmpl :export none :noweb yes
-      * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
-      DEADLINE: %^{Due}t
-      %?
-    #+END_SRC
-*** todo
-    The =todo= template captures a =TODO= without a deadline.
-    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/todo.orgcaptmpl :export none :noweb yes
-      * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
-      %?
-    #+END_SRC
-** emacs.notiffany.erb
-   Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
-   #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
-     (progn
-       (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
-       (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
-       (set-face-attribute 'mode-line nil :background "<%= bgcolor %>" :foreground "<%= color %>")
-       (message "<%= message %>")
-
-       (run-at-time "5 sec" nil (lambda ()
-                                  (set-face-attribute 'mode-line nil
-                                                      :background notiffany-original-background
-                                                      :foreground notiffany-original-foreground))))
-   #+END_SRC
-** gemrc
-   #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
-     ---
-     :backtrace: false
-     :bulk_threshold: 1000
-     :sources:
-     - https://rubygems.org/
-     :update_sources: true
-     :verbose: true
-     install: "--no-rdoc --no-ri"
-     update: "--no-rdoc --no-ri"
-   #+END_SRC
-** guard.rb
-   For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
-   #+BEGIN_SRC ruby :tangle .guard.rb :export none :noweb yes
-     notification(:emacs,
-                  elisp_file: '~/.emacs.notiffany.erb',
-                  success:   'ForestGreen',
-                  failed:    'Firebrick',
-                  default:   'Black',
-                  fontcolor: 'White')
-   #+END_SRC
-** gitconfig
-
-   Setup my identity with Git using my client email for now.
-
-   #+NAME: gitconfig-public-user
-   #+BEGIN_SRC conf :result silent
-     [user]
-       name = Johnson P Denen
-       email = jdenen@cas.org
-   #+END_SRC
-
-   Set push style and a global ignore list.
-
-   #+NAME: gitconfig-public-push
-   #+BEGIN_SRC conf :result silent
-     [push]
-       default = simple
-     [core]
-       excludesfile = /Users/$USER/.gitignore_global
-   #+END_SRC
-
-   I have a few Git aliases. I call some from functions defined in my =.bashrc=. Others are used by private scripts.
-
-   #+NAME: gitconfig-public-alias
-   #+BEGIN_SRC conf :result silent
-     [alias]
-       root = rev-parse --show-toplevel
-       logg = log --graph
-       update-tools = !cd \"~/.cas-git-tools\" && git fetch && git reset --hard origin/master
-       changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
-   #+END_SRC
-
-   Then, there are some miscellaneous configurations.
-
-   #+NAME: gitconfig-public-misc
-   #+BEGIN_SRC conf :results silent
-     [color]
-       ui = true
-     [diff]
-       renames = true
-     [gerrit]
-       createchangeid = true
-   #+END_SRC
-*** Tangle
-    #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
-      <<gitconfig-public-user>>
-      <<gitconfig-public-push>>
-      <<gitconfig-public-alias>>
-      <<gitconfig-public-misc>>
-      <<gitconfig-private>>
-    #+END_SRC
-** pryrc
-   #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
-     Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
-     Pry.config.editor = "emacsclient"
-   #+END_SRC
