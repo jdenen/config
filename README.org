@@ -3,6 +3,10 @@
 # End:
 
 * Dot
+  :PROPERTIES:
+  :header-args: :comments link
+  :END:
+
   Just =tangle= this file with Emacs to provision my personal machine.
 
   Execute this block to make it happen.
