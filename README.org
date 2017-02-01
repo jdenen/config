@@ -191,7 +191,7 @@
       [gerrit]
         createchangeid = true
     #+END_SRC
-**** Tangle
+**** Integration
      #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
        <<gitconfig-public-user>>
        <<gitconfig-public-push>>
@@ -236,3 +236,13 @@
        * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
        %?
      #+END_SRC
+** Packages
+   :PROPERTIES:
+   :header-args: :results silent output :eval yes :export none
+   :END:
+   These src blocks presuppose the installation of a package manager (=brew=).
+*** ag
+    I use =ag= on both the command line and as part of my spacemacs workflows.
+    #+BEGIN_SRC sh
+      brew install the_silver_searcher
+    #+END_SRC
