@@ -14,7 +14,7 @@
    Use =tangle= to provision my config files. Executing this block with =C-c C-c= will make it happen.
 
    #+BEGIN_SRC emacs-lisp :eval yes :noweb yes
-     (dolist (dir '("~/.spacemacs.d/foobar/layers" "~/.spacemacs.d/foobar/templates")) (make-directory dir t))
+     (dolist (dir '("~/.spacemacs.d/layers" "~/.spacemacs.d/templates")) (make-directory dir t))
      (org-babel-lob-ingest "~/vc-docs/scratch.org")
      (org-babel-tangle-file (buffer-file-name))
    #+END_SRC
@@ -98,7 +98,7 @@
        [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
      #+END_SRC
 **** Integration
-     #+BEGIN_SRC sh :tangle .bashrc :export none :noweb yes
+     #+BEGIN_SRC sh :tangle ~/.bashrc :export none :noweb yes
        <<bashrc-function-changelog>>
 
        <<bashrc-function-dmenv>>
@@ -114,7 +114,7 @@
      #+END_SRC
 *** ~/.emacs.notiffany.erb
     Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
-    #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
+    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.notiffany.erb :export none :noweb yes
       (progn
         (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
         (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
@@ -127,7 +127,7 @@
                                                        :foreground notiffany-original-foreground))))
     #+END_SRC
 *** ~/.gemrc
-    #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
+    #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :noweb yes
       ---
       :backtrace: false
       :bulk_threshold: 1000
@@ -140,7 +140,7 @@
     #+END_SRC
 *** ~/.guard.rb
     For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
-    #+BEGIN_SRC ruby :tangle .guard.rb :export none :noweb yes
+    #+BEGIN_SRC ruby :tangle ~/.guard.rb :export none :noweb yes
       notification(:emacs,
                    elisp_file: '~/.emacs.notiffany.erb',
                    success:   'ForestGreen',
@@ -192,7 +192,7 @@
         createchangeid = true
     #+END_SRC
 **** Integration
-     #+BEGIN_SRC conf :tangle .gitconfig :export none :noweb yes
+     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes
        <<gitconfig-public-user>>
        <<gitconfig-public-push>>
        <<gitconfig-public-alias>>
@@ -200,7 +200,7 @@
        <<gitconfig-private>>
      #+END_SRC
 *** ~/.pryrc
-    #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
+    #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :noweb yes
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
       Pry.config.editor = "emacsclient"
     #+END_SRC
@@ -291,7 +291,7 @@
          "ok"  'tramp-cleanup-all-buffers)
      #+END_SRC
 **** integration
-     #+BEGIN_SRC emacs-lisp :tangle dotsetup.el :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/dotsetup.el :export none :noweb yes
        <<setup-add-mode-hooks>>
 
        <<setup-map-registers>>
@@ -312,7 +312,7 @@
      #+END_SRC
 *** ~/.spacemacs.d/init.el
     This file is too big for the README, so I include it in version control independently. I just need to copy it to the right place.
-    #+BEGIN_SRC emacs-lisp :tangle .init.el :export none :noweb yes
+    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/init.el :export none :noweb yes
       ;; -*- mode: emacs-lisp -*-
       ;; This file is loaded by Spacemacs at startup.
       ;; It must be stored in your home directory.
@@ -682,27 +682,27 @@
 *** ~/.spacemacs.d/templates
 **** appt
      The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/appt.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/appt.orgcaptmpl :export none :noweb yes
        * %^{Summary} %^g
        %^{When}t
        %?
      #+END_SRC
 **** note
      The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/note.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/note.orgcaptmpl :export none :noweb yes
        * %^{Summary} %^g
        %?
      #+END_SRC
 **** task
      The =task= template captures a =TODO= with a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/task.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/task.orgcaptmpl :export none :noweb yes
        * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
        DEADLINE: %^{Due}t
        %?
      #+END_SRC
 **** todo
      The =todo= template captures a =TODO= without a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/todo.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/todo.orgcaptmpl :export none :noweb yes
        * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
        %?
      #+END_SRC
