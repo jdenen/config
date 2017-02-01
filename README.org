@@ -525,7 +525,7 @@
       explicitly specified that a variable should be set before a package is loaded,
       you should place your code here."
         (load "~/vc-docs/defs.el")
-        (load "~/Code/me/dot/dotsetup.el")
+        (load "~/.spacemacs.d/dotsetup.el")
         (setq rspec-command-options nil)
         (setq js-indent-level  2
               js2-basic-offset 2))
