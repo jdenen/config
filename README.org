@@ -204,6 +204,112 @@
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
       Pry.config.editor = "emacsclient"
     #+END_SRC
+*** ~/.spacemacs.d/dotsetup.el
+    I have a bunch of messy setup in my spacemacs config. I extract it for easier ingestion.
+**** hooks
+     #+NAME: setup-add-mode-hooks
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+        (progn
+          (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+          (add-hook 'eshell-mode-hook 'with-editor-export-editor)
+          (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
+          (add-hook 'ruby-mode-hook 'yard-mode)
+          (add-hook 'shell-mode-hook 'with-editor-export-editor)
+          (add-hook 'term-mode-hook 'with-editor-export-editor))
+     #+END_SRC
+**** registers
+     #+NAME: setup-map-registers
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+        (mapcar
+         (lambda (r)
+           (set-register (car r) (cons 'file (cdr r))))
+         '((?b . "~/.bashrc")
+           (?s . "~/vc-docs/scratch.org")))
+     #+END_SRC
+**** org
+     #+NAME: setup-org
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (setq org-agenda-files               '("~/vc-docs/scratch.org")
+             org-agenda-start-with-log-mode t
+             org-agenda-use-time-grid       t
+             org-agenda-include-all-todo    t
+             org-agenda-include-diary       t
+             diary-file                     "~/vc-docs/diary"
+             org-log-done                   'time)
+     #+END_SRC
+**** org-agenda
+     #+NAME: setup-org-agenda
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
+                                 (sequence "BLOCK(b)" "|" "CANCEL")))
+     #+END_SRC
+**** org-capture
+     #+NAME: setup-org-capture
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (setq org-capture-templates '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")
+                                      (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
+                                     ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")
+                                      (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
+                                     ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")
+                                      (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
+                                     ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
+                                      (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
+
+     #+END_SRC
+**** org-babel
+     #+NAME: setup-org-babel
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (org-babel-do-load-languages
+        'org-babel-load-languages '((ruby       . t)
+                                    (groovy     . t)
+                                    (shell      . t)
+                                    (emacs-lisp . t)))
+     #+END_SRC
+**** groovy
+     #+NAME: setup-groovy-config
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+       (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
+       (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
+         "id" 'groovy-imports-add-import-dwim)
+     #+END_SRC
+**** dockerfile
+     #+NAME: setup-dockerfile-config
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
+       (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
+         "bb" 'dockerfile-build-buffer))
+     #+END_SRC
+**** keybindings
+     #+NAME: setup-spacemacs-kbds
+     #+BEGIN_SRC emacs-lisp :export none :noweb yes
+       (spacemacs/set-leader-keys
+         "fE"  'sudo-open-file
+         "aoa" 'org-agenda-and-todos
+         "or"  'jump-to-register
+         "oo"  'cas/openstack
+         "ok"  'tramp-cleanup-all-buffers)
+     #+END_SRC
+**** integration
+     #+BEGIN_SRC emacs-lisp :tangle dotsetup.el :export none :noweb yes
+       <<setup-add-mode-hooks>>
+
+       <<setup-map-registers>>
+
+       <<setup-org>>
+
+       <<setup-org-agenda>>
+
+       <<setup-org-capture>>
+
+       <<setup-org-babel>>
+
+       <<setup-groovy-config>>
+
+       <<setup-dockerfile-config>>
+
+       <<setup-spacemacs-kbds>>
+     #+END_SRC
 *** ~/.spacemacs.d/init.el
     This file is too big for the README, so I include it in version control independently. I just need to copy it to the right place.
     #+BEGIN_SRC sh :eval yes
