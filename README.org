@@ -22,7 +22,6 @@
     My =changelog= function is dependent on an alias defined in my =.gitconfig= below.
 
     My command line prompt ends up looking like:
-
     #+BEGIN_SRC sh :eval no
        Mon Jan 30 12:00:00
        ~ $
@@ -94,38 +93,20 @@
 
     Setup my identity with Git using my client email for now.
 
-    #+NAME: gitconfig-public-user
+    #+NAME: gitconfig-public
     #+BEGIN_SRC conf :result silent
       [user]
         name = Johnson P Denen
         email = jdenen@cas.org
-    #+END_SRC
-
-    Set push style and a global ignore list.
-
-    #+NAME: gitconfig-public-push
-    #+BEGIN_SRC conf :result silent
       [push]
         default = simple
       [core]
         excludesfile = /Users/$USER/.gitignore_global
-    #+END_SRC
-
-    I have a few Git aliases. I call some from functions defined in my =.bashrc=. Others are used by private scripts.
-
-    #+NAME: gitconfig-public-alias
-    #+BEGIN_SRC conf :result silent
       [alias]
         root = rev-parse --show-toplevel
         logg = log --graph
         update-tools = !cd \"~/.cas-git-tools\" && git fetch && git reset --hard origin/master
         changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
-    #+END_SRC
-
-    Then, there are some miscellaneous configurations.
-
-    #+NAME: gitconfig-public-misc
-    #+BEGIN_SRC conf
       [color]
         ui = true
       [diff]
@@ -133,14 +114,14 @@
       [gerrit]
         createchangeid = true
     #+END_SRC
-**** Integration
-     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes
-       <<gitconfig-public-user>>
-       <<gitconfig-public-push>>
-       <<gitconfig-public-alias>>
-       <<gitconfig-public-misc>>
+
+    Because I have private git configuration, I tangle it using a loaded =src= block. This breaks
+    =org-babel-detangle= but =.gitconfig= rarely changes.
+
+    #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes
+       <<gitconfig-public>>
        <<gitconfig-private>>
-     #+END_SRC
+    #+END_SRC
 *** ~/.pryrc
     #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :noweb yes
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
