@@ -15,7 +15,7 @@
      (org-babel-lob-ingest "~/vc-docs/scratch.org")
      (org-babel-tangle-file (buffer-file-name))
    #+END_SRC
-*** bashrc
+*** ~/.bashrc
 **** Functions
      I use the =changelog= function to get a general idea of changes between releases (tags) of a Git project.
 
@@ -94,7 +94,7 @@
        export SDKMAN_DIR="~/.sdkman"
        [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
      #+END_SRC
-**** Tangle
+**** Integration
      #+BEGIN_SRC sh :tangle .bashrc :export none :noweb yes
        <<bashrc-function-changelog>>
 
@@ -109,34 +109,7 @@
 
        <<bashrc-setup-sdkman>>
      #+END_SRC
-*** capture templates
-**** appt
-     The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/appt.orgcaptmpl :export none :noweb yes
-       * %^{Summary} %^g
-       %^{When}t
-       %?
-     #+END_SRC
-**** note
-     The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/note.orgcaptmpl :export none :noweb yes
-       * %^{Summary} %^g
-       %?
-     #+END_SRC
-**** task
-     The =task= template captures a =TODO= with a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/task.orgcaptmpl :export none :noweb yes
-       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
-       DEADLINE: %^{Due}t
-       %?
-     #+END_SRC
-**** todo
-     The =todo= template captures a =TODO= without a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/todo.orgcaptmpl :export none :noweb yes
-       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
-       %?
-     #+END_SRC
-*** emacs.notiffany.erb
+*** ~/.emacs.notiffany.erb
     Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
     #+BEGIN_SRC emacs-lisp :tangle .emacs.notiffany.erb :export none :noweb yes
       (progn
@@ -150,7 +123,7 @@
                                                        :background notiffany-original-background
                                                        :foreground notiffany-original-foreground))))
     #+END_SRC
-*** gemrc
+*** ~/.gemrc
     #+BEGIN_SRC yaml :tangle .gemrc :export none :noweb yes
       ---
       :backtrace: false
@@ -162,7 +135,7 @@
       install: "--no-rdoc --no-ri"
       update: "--no-rdoc --no-ri"
     #+END_SRC
-*** guard.rb
+*** ~/.guard.rb
     For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
     #+BEGIN_SRC ruby :tangle .guard.rb :export none :noweb yes
       notification(:emacs,
@@ -172,7 +145,7 @@
                    default:   'Black',
                    fontcolor: 'White')
     #+END_SRC
-*** gitconfig
+*** ~/.gitconfig
 
     Setup my identity with Git using my client email for now.
 
@@ -223,8 +196,35 @@
        <<gitconfig-public-misc>>
        <<gitconfig-private>>
      #+END_SRC
-*** pryrc
+*** ~/.pryrc
     #+BEGIN_SRC ruby :tangle .pryrc :export none :noweb yes
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
       Pry.config.editor = "emacsclient"
     #+END_SRC
+*** ~/.spacemacs.d/templates
+**** appt
+     The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/appt.orgcaptmpl :export none :noweb yes
+       * %^{Summary} %^g
+       %^{When}t
+       %?
+     #+END_SRC
+**** note
+     The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/note.orgcaptmpl :export none :noweb yes
+       * %^{Summary} %^g
+       %?
+     #+END_SRC
+**** task
+     The =task= template captures a =TODO= with a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/task.orgcaptmpl :export none :noweb yes
+       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+       DEADLINE: %^{Due}t
+       %?
+     #+END_SRC
+**** todo
+     The =todo= template captures a =TODO= without a deadline.
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/foobar/templates/todo.orgcaptmpl :export none :noweb yes
+       * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
+       %?
+     #+END_SRC
