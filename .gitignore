@@ -7,3 +7,4 @@
 /.guard.rb
 /*.orgcaptmpl
 /dotsetup.el
+/.init.el
