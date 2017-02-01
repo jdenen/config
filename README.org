@@ -53,6 +53,17 @@
        export SDKMAN_DIR="~/.sdkman"
        [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
     #+END_SRC
+*** ~/.bash_profile
+    #+BEGIN_SRC sh :tangle ~/.bash_profile :export none :noweb yes
+      source "$HOME/.bashrc"
+
+      export PATH="$HOME/.rbenv/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+      eval "$(rbenv init -)"
+
+      #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+      export SDKMAN_DIR="$HOME/.sdkman"
+      [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+    #+END_SRC
 *** ~/.emacs.notiffany.erb
     Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
     #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.notiffany.erb :export none :noweb yes
