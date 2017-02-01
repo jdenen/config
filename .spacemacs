@@ -335,65 +335,11 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (load "~/vc-docs/defs.el")
-
-  (setq org-agenda-files               '("~/vc-docs/scratch.org")
-        org-agenda-start-with-log-mode t
-        org-agenda-use-time-grid       t
-        org-agenda-include-all-todo    t
-        org-agenda-include-diary       t
-        diary-file                     "~/vc-docs/diary"
-        org-log-done                   'time
-        org-todo-keywords              '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
-                                         (sequence "BLOCK(b)" "|" "CANCEL"))
-        org-capture-templates          '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")  ;; No action, no deadline
-                                          (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
-                                         ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")  ;; Action, no deadline
-                                          (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
-                                         ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")  ;; Action, deadline
-                                          (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
-                                         ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")  ;; No action, deadline
-                                          (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
-
-  (mapcar
-   (lambda (r)
-     (set-register (car r) (cons 'file (cdr r))))
-   '((?b . "~/.bashrc")
-     (?s . "~/vc-docs/scratch.org")
-     (?j . "~/vc-docs/johnson.org")))
+  (load "~/Code/me/dot/dotsetup.el")
 
   (setq rspec-command-options nil)
   (setq js-indent-level  2
-        js2-basic-offset 2)
-
-  (add-hook 'ruby-mode-hook 'yard-mode)
-  (add-hook 'after-init-hook 'inf-ruby-switch-setup)
-  (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
-  (add-hook 'shell-mode-hook 'with-editor-export-editor)
-  (add-hook 'term-mode-hook 'with-editor-export-editor)
-  (add-hook 'eshell-mode-hook 'with-editor-export-editor)
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((ruby . t)
-                               (groovy . t)
-                               (shell . t)
-                               (emacs-lisp . t)))
-  (spacemacs/set-leader-keys
-    "fE"  'sudo-open-file
-    "aoa" 'org-agenda-and-todos
-    "or"  'jump-to-register
-    "oo"  'cas/openstack
-    "ok"  'tramp-cleanup-all-buffers)
-
-  ;; groovy
-  (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
-  (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
-  (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
-    "id" 'groovy-imports-add-import-dwim)
-
-  ;; dockerfile
-  (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
-  (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
-    "bb" 'dockerfile-build-buffer))
+        js2-basic-offset 2))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

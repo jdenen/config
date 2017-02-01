@@ -278,7 +278,7 @@
      #+BEGIN_SRC emacs-lisp :export none :noweb yes
        (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
        (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
-         "bb" 'dockerfile-build-buffer))
+         "bb" 'dockerfile-build-buffer)
      #+END_SRC
 **** keybindings
      #+NAME: setup-spacemacs-kbds
