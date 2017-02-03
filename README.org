@@ -120,6 +120,8 @@
         changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
       [color]
         ui = true
+      [rerere]
+        enabled = true
       [diff]
         renames = true
       [gerrit]
