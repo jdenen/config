@@ -148,7 +148,6 @@
        (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
        (add-hook 'ruby-mode-hook 'yard-mode)
        (add-hook 'shell-mode-hook 'with-editor-export-editor)
-       (add-hook 'term-mode-hook 'with-editor-export-editor)
 
        (mapcar
         (lambda (r)
