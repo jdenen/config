@@ -175,6 +175,10 @@
                                      ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
                                       (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
 
+       (setq rspec-command-options nil
+             js-indent-level       2
+             js2-basic-offset      2)
+
        (org-babel-do-load-languages
         'org-babel-load-languages '((ruby       . t)
                                     (groovy     . t)
@@ -538,10 +542,7 @@
       explicitly specified that a variable should be set before a package is loaded,
       you should place your code here."
         (load "~/vc-docs/defs.el")
-        (load "~/.spacemacs.d/dotsetup.el")
-        (setq rspec-command-options nil)
-        (setq js-indent-level  2
-              js2-basic-offset 2))
+        (load "~/.spacemacs.d/dotsetup.el"))
 
       ;; Do not write anything past this comment. This is where Emacs will
       ;; auto-generate custom variable definitions.
