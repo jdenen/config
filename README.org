@@ -191,10 +191,11 @@
          "bb" 'dockerfile-build-buffer)
 
        (spacemacs/set-leader-keys
-         "fE"  'sudo-open-file
-         "aoa" 'org-agenda-and-todos
-         "or"  'jump-to-register
+         "Dm"  'docker-machines
          "oo"  'cas/openstack
+         "or"  'jump-to-register
+         "aoa" 'org-agenda-and-todos
+         "fE"  'sudo-open-file
          "ok"  'tramp-cleanup-all-buffers)
      #+END_SRC
 *** ~/.spacemacs.d/init.el
