@@ -572,27 +572,27 @@
 *** ~/.spacemacs.d/templates
 **** appt
      The =appt= template captures meetings, events, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/appt.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/appt.orgcaptmpl :export none :noweb yes :comments no
        * %^{Summary} %^g
        %^{When}t
        %?
      #+END_SRC
 **** note
      The =note= template captures ideas, reference material, code snippets, etc. It is not a =TODO= and does not have a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/note.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/note.orgcaptmpl :export none :noweb yes :comments no
        * %^{Summary} %^g
        %?
      #+END_SRC
 **** task
      The =task= template captures a =TODO= with a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/task.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/task.orgcaptmpl :export none :noweb yes :comments no
        * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
        DEADLINE: %^{Due}t
        %?
      #+END_SRC
 **** todo
      The =todo= template captures a =TODO= without a deadline.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/todo.orgcaptmpl :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/templates/todo.orgcaptmpl :export none :noweb yes :comments no
        * TODO [#%^{priority|A|B|C}] %^{Summary} %^g
        %?
      #+END_SRC
