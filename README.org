@@ -140,67 +140,161 @@
       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
       Pry.config.editor = "emacsclient"
     #+END_SRC
+*** ~/.spacemacs.d/dotfuns.el
+    I write a non-trivial amount of functions for use in Emacs. The ones that are not client specific are stored here.
+
+    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/dotfuns.el :export none :noweb yes
+      (defun move-file (new-location)
+        "Write current buffer file to NEW-LOCATION and delete the old one."
+        (interactive (list (if buffer-file-name
+                               (read-file-name "Move file to: ")
+                             (read-file-name "Move file to: "
+                                             default-directory
+                                             (expand-file-name (file-name-nondirectory (buffer-name))
+                                                               default-directory)))))
+        (when (file-exists-p new-location)
+          (delete-file new-location))
+        (let ((old-location (buffer-file-name)))
+          (write-file new-location t)
+          (when (and old-location
+                     (file-exists-p new-location))
+            (delete-file old-location))))
+
+      ;; FIXME
+      ;; Execute once and it opens properly. Execute again and it closes properly.
+      ;; Execute a third time and it does not open to insert mode.
+      (defun multiterm-pop-to-insert-mode()
+        "Pop a `multi-term' session in insert mode."
+        (interactive)
+        (progn
+          (spacemacs/shell-pop-multiterm nil)
+          (if (eq "term-mode" major-mode)
+              (evil-insert 0))))
+
+      (defun org-agenda-and-todos ()
+        "Show org-agenda with a global list of TODOs.
+
+      This is the same as =SPC a o o n= in spacemacs."
+        (interactive)
+        (org-agenda nil "n"))
+
+      (defun copy-current-file-path ()
+        "Copy filepath of the buffer file."
+        (interactive)
+        (if (null (buffer-file-name))
+            (user-error "Current buffer is not a file.")
+          (progn
+            (message "Copied: %s" (buffer-file-name))
+            (kill-new (buffer-file-name)))))
+
+      (defun sudo-open-file ()
+        "Prompt to open file using sudo."
+        (interactive)
+        (let ((current-directory (helm-current-directory)))
+          (let ((default-directory (concat "/sudo:johnson@localhost:" current-directory)))
+            (call-interactively 'helm-find-files))))
+
+      ;; TODO
+      ;; Document me!
+      (defun pry-edit ()
+        (interactive)
+        (progn
+          (server-edit)
+          (ruby-switch-to-inf t)))
+
+      (defun dmenv ()
+        "Start and use the default machine while regenerating its certs."
+        (interactive)
+        (docker-machine-start "default")
+        (docker-machine "regenerate-certs" "default")
+        (docker-machine-env "default"))
+
+      (defun dired-elsewhere (user loc &optional sudo)
+        "Open `dired' to /ssh:USER@LOC:/.
+
+      Optionally, `tramp' in as root if SUDO is non-nil."
+        (interactive
+         (list
+          (read-string "Who: ")
+          (read-string "Where: ")))
+        (let ((user-at-loc (concat "/ssh:" user "@" loc)))
+          (let ((connection-string
+                 (if sudo
+                     (concat user-at-loc "|sudo:" loc ":/")
+                   (concat user-at-loc ":/"))))
+            (dired connection-string))))
+
+      (defun sudo-dired-elsewhere (user loc)
+        "Open `dired' to /ssh:USER@LOC|sudo:LOC:/ which is equal to /ssh:root@LOC:/."
+        (interactive
+         (list
+          (read-string "Who: ")
+          (read-string "Where: ")))
+        (dired-elsewhere user loc t))
+    #+END_SRC
 *** ~/.spacemacs.d/dotsetup.el
     I have a bunch of messy setup in my spacemacs config. I extract it for easier ingestion.
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/dotsetup.el :export none :noweb yes
-       (add-hook 'after-init-hook 'inf-ruby-switch-setup)
-       (add-hook 'eshell-mode-hook 'with-editor-export-editor)
-       (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
-       (add-hook 'ruby-mode-hook 'yard-mode)
-       (add-hook 'shell-mode-hook 'with-editor-export-editor)
+    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/dotsetup.el :export none :noweb yes
+      (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+      (add-hook 'eshell-mode-hook 'with-editor-export-editor)
+      (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
+      (add-hook 'ruby-mode-hook 'yard-mode)
+      (add-hook 'shell-mode-hook 'with-editor-export-editor)
 
-       (mapcar
-        (lambda (r)
-          (set-register (car r) (cons 'file (cdr r))))
-        '((?b . "~/.bashrc")
-          (?s . "~/vc-docs/scratch.org")))
+      (mapcar
+       (lambda (r)
+         (set-register (car r) (cons 'file (cdr r))))
+       '((?b . "~/.bashrc")
+         (?s . "~/vc-docs/scratch.org")))
 
-       (setq org-agenda-files               '("~/vc-docs/scratch.org")
-             org-agenda-start-with-log-mode t
-             org-agenda-use-time-grid       t
-             org-agenda-include-all-todo    t
-             org-agenda-include-diary       t
-             diary-file                     "~/vc-docs/diary"
-             org-log-done                   'time)
+      (setq org-agenda-files               '("~/vc-docs/scratch.org")
+            org-agenda-start-with-log-mode t
+            org-agenda-use-time-grid       t
+            org-agenda-include-all-todo    t
+            org-agenda-include-diary       t
+            diary-file                     "~/vc-docs/diary"
+            org-log-done                   'time)
 
-       (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
-                                 (sequence "BLOCK(b)" "|" "CANCEL")))
+      (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
+                                (sequence "BLOCK(b)" "|" "CANCEL")))
 
-       (setq org-capture-templates '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")
-                                      (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
-                                     ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")
-                                      (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
-                                     ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")
-                                      (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
-                                     ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
-                                      (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
+      (setq org-capture-templates '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")
+                                     (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
+                                    ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")
+                                     (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
+                                    ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")
+                                     (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
+                                    ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
+                                     (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
 
-       (setq rspec-command-options nil
-             js-indent-level       2
-             js2-basic-offset      2)
+      (setq rspec-command-options nil
+            js-indent-level       2
+            js2-basic-offset      2)
 
-       (org-babel-do-load-languages
-        'org-babel-load-languages '((ruby       . t)
-                                    (groovy     . t)
-                                    (shell      . t)
-                                    (emacs-lisp . t)))
+      (org-babel-do-load-languages
+       'org-babel-load-languages '((ruby       . t)
+                                   (groovy     . t)
+                                   (shell      . t)
+                                   (emacs-lisp . t)))
 
-       (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
-       (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
-       (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
-         "id" 'groovy-imports-add-import-dwim)
+      (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+      (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
+      (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
+        "id" 'groovy-imports-add-import-dwim)
 
-       (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
-       (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
-         "bb" 'dockerfile-build-buffer)
+      (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
+      (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
+        "bb" 'dockerfile-build-buffer)
 
-       (spacemacs/set-leader-keys
-         "Dm"  'docker-machines
-         "oo"  'cas/openstack
-         "or"  'jump-to-register
-         "aoa" 'org-agenda-and-todos
-         "fE"  'sudo-open-file
-         "ok"  'tramp-cleanup-all-buffers)
+      (spacemacs/set-leader-keys
+        "&"   'async-shell-command
+        "Dm"  'docker-machines
+        "oo"  'cas/openstack
+        "or"  'jump-to-register
+        "aoa" 'org-agenda-and-todos
+        "asm" 'multiterm-pop-to-insert-mode
+        "fE"  'sudo-open-file
+        "ok"  'tramp-cleanup-all-buffers)
      #+END_SRC
 *** ~/.spacemacs.d/init.el
     This file is too big for the README, so I include it in version control independently. I just need to copy it to the right place.
