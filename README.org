@@ -263,6 +263,7 @@
                   shell-default-height 50
                   shell-default-shell 'shell)
            syntax-checking
+           vinegar
            yaml
            )
          ;; List of additional packages that will be installed without being
