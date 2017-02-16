@@ -160,6 +160,31 @@
                      (file-exists-p new-location))
             (delete-file old-location))))
 
+      (defcustom my/org-present-edit-p nil "Current `org-present-toggle-edit' status.")
+
+      (defun my/org-present-edit ()
+        "Show cursor and allow editing in `org-present-mode'."
+        (progn
+          (setq my/org-present-edit-p t)
+          (org-present-show-cursor)
+          (org-present-read-write)))
+
+      (defun my/org-present-no-edit ()
+        "Hide cursor and make buffer read-only."
+        (progn
+          (setq my/org-present-edit-p nil)
+          (org-present-hide-cursor)
+          (org-present-read-only)))
+
+      (defun my/org-present-toggle-edit ()
+        "Toggle edit settings in `org-present-mode'.
+
+      Uses `org-present-edit' and `org-present-no-edit'."
+        (interactive)
+        (if my/org-present-edit-p
+            (my/org-present-no-edit)
+          (my/org-present-edit)))
+
       ;; FIXME
       ;; Execute once and it opens properly. Execute again and it closes properly.
       ;; Execute a third time and it does not open to insert mode.
@@ -276,6 +301,10 @@
                                    (groovy     . t)
                                    (shell      . t)
                                    (emacs-lisp . t)))
+
+      (spacemacs/declare-prefix-for-mode 'org-present-mode "mp" "presenting" "presentation")
+      (spacemacs/set-leader-keys-for-minor-mode 'org-present-mode
+        "pe" 'my/org-present-toggle-edit)
 
       (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
       (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
@@ -637,6 +666,7 @@
       explicitly specified that a variable should be set before a package is loaded,
       you should place your code here."
         (load "~/vc-docs/defs.el")
+        (load "~/.spacemacs.d/dotfuns.el")
         (load "~/.spacemacs.d/dotsetup.el"))
 
       ;; Do not write anything past this comment. This is where Emacs will
