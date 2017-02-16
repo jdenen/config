@@ -270,6 +270,7 @@
        (lambda (r)
          (set-register (car r) (cons 'file (cdr r))))
        '((?b . "~/.bashrc")
+         (?r . "~/Code/me/dot/README.org")
          (?s . "~/vc-docs/scratch.org")))
 
       (setq org-agenda-files               '("~/vc-docs/scratch.org")
