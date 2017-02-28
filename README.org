@@ -386,7 +386,6 @@
            markdown
            org
            osx
-           ranger
            (ruby :variables
                  ruby-test-runner 'rspec
                  ruby-version-manager 'rbenv)
