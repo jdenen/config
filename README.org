@@ -303,9 +303,15 @@
                                    (shell      . t)
                                    (emacs-lisp . t)))
 
+      (setq twittering-icon-mode t
+            twittering-use-master-password t)
+
+      (setq org-present-text-scale 12)
       (spacemacs/declare-prefix-for-mode 'org-present-mode "mp" "presenting" "presentation")
       (spacemacs/set-leader-keys-for-minor-mode 'org-present-mode
-        "pe" 'my/org-present-toggle-edit)
+        "ptc" 'org-present-cursor-toggle
+        "pte" 'org-present-edit-toggle
+        "px"  'org-present-execute-slide)
 
       (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
       (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
@@ -321,6 +327,7 @@
         "Dm"  'docker-machines
         "oo"  'cas/openstack
         "or"  'jump-to-register
+        "ot"  'twittering-update-status-from-pop-up-buffer
         "aoa" 'org-agenda-and-todos
         "asm" 'multiterm-pop-to-insert-mode
         "fE"  'sudo-open-file
@@ -387,6 +394,7 @@
                   shell-default-height 50
                   shell-default-shell 'shell)
            syntax-checking
+           twitter
            vinegar
            yaml
            )
