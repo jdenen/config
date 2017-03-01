@@ -381,6 +381,7 @@
            command-log
            docker
            emacs-lisp
+           html
            git
            gnus
            groovy
