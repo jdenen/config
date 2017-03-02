@@ -295,6 +295,8 @@
                                     ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
                                      (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
 
+      (setq magit-diff-refine-hunk t)
+
       (setq rspec-command-options nil
             js-indent-level       2
             js2-basic-offset      2)
