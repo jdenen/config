@@ -162,30 +162,50 @@
                      (file-exists-p new-location))
             (delete-file old-location))))
 
-      (defcustom my/org-present-edit-p nil "Current `org-present-toggle-edit' status.")
+      (defcustom org-present-edit-p nil "Current `org-present-edit-toggle' status.")
+      (defcustom org-present-cursor-p nil "Current `org-present-cursor-toggle' status.")
 
-      (defun my/org-present-edit ()
-        "Show cursor and allow editing in `org-present-mode'."
-        (progn
-          (setq my/org-present-edit-p t)
-          (org-present-show-cursor)
-          (org-present-read-write)))
-
-      (defun my/org-present-no-edit ()
-        "Hide cursor and make buffer read-only."
-        (progn
-          (setq my/org-present-edit-p nil)
-          (org-present-hide-cursor)
-          (org-present-read-only)))
-
-      (defun my/org-present-toggle-edit ()
-        "Toggle edit settings in `org-present-mode'.
-
-      Uses `org-present-edit' and `org-present-no-edit'."
+      (defun org-present-execute-slide ()
+        "Execute all SRC blocks on the slide."
         (interactive)
-        (if my/org-present-edit-p
-            (my/org-present-no-edit)
-          (my/org-present-edit)))
+        (if org-present-edit-p
+            (org-babel-execute-buffer)
+          (progn
+            (org-present-edit-toggle)
+            (org-babel-execute-buffer)
+            (org-present-edit-toggle))))
+
+      (defun org-present-edit-toggle ()
+        "Toggle edit settings in `org-present-mode'."
+        (interactive)
+        (if org-present-edit-p
+            (progn
+              (setq org-present-edit-p nil)
+              (org-present-read-only))
+          (progn
+            (setq org-present-edit-p t)
+            (org-present-read-write))))
+
+      (defun org-present-cursor-toggle ()
+        "Toggle cursor settings in `org-present-mode'."
+        (interactive)
+        (if org-present-cursor-p
+            (progn
+              (setq org-present-cursor-p nil)
+              (org-present-hide-cursor))
+          (progn
+            (setq org-present-cursor-p t)
+            (org-present-show-cursor))))
+
+      (defun org-present-bigger ()
+        "Make `org-present' text larger by increments of `org-present-text-scale'."
+        (interactive)
+        (text-scale-increase org-present-text-scale))
+
+      (defun org-present-smaller ()
+        "Make `org-present' text smaller by increments of `org-present-text-scale'."
+        (interactive)
+        (text-scale-decrease org-present-text-scale))
 
       ;; FIXME
       ;; Execute once and it opens properly. Execute again and it closes properly.
@@ -335,6 +355,8 @@
         "aoa" 'org-agenda-and-todos
         "asm" 'multiterm-pop-to-insert-mode
         "fE"  'sudo-open-file
+        "."   'mc/mark-next-like-this
+        ","   'mc/unmark-next-like-this
         "ok"  'tramp-cleanup-all-buffers)
      #+END_SRC
 *** ~/.spacemacs.d/init.el
@@ -412,6 +434,7 @@
                                             gist
                                             groovy-imports
                                             hackernews
+                                            multiple-cursors
                                             vdiff
                                             yard-mode)
          ;; A list of packages that cannot be updated.
