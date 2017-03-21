@@ -402,6 +402,7 @@
            ;; ----------------------------------------------------------------
            auto-completion
            better-defaults
+           clojure
            command-log
            docker
            emacs-lisp
