@@ -278,86 +278,112 @@
           (read-string "Who: ")
           (read-string "Where: ")))
         (dired-elsewhere user loc t))
+
+
+      (defun groovysh-load-buffer ()
+        "Load the current groovy buffer into `inf-groovy'."
+        (interactive)
+        (comint-check-source (buffer-file-name))
+        (my/groovysh-send-string (concat ":load " (buffer-file-name))))
+
+      (defun groovysh-load-buffer-and-go ()
+        "Execute `my/groovysh-load-buffer' and go to the REPL."
+        (interactive)
+        (my/groovysh-load-buffer)
+        (switch-to-groovy t))
+
+      (defun groovysh-clear ()
+        "Clear the `inf-groovy' REPL."
+        (interactive)
+        (my/groovysh-send-string ":clear"))
+
+      (defun groovysh-send-string (str)
+        "Send STR to `inf-groovy' followed by a newline character."
+        (comint-send-string (groovy-proc) str)
+        (comint-send-string (groovy-proc) "\n"))
     #+END_SRC
 *** ~/.spacemacs.d/dotsetup.el
     I have a bunch of messy setup in my spacemacs config. I extract it for easier ingestion.
     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs.d/dotsetup.el :export none :noweb yes
-      (add-hook 'after-init-hook 'inf-ruby-switch-setup)
-      (add-hook 'eshell-mode-hook 'with-editor-export-editor)
-      (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
-      (add-hook 'ruby-mode-hook 'yard-mode)
-      (add-hook 'shell-mode-hook 'with-editor-export-editor)
+            (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+            (add-hook 'eshell-mode-hook 'with-editor-export-editor)
+            (add-hook 'groovy-mode-hook 'groovy-imports-scan-file)
+            (add-hook 'ruby-mode-hook 'yard-mode)
+            (add-hook 'shell-mode-hook 'with-editor-export-editor)
 
-      (mapcar
-       (lambda (r)
-         (set-register (car r) (cons 'file (cdr r))))
-       '((?b . "~/.bashrc")
-         (?r . "~/Code/me/dot/README.org")
-         (?s . "~/vc-docs/scratch.org")))
+            (mapcar
+             (lambda (r)
+               (set-register (car r) (cons 'file (cdr r))))
+             '((?b . "~/.bashrc")
+               (?r . "~/Code/me/dot/README.org")
+               (?s . "~/vc-docs/scratch.org")))
 
-      (setq org-agenda-files               '("~/vc-docs/scratch.org")
-            org-agenda-start-with-log-mode t
-            org-agenda-use-time-grid       t
-            org-agenda-include-all-todo    t
-            org-agenda-include-diary       t
-            diary-file                     "~/vc-docs/diary"
-            org-log-done                   'time)
+            (setq org-agenda-files               '("~/vc-docs/scratch.org")
+                  org-agenda-start-with-log-mode t
+                  org-agenda-use-time-grid       t
+                  org-agenda-include-all-todo    t
+                  org-agenda-include-diary       t
+                  diary-file                     "~/vc-docs/diary"
+                  org-log-done                   'time)
 
-      (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
-                                (sequence "BLOCK(b)" "|" "CANCEL")))
+            (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "VRFY(v)" "|" "DONE(d)")
+                                      (sequence "BLOCK(b)" "|" "CANCEL")))
 
-      (setq org-capture-templates '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")
-                                     (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
-                                    ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")
-                                     (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
-                                    ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")
-                                     (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
-                                    ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
-                                     (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
+            (setq org-capture-templates '(("n" "Note" entry (file+datetree "~/vc-docs/scratch.org")
+                                           (file "~/.spacemacs.d/templates/note.orgcaptmpl"))
+                                          ("d" "Todo" entry (file+datetree "~/vc-docs/scratch.org")
+                                           (file "~/.spacemacs.d/templates/todo.orgcaptmpl"))
+                                          ("t" "Task" entry (file+datetree "~/vc-docs/scratch.org")
+                                           (file "~/.spacemacs.d/templates/task.orgcaptmpl"))
+                                          ("a" "Appt" entry (file+datetree "~/vc-docs/scratch.org")
+                                           (file "~/.spacemacs.d/templates/appt.orgcaptmpl"))))
 
-      (setq magit-diff-refine-hunk t)
+            (setq magit-diff-refine-hunk t)
 
-      (setq rspec-command-options nil
-            js-indent-level       2
-            js2-basic-offset      2)
+            (setq rspec-command-options nil
+                  js-indent-level       2
+                  js2-basic-offset      2)
 
-      (org-babel-do-load-languages
-       'org-babel-load-languages '((ruby       . t)
-                                   (groovy     . t)
-                                   (shell      . t)
-                                   (emacs-lisp . t)))
+            (org-babel-do-load-languages
+             'org-babel-load-languages '((ruby       . t)
+                                         (groovy     . t)
+                                         (shell      . t)
+                                         (emacs-lisp . t)))
 
-      (setq twittering-icon-mode t
-            twittering-use-master-password t)
+            (setq twittering-icon-mode t
+                  twittering-use-master-password t)
 
-      (setq org-present-text-scale 12)
-      (spacemacs/declare-prefix-for-mode 'org-present-mode "mp" "presenting" "presentation")
-      (spacemacs/set-leader-keys-for-minor-mode 'org-present-mode
-        "ptc" 'org-present-cursor-toggle
-        "pte" 'org-present-edit-toggle
-        "px"  'org-present-execute-slide)
+            (setq org-present-text-scale 12)
+            (spacemacs/declare-prefix-for-mode 'org-present-mode "mp" "presenting" "presentation")
+            (spacemacs/set-leader-keys-for-minor-mode 'org-present-mode
+              "ptc" 'org-present-cursor-toggle
+              "pte" 'org-present-edit-toggle
+              "px"  'org-present-execute-slide)
 
-      (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
-      (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
-      (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
-        "id" 'groovy-imports-add-import-dwim)
+            (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+            (spacemacs/declare-prefix-for-mode 'groovy-mode "mi" "import")
+            (spacemacs/set-leader-keys-for-major-mode 'groovy-mode
+              "id" 'groovy-imports-add-import-dwim
+              "sb" 'groovysh-load-buffer
+              "sB" 'groovysh-load-buffer-and-go
+              "sC" 'groovysh-clear)
 
-      (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
-      (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
-        "bb" 'dockerfile-build-buffer)
+            (spacemacs/declare-prefix-for-mode 'dockerfile-mode "mb" "build")
+            (spacemacs/set-leader-keys-for-major-mode 'dockerfile-mode
+              "bb" 'dockerfile-build-buffer)
 
-      (spacemacs/set-leader-keys
-        "&"   'async-shell-command
-        "Dm"  'docker-machines
-        "oo"  'cas/openstack
-        "or"  'jump-to-register
-        "ot"  'twittering-update-status-from-pop-up-buffer
-        "aoa" 'org-agenda-and-todos
-        "asm" 'multiterm-pop-to-insert-mode
-        "fE"  'sudo-open-file
-        "."   'mc/mark-next-like-this
-        ","   'mc/unmark-next-like-this
-        "ok"  'tramp-cleanup-all-buffers)
+            (spacemacs/set-leader-keys
+              "&"   'async-shell-command
+              "Dm"  'docker-machines
+              "oo"  'cas/openstack
+              "or"  'jump-to-register
+              "ot"  'twittering-update-status-from-pop-up-buffer
+              "aoa" 'org-agenda-and-todos
+              "asm" 'multiterm-pop-to-insert-mode
+              "fE"  'sudo-open-file
+              "."   'mc/mark-next-like-this
+              ","   'mc/unmark-next-like-this
+              "ok"  'tramp-cleanup-all-buffers)
      #+END_SRC
 *** ~/.spacemacs.d/init.el
     This file is too big for the README, so I include it in version control independently. I just need to copy it to the right place.
