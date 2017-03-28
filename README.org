@@ -50,8 +50,6 @@
        PS1_PWD="\[\033[0;37m\]\W"
        export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
 
-       export PATH=$PATH:$HOME/.cas-git-tools/bin
-
        export SDKMAN_DIR="~/.sdkman"
        [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
     #+END_SRC
@@ -109,8 +107,8 @@
     #+NAME: gitconfig-public
     #+BEGIN_SRC conf :result silent
       [user]
-        name = Johnson P Denen
-        email = jdenen@cas.org
+        name = Johnson Denen
+        email = johnson.denen@gmail.com
       [push]
         default = simple
       [core]
@@ -118,7 +116,6 @@
       [alias]
         root = rev-parse --show-toplevel
         logg = log --graph
-        update-tools = !cd \"~/.cas-git-tools\" && git fetch && git reset --hard origin/master
         changelog = ! git log ${1}..${2:-HEAD} --pretty=format:'* %s'
       [color]
         ui = true
@@ -375,7 +372,6 @@
             (spacemacs/set-leader-keys
               "&"   'async-shell-command
               "Dm"  'docker-machines
-              "oo"  'cas/openstack
               "or"  'jump-to-register
               "ot"  'twittering-update-status-from-pop-up-buffer
               "aoa" 'org-agenda-and-todos
