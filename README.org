@@ -447,6 +447,7 @@
                   shell-default-height 50
                   shell-default-shell 'shell)
            syntax-checking
+           terraform
            twitter
            vinegar
            yaml
