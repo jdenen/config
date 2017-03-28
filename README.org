@@ -284,18 +284,18 @@
         "Load the current groovy buffer into `inf-groovy'."
         (interactive)
         (comint-check-source (buffer-file-name))
-        (my/groovysh-send-string (concat ":load " (buffer-file-name))))
+        (groovysh-send-string (concat ":load " (buffer-file-name))))
 
       (defun groovysh-load-buffer-and-go ()
         "Execute `my/groovysh-load-buffer' and go to the REPL."
         (interactive)
-        (my/groovysh-load-buffer)
+        (groovysh-load-buffer)
         (switch-to-groovy t))
 
       (defun groovysh-clear ()
         "Clear the `inf-groovy' REPL."
         (interactive)
-        (my/groovysh-send-string ":clear"))
+        (groovysh-send-string ":clear"))
 
       (defun groovysh-send-string (str)
         "Send STR to `inf-groovy' followed by a newline character."
