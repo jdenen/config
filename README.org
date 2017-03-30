@@ -442,6 +442,7 @@
            (shell :variables
                   shell-default-height 50
                   shell-default-shell 'shell)
+           shell-scripts
            syntax-checking
            terraform
            twitter
