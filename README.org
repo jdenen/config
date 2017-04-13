@@ -455,6 +455,7 @@
          ;; configuration in `dotspacemacs/user-config'.
          dotspacemacs-additional-packages '(ample-theme
                                             copy-as-format
+                                            el-mock
                                             feature-mode
                                             gist
                                             groovy-imports
