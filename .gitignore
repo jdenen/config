@@ -1,10 +1,2 @@
 .DS_Store
-/.bashrc
-/.gemrc
-/.pryrc
 /.gitconfig
-/.emacs.notiffany.erb
-/.guard.rb
-/*.orgcaptmpl
-/dotsetup.el
-/.init.el
