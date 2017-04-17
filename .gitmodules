@@ -5,3 +5,7 @@
 	path = .emacs.d
 	url = https://github.com/jdenen/spacemacs
 	branch = develop
+[submodule ".dockemacs"]
+	path = .dockemacs
+	url = https://github.com/jdenen/dockemacs
+	branch = master
