@@ -3,107 +3,15 @@
 # End:
 
 * Dot
-  Configuration files and software packages that I need to function. They're all wrapped up in a nice, literate README.
-
-  Using this README assumes an installation of Emacs. For now, it will also assume a =darwin= OS.
-** Configuration
-   :PROPERTIES:
-   :header-args: :comments link :results silent
-   :END:
-
-   Use =tangle= to provision my config files. Executing this block with =C-c C-c= will make it happen.
-
-   #+BEGIN_SRC emacs-lisp :eval yes :noweb yes
-     (dolist (dir '("~/.spacemacs.d/layers" "~/.spacemacs.d/templates")) (make-directory dir t))
-     (org-babel-lob-ingest "~/vc-docs/scratch.org")
-     (org-babel-tangle-file (buffer-file-name))
-   #+END_SRC
-*** ~/.bashrc
-    My =changelog= function is dependent on an alias defined in my =.gitconfig= below.
-
-    My command line prompt ends up looking like:
-    #+BEGIN_SRC sh :eval no
-       Mon Jan 30 12:00:00
-       ~ $
-    #+END_SRC
-
-    #+BEGIN_SRC sh :tangle ~/.bashrc :export none :noweb yes
-       function changelog() {
-           git changelog ${1} ${2} | grep -vE 'Bump|Squashed'
-       }
-
-       function dmenv() {
-           docker-machine start default
-           docker-machine regenerate-certs default
-           eval "$(docker-machine env default)"
-       }
-
-       alias ls='ls -lF'
-       alias freq='history | cut -c8- | sort | uniq -c | sort -rn | head'
-       alias root='cd $(git rev-parse --show-toplevel)'
-       alias be='bundle exec'
-       alias dm='docker-machine'
-       alias src='source ~/.bashrc'
-
-       PS1_DATE="\[\033[32m\]\d"
-       PS1_TIME="\[\033[1;36m\]\T"
-       PS1_PWD="\[\033[0;37m\]\W"
-       export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
-
-       export SDKMAN_DIR="~/.sdkman"
-       [[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
-    #+END_SRC
-*** ~/.bash_profile
-    #+BEGIN_SRC sh :tangle ~/.bash_profile :export none :noweb yes
-      source "$HOME/.bashrc"
-
-      export PATH="$HOME/.nix-profile/bin:$HOME/.rbenv/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-      eval "$(rbenv init -)"
-
-      #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-      export SDKMAN_DIR="$HOME/.sdkman"
-      [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-    #+END_SRC
-*** ~/.emacs.notiffany.erb
-    Guard uses this erb file to integrate with Emacs. Notification colors are configured in the =.guard.rb= file below.
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.notiffany.erb :export none :noweb yes
-      (progn
-        (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
-        (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
-        (set-face-attribute 'mode-line nil :background "<%= bgcolor %>" :foreground "<%= color %>")
-        (message "<%= message %>")
-
-        (run-at-time "5 sec" nil (lambda ()
-                                   (set-face-attribute 'mode-line nil
-                                                       :background notiffany-original-background
-                                                       :foreground notiffany-original-foreground))))
-    #+END_SRC
-*** ~/.gemrc
-    #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :noweb yes
-      ---
-      :backtrace: false
-      :bulk_threshold: 1000
-      :sources:
-      - https://rubygems.org/
-      :update_sources: true
-      :verbose: true
-      install: "--no-rdoc --no-ri"
-      update: "--no-rdoc --no-ri"
-    #+END_SRC
-*** ~/.guard.rb
-    For integration with Emacs, the guard config makes use of the =.emacs.notiffany.erb= file defined above.
-    #+BEGIN_SRC ruby :tangle ~/.guard.rb :export none :noweb yes
-      notification(:emacs,
-                   elisp_file: '~/.emacs.notiffany.erb',
-                   success:   'ForestGreen',
-                   failed:    'Firebrick',
-                   default:   'Black',
-                   fontcolor: 'White')
-    #+END_SRC
-*** ~/.gitconfig
-
-    Setup my identity with Git using my client email for now.
-
+  My dotfiles.
+** Spacemacs
+   The .emacs.d submodule tracks my [[https://github.com/jdenen/spacemacs][fork]] of [[https://github.com/syl20bnr/spacemacs][Spacemacs]] on the develop branch.
+** Emacs
+   Emacs configuration is done in the .spacemacs.d submodule, which tracks my [[https://github.com/jdenen/.spacemacs.d][.spacemacs.d]] repo.
+** Git
+   Because I have private Git configuration, I =tangle= this file to create my user 
+   level =.gitconfig=, which pulls in the private stuff from a private repo.
+*** gitconfig-public
     #+NAME: gitconfig-public
     #+BEGIN_SRC conf :result silent
       [user]
@@ -127,10 +35,14 @@
         createchangeid = true
     #+END_SRC
 
-    Because I have private git configuration, I tangle it using a loaded =src= block. This breaks
-    =org-babel-detangle= but =.gitconfig= rarely changes.
-
     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes
        <<gitconfig-public>>
        <<gitconfig-private>>
+    #+END_SRC
+*** Tangle
+    Execute this block to create dotfiles from the README.
+
+    #+BEGIN_SRC emacs-lisp :eval yes :noweb yes :results silent
+      (org-babel-lob-ingest "~/vc-docs/scratch.org")
+      (org-babel-tangle-file (buffer-file-name))
     #+END_SRC
