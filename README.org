@@ -5,9 +5,9 @@
 * Dot
   My dotfiles.
 ** Spacemacs
-   The .emacs.d submodule tracks my [[https://github.com/jdenen/spacemacs][fork]] of [[https://github.com/syl20bnr/spacemacs][Spacemacs]] on the develop branch.
+   Spacemacs configuration is done in the .spacemacs.d submodule, which tracks my [[https://github.com/jdenen/.spacemacs.d][.spacemacs.d]] repo.
 ** Emacs
-   Emacs configuration is done in the .spacemacs.d submodule, which tracks my [[https://github.com/jdenen/.spacemacs.d][.spacemacs.d]] repo.
+   The .emacs.d submodule tracks my [[https://github.com/jdenen/spacemacs][fork]] of [[https://github.com/syl20bnr/spacemacs][Spacemacs]] on the develop branch.
 *** Image
     The .dockemacs submodule tracks this [[https://github.com/jdenen/dockemacs][project]]. I use a minimal, containerized Emacs setup
     for testing Emacs packages and running =ert= tests.
