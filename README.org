@@ -5,6 +5,11 @@
      (unless (file-exists-p "~/.emacs.d")
        (copy-directory ".emacs.d" "~/.emacs.d" t nil t))
 
+     (unwind-protect (progn
+                       (epa-decrypt-file "private.org" "clear-text.org")
+                       (org-babel-lob-ingest "clear-text.org"))
+       (delete-file "clear-text.org"))
+
      (org-babel-tangle)
    #+END_SRC
 ** Executing the script...
@@ -31,6 +36,16 @@
      #+END_SRC
 **** Emacs
      ... copies the submodule of my [[https://github.com/jdenen/spacemacs][Spacemacs]] fork into =~/.emacs.d=:
+**** Exercism
+     ... tangles this block into =~/.exercism.json=, importing my =apiKey= from an another file:
+     #+BEGIN_SRC js :tangle ~/.exercism.json :export none :results silent :noweb yes
+       {
+           "apiKey": <<exercism-key>>,
+           "dir": "/Users/johnson/Code/me/koans",
+           "api": "http://exercism.io",
+           "xapi": "http://x.exercism.io"
+       }
+     #+END_SRC
 **** Git
      ... tangles this block into =~/.gitconfig=:
      #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :results silent
@@ -66,7 +81,7 @@
      #+END_SRC
 **** Spacemacs
      ... tangles this block into =~/.spacemacs=:
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none :noweb yes
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none
        ;; -*- mode: emacs-lisp -*-
        (defun dotspacemacs/layers ()
          "Layer configuration:
