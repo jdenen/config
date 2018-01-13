@@ -8,11 +8,32 @@
      (org-babel-tangle)
    #+END_SRC
 ** Executing the script...
+**** Bash
+     ... tangles this block into =~/.bash_profile=:
+     #+BEGIN_SRC sh :tangle ~/.bash_profile :export none :results silent
+       #!/bin/bash
+
+       alias ls='ls -lF'
+       alias be='bundle exec'
+
+       PS1_DATE="\[\033[32m\]\d"
+       PS1_TIME="\[\033[1;36m\]\T"
+       PS1_PWD="\[\033[0;37m\]\W"
+
+       export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
+       export PATH="${PATH}:${HOME}/.rbenv/bin"
+       export SKDMAN_DIR="${HOME}/.sdkman"
+
+       source "${HOME}/.git-completion.bash"
+       [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+       eval "$(rbenv init -)"
+     #+END_SRC
 **** Emacs
      ... copies the submodule of my [[https://github.com/jdenen/spacemacs][Spacemacs]] fork into =~/.emacs.d=:
 **** Git
-     ... tangles this file to =~/.gitconfig=:
-     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :noweb yes :results silent
+     ... tangles this block into =~/.gitconfig=:
+     #+BEGIN_SRC conf :tangle ~/.gitconfig :export none :results silent
        [user]
        name = Johnson Denen
        email = johnson.denen@gmail.com
@@ -44,7 +65,7 @@
        enabled = true
      #+END_SRC
 **** Spacemacs
-     ... tangles this file to =~/.spacemacs=:
+     ... tangles this block into =~/.spacemacs=:
      #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none :noweb yes
        ;; -*- mode: emacs-lisp -*-
        (defun dotspacemacs/layers ()
