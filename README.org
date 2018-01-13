@@ -219,3 +219,12 @@
        Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
        Pry.config.editor = "emacsclient"
      #+END_SRC
+**** Vim
+     ... tangles this block into =~/.vimrc=:
+     #+BEGIN_SRC vimrc
+       :set tabstop=4
+       :set shiftwidth=4
+       :set expandtab
+       :syntax enable
+       :set number
+     #+END_SRC
