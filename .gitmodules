@@ -1,11 +1,4 @@
-[submodule ".spacemacs.d"]
-	path = .spacemacs.d
-	url = https://github.com/jdenen/.spacemacs.d
 [submodule ".emacs.d"]
 	path = .emacs.d
-	url = https://github.com/jdenen/spacemacs
+	url = git@github.com:jdenen/spacemacs
 	branch = develop
-[submodule ".dockemacs"]
-	path = .dockemacs
-	url = https://github.com/jdenen/dockemacs
-	branch = master
