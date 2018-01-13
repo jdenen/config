@@ -1,3 +1,139 @@
+# Local variables:
+# org-confirm-babel-evaluate: nil
+# End:
+
 * Machine configuration
-** .emacs.d
-   Tracks my fork of [[https://github.com/jdenen/spacemacs][Spacemacs]].
+** Usage
+   Run =org-babel-tangle= in this file buffer.
+
+   #+BEGIN_SRC emacs-lisp :eval yes :noweb yes :results silent
+     (org-bable-tangle-file (buffer-file-name))
+   #+END_SRC
+** Files
+*** .emacs.d
+    Tracks my fork of [[https://github.com/jdenen/spacemacs][Spacemacs]].
+
+    #+BEGIN_SRC emacs-lisp :eval yes :noweb yes :results silent
+      (copy-directory ".emacs.d" "~/.emacs.d" t nil t)
+    #+END_SRC
+*** .spacemacs.d
+    #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none :noweb yes
+      ;; -*- mode: emacs-lisp -*-
+      (defun dotspacemacs/layers ()
+        "Layer configuration:
+      This function should only modify configuration layer settings."
+        (setq-default dotspacemacs-distribution 'spacemacs
+                      dotspacemacs-enable-lazy-installation 'unused
+                      dotspacemacs-ask-for-lazy-installation nil
+                      dotspacemacs-configuration-layer-path '("~/Code/me/dot/layers")
+                      dotspacemacs-configuration-layers '((better-defaults)
+                                                          (docker)
+                                                          (emacs-lisp)
+                                                          (evil-commentary)
+                                                          (git)
+                                                          (markdown)
+                                                          (org :packages
+                                                               (not orgit
+                                                                    org-present
+                                                                    org-pomodoro
+                                                                    org-plus-contrib)
+                                                               :variables
+                                                               org-enable-reveal-js-support t)
+                                                          (osx)
+                                                          (python :variables
+                                                                  python-test-runner 'pytest)
+                                                          (ruby :packages
+                                                                (not rvm)
+                                                                :variables
+                                                                ruby-test-runner 'rspec
+                                                                ruby-version-manager 'rbenv)
+                                                          (scheme)
+                                                          (shell :variables
+                                                                 shell-default-shell 'shell)
+                                                          (shell-scripts :packages
+                                                                         (not fish-mode))
+                                                          (shell-scripts)
+                                                          (syntax-checking)
+                                                          (vinegar)
+                                                          (yaml))
+                      dotspacemacs-additional-packages '(ample-theme
+                                                         copy-as-format
+                                                         el-mock
+                                                         multiple-cursors)
+                      dotspacemacs-excluded-packages '()
+                      dotspacemacs-delete-orphan-packages t))
+
+      (defun dotspacemacs/init ()
+        (setq-default dotspacemacs-elpa-https t
+                      dotspacemacs-elpa-timeout 5
+                      dotspacemacs-verify-spacelpa-archives nil
+                      dotspacemacs-check-for-update nil
+                      dotspacemacs-elpa-subdirectory 'emacs-version
+                      dotspacemacs-editing-style 'hybrid
+                      dotspacemacs-verbose-loading nil
+                      dotspacemacs-startup-banner 'official
+                      dotspacemacs-startup-lists '((agenda . 5)
+                                                   (recents . 5)
+                                                   (projects . 5))
+                      dotspacemacs-startup-buffer-responsive t
+                      dotspacemacs-scratch-mode 'emacs-lisp-mode
+                      dotspacemacs-themes '(ample)
+                      dotspacemacs-colorize-cursor-according-to-state t
+                      dotspacemacs-default-font '("Droid Sans Mono"
+                                                  :size 13
+                                                  :weight normal
+                                                  :width normal
+                                                  :powerline-scale 1.1)
+                      dotspacemacs-leader-key "SPC"
+                      dotspacemacs-emacs-command-key "SPC"
+                      dotspacemacs-ex-command-key ":"
+                      dotspacemacs-emacs-leader-key "M-m"
+                      dotspacemacs-major-mode-leader-key ","
+                      dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+                      dotspacemacs-distinguish-gui-tab nil
+                      dotspacemacs-remap-Y-to-y$ t
+                      dotspacemacs-retain-visual-state-on-shift t
+                      dotspacemacs-visual-line-move-text nil
+                      dotspacemacs-ex-substitute-global nil
+                      dotspacemacs-default-layout-name "Default"
+                      dotspacemacs-display-default-layout nil
+                      dotspacemacs-auto-resume-layouts nil
+                      dotspacemacs-auto-generate-layout-names nil
+                      dotspacemacs-large-file-size 1
+                      dotspacemacs-auto-save-file-location 'cache
+                      dotspacemacs-max-rollback-slots 5
+                      dotspacemacs-helm-resize nil
+                      dotspacemacs-helm-no-header nil
+                      dotspacemacs-helm-position 'bottom
+                      dotspacemacs-helm-use-fuzzy 'always
+                      dotspacemacs-enable-paste-transient-state t
+                      dotspacemacs-which-key-delay 0.4
+                      dotspacemacs-which-key-position 'bottom
+                      dotspacemacs-switch-to-buffer-prefers-purpose nil
+                      dotspacemacs-loading-progress-bar nil
+                      dotspacemacs-fullscreen-at-startup nil
+                      dotspacemacs-fullscreen-use-non-native nil
+                      dotspacemacs-maximized-at-startup t
+                      dotspacemacs-active-transparency 90
+                      dotspacemacs-inactive-transparency 90
+                      dotspacemacs-show-transient-state-title t
+                      dotspacemacs-show-transient-state-color-guide t
+                      dotspacemacs-mode-line-unicode-symbols t
+                      dotspacemacs-smooth-scrolling t
+                      dotspacemacs-line-numbers t
+                      dotspacemacs-folding-method 'evil
+                      dotspacemacs-smartparens-strict-mode nil
+                      dotspacemacs-smart-closing-parenthesis nil
+                      dotspacemacs-highlight-delimiters 'all
+                      dotspacemacs-persistent-server nil
+                      dotspacemacs-search-tools '("ag")
+                      dotspacemacs-default-package-repository nil
+                      dotspacemacs-frame-title-format "%I@%S"
+                      dotspacemacs-icon-title-format nil
+                      dotspacemacs-whitespace-cleanup 'changed
+                      dotspacemacs-zone-out-when-idle 30
+                      dotspacemacs-pretty-docs nil))
+
+      (defun dotspacemacs/user-init ())
+      (defun dotspacemacs/user-config ())
+    #+END_SRC
