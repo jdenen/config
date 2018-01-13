@@ -201,3 +201,21 @@
        (defun dotspacemacs/user-init ())
        (defun dotspacemacs/user-config ())
      #+END_SRC
+**** Ruby
+     ... tangles this block into =~/.gemrc=:
+     #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :results silent
+       ---
+       :backtrace: false
+       :bulk_threshold: 1000
+       :sources:
+         - https://rubygems.org/
+       :update_sources: true
+       :verbose: true
+       install: "--no-rdoc --no-ri"
+       update: "--no-rdoc --no-ri"
+     #+END_SRC
+     ... tangles this block into =~/.pryrc=:
+     #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :results silent
+       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+       Pry.config.editor = "emacsclient"
+     #+END_SRC
