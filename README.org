@@ -155,6 +155,8 @@
          (let ((key (car pair))
                (place (cdr pair)))
            (set-register key `(file . ,place))))
+
+       (spacemacs/set-leader-keys "oj" 'jump-to-register)
      #+END_SRC
 **** Ruby
      ... tangles this block into =~/.gemrc=:
