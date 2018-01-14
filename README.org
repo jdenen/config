@@ -5,13 +5,16 @@
      (unless (file-exists-p "~/.emacs.d")
        (copy-directory ".emacs.d" "~/.emacs.d" t nil t))
 
+     (unless (file-exists-p "~/.notebooks")
+       (copy-directory ".notebooks" "~/.notebooks" t nil t))
+
      (unless (file-exists-p "~/.git-completion.bash")
        (copy-file ".git-completion.bash" "~/" t t))
 
      (unwind-protect (org-babel-lob-ingest "private.org")
        (delete-file "private.org"))
 
-     (make-directory "./templates" t)
+     (make-directory "~/.templates" t)
      (org-babel-tangle)
    #+END_SRC
 ** Executing the script...
@@ -83,20 +86,78 @@
        enabled = true
      #+END_SRC
 **** Org
-     ... tangles this block into =templates/todo.orgcaptmpl=:
-     #+BEGIN_SRC text :tangle ./templates/todo.orgcaptmpl :export none :results silent
+     ... tangles this block into =~/.templates/deadline.orgcaptmpl=:
+     #+BEGIN_SRC text :tangle ~/.templates/deadline.orgcaptmpl :export none :results silent
        * TODO [#%^{priority|A|B|C|D|E}] %^{Summary} %^g
-       DEADLINE: %^{Due}t
-       %?
-     #+END_SRC
-     ... tangles this block into =templates/note.orgcaptmpl=:
-     #+BEGIN_SRC text :tangle ./templates/note.orgcaptmpl :export none :results silent
-       ,* %^{Summary} %^g
+         DEADLINE: %^{Due}t
          %?
+     #+END_SRC
+     ... tangles this block into =~/.templates/note.orgcaptmpl=:
+     #+BEGIN_SRC text :tangle ~/.templates/note.orgcaptmpl :export none :results silent
+       * %^{Summary} %^g
+         %?
+     #+END_SRC
+     ... tangles this block into =~/.templates/reminder.orgcaptmpl=:
+     #+BEGIN_SRC text :tangle ~/.templates/reminder.orgcaptmpl :export none :results silent
+       * BKLG %^{Reminder}
+     #+END_SRC
+     ... uses this block to configure =org-mode=, =org-capture=, and =org-agenda=:
+     #+NAME: orgrc
+     #+BEGIN_SRC emacs-lisp :export none :results silent
+       (defun org-agenda-and-todos ()
+         "Show `org-agenda' with a global list of TODOs."
+         (interactive)
+         (org-agenda nil "n"))
+
+       (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
+
+       (setq org-agenda-start-with-log-mode t
+             org-agenda-use-time-grid       t
+             org-agenda-include-diary       t
+             org-log-done                   'note
+             diary-file                     "~/.dates"
+             org-agenda-files
+             '("~/.notebooks/deadlines.org"
+               "~/.notebooks/notes.org"
+               "~/.notebooks/reminders.org")
+             org-todo-keywords
+             '((sequence "TODO(t)" "NEXT(n)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
+               (sequence "BKLG(b)" "CURR(u)" "|" "READ(r)"))
+             org-capture-templates
+             '(("m" "Note for me" entry
+                (file+headline "~/.notebooks/notes.org" "Personal")
+                (file "~/.templates/note.orgcaptmpl"))
+               ("r" "Reminder" entry
+                (file "~/.notebooks/reminders.org")
+                (file "~/.templates/reminder.orgcaptmpl"))
+               ("t" "Task" entry
+                (file+olp+datetree "~/.notebooks/deadlines.org")
+                (file "~/.templates/deadline.orgcaptmpl"))
+               ("w" "Note for work" entry
+                (file+headline "~/.notebooks/notes.org" "Work")
+                (file "~/.templates/note.orgcaptmpl"))))
+     #+END_SRC
+**** Ruby
+     ... tangles this block into =~/.gemrc=:
+     #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :results silent
+       ---
+       :backtrace: false
+       :bulk_threshold: 1000
+       :sources:
+         - https://rubygems.org/
+       :update_sources: true
+       :verbose: true
+       install: "--no-rdoc --no-ri"
+       update: "--no-rdoc --no-ri"
+     #+END_SRC
+     ... tangles this block into =~/.pryrc=:
+     #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :results silent
+       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+       Pry.config.editor = "emacsclient"
      #+END_SRC
 **** Spacemacs
      ... tangles this block into =~/.spacemacs=:
-     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none
+     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :export none :noweb yes
        ;; -*- mode: emacs-lisp -*-
        (defun dotspacemacs/layers ()
          "Layer configuration:
@@ -151,18 +212,17 @@
                        dotspacemacs-editing-style 'hybrid
                        dotspacemacs-verbose-loading nil
                        dotspacemacs-startup-banner 'official
-                       dotspacemacs-startup-lists '((agenda . 5)
-                                          (recents . 5)
-                                          (projects . 5))
+                       dotspacemacs-startup-lists '((recents . 5)
+                                                    (projects . 5))
                        dotspacemacs-startup-buffer-responsive t
                        dotspacemacs-scratch-mode 'emacs-lisp-mode
                        dotspacemacs-themes '(ample)
                        dotspacemacs-colorize-cursor-according-to-state t
                        dotspacemacs-default-font '("Droid Sans Mono"
-                                         :size 13
-                                         :weight normal
-                                         :width normal
-                                         :powerline-scale 1.1)
+                                                   :size 13
+                                                   :weight normal
+                                                   :width normal
+                                                   :powerline-scale 1.1)
                        dotspacemacs-leader-key "SPC"
                        dotspacemacs-emacs-command-key "SPC"
                        dotspacemacs-ex-command-key ":"
@@ -214,25 +274,8 @@
                        dotspacemacs-pretty-docs nil))
 
        (defun dotspacemacs/user-init ())
-       (defun dotspacemacs/user-config ())
-     #+END_SRC
-**** Ruby
-     ... tangles this block into =~/.gemrc=:
-     #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :results silent
-       ---
-       :backtrace: false
-       :bulk_threshold: 1000
-       :sources:
-         - https://rubygems.org/
-       :update_sources: true
-       :verbose: true
-       install: "--no-rdoc --no-ri"
-       update: "--no-rdoc --no-ri"
-     #+END_SRC
-     ... tangles this block into =~/.pryrc=:
-     #+BEGIN_SRC ruby :tangle ~/.pryrc :export none :results silent
-       Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
-       Pry.config.editor = "emacsclient"
+       (defun dotspacemacs/user-config ()
+         <<orgrc>>)
      #+END_SRC
 **** Vim
      ... tangles this block into =~/.vimrc=:
