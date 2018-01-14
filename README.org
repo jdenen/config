@@ -102,8 +102,9 @@
        * BKLG %^{Reminder}
      #+END_SRC
      ... uses this block to configure =org-mode=, =org-capture=, and =org-agenda=:
-     #+NAME: orgrc
+     #+NAME: org-config
      #+BEGIN_SRC emacs-lisp :export none :results silent
+       ;; org-config
        (defun org-agenda-and-todos ()
          "Show `org-agenda' with a global list of TODOs."
          (interactive)
@@ -137,6 +138,19 @@
                 (file+headline "~/.notebooks/notes.org" "Work")
                 (file "~/.templates/note.orgcaptmpl"))))
      #+END_SRC
+**** Registers
+     ... uses this block to configure Emacs registers:
+     #+NAME: register-config
+     #+BEGIN_SRC emacs-lisp :export non :results silent
+       ;; register-config
+       (dolist (pair '((?c . "~/Code/me/dot/README.org")
+                       (?d . "~/.notebooks/deadlines.org")
+                       (?n . "~/.notebooks/notes.org")
+                       (?r . "~/.notebooks/reminders.org")))
+         (let ((key (car pair))
+               (place (cdr pair)))
+           (set-register key `(file . ,place))))
+     #+END_SRC
 **** Ruby
      ... tangles this block into =~/.gemrc=:
      #+BEGIN_SRC yaml :tangle ~/.gemrc :export none :results silent
@@ -167,39 +181,39 @@
                        dotspacemacs-ask-for-lazy-installation nil
                        dotspacemacs-configuration-layer-path '("~/Code/me/dot/layers")
                        dotspacemacs-configuration-layers '((better-defaults)
-                                                 (docker)
-                                                 (emacs-lisp)
-                                                 (evil-commentary)
-                                                 (git)
-                                                 (markdown)
-                                                 (org :packages
-                                                      (not orgit
-                                                           org-present
-                                                           org-pomodoro
-                                                           org-plus-contrib)
-                                                      :variables
-                                                      org-enable-reveal-js-support t)
-                                                 (osx)
-                                                 (python :variables
-                                                         python-test-runner 'pytest)
-                                                 (ruby :packages
-                                                       (not rvm)
-                                                       :variables
-                                                       ruby-test-runner 'rspec
-                                                       ruby-version-manager 'rbenv)
-                                                 (scheme)
-                                                 (shell :variables
-                                                        shell-default-shell 'shell)
-                                                 (shell-scripts :packages
-                                                                (not fish-mode))
-                                                 (shell-scripts)
-                                                 (syntax-checking)
-                                                 (vinegar)
-                                                 (yaml))
+                                                           (docker)
+                                                           (emacs-lisp)
+                                                           (evil-commentary)
+                                                           (git)
+                                                           (markdown)
+                                                           (org :packages
+                                                                (not orgit
+                                                                     org-present
+                                                                     org-pomodoro
+                                                                     org-plus-contrib)
+                                                                :variables
+                                                                org-enable-reveal-js-support t)
+                                                           (osx)
+                                                           (python :variables
+                                                                   python-test-runner 'pytest)
+                                                           (ruby :packages
+                                                                 (not rvm)
+                                                                 :variables
+                                                                 ruby-test-runner 'rspec
+                                                                 ruby-version-manager 'rbenv)
+                                                           (scheme)
+                                                           (shell :variables
+                                                                  shell-default-shell 'shell)
+                                                           (shell-scripts :packages
+                                                                          (not fish-mode))
+                                                           (shell-scripts)
+                                                           (syntax-checking)
+                                                           (vinegar)
+                                                           (yaml))
                        dotspacemacs-additional-packages '(ample-theme
-                                                copy-as-format
-                                                el-mock
-                                                multiple-cursors)
+                                                          copy-as-format
+                                                          el-mock
+                                                          multiple-cursors)
                        dotspacemacs-excluded-packages '()
                        dotspacemacs-delete-orphan-packages t))
 
@@ -275,7 +289,9 @@
 
        (defun dotspacemacs/user-init ())
        (defun dotspacemacs/user-config ()
-         <<orgrc>>)
+         <<org-config>>
+
+         <<register-config>>)
      #+END_SRC
 **** Vim
      ... tangles this block into =~/.vimrc=:
