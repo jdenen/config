@@ -11,6 +11,7 @@
      (unwind-protect (org-babel-lob-ingest "private.org")
        (delete-file "private.org"))
 
+     (make-directory "./templates" t)
      (org-babel-tangle)
    #+END_SRC
 ** Executing the script...
@@ -80,6 +81,18 @@
 
        [rerere]
        enabled = true
+     #+END_SRC
+**** Org
+     ... tangles this block into =templates/todo.orgcaptmpl=:
+     #+BEGIN_SRC text :tangle ./templates/todo.orgcaptmpl :export none :results silent
+       * TODO [#%^{priority|A|B|C|D|E}] %^{Summary} %^g
+       DEADLINE: %^{Due}t
+       %?
+     #+END_SRC
+     ... tangles this block into =templates/note.orgcaptmpl=:
+     #+BEGIN_SRC text :tangle ./templates/note.orgcaptmpl :export none :results silent
+       ,* %^{Summary} %^g
+         %?
      #+END_SRC
 **** Spacemacs
      ... tangles this block into =~/.spacemacs=:
