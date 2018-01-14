@@ -115,7 +115,8 @@
        (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
              org-agenda-include-diary       t
-             org-log-done                   'note
+             org-log-done                   'time
+             org-log-refile                 'time
              org-lowest-priority            ?E
              org-default-priority           ?C
              diary-file                     "~/.notebooks/diary"
@@ -123,6 +124,9 @@
              '("~/.notebooks/deadlines.org"
                "~/.notebooks/notes.org"
                "~/.notebooks/reminders.org")
+             org-refile-targets
+             '((nil :maxlevel . 1)
+               (org-agenda-files :maxlevel . 1))
              org-todo-keywords
              '((sequence "BKLG(b)" "TODO(t)" "NEXT(n)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
              org-capture-templates
