@@ -116,14 +116,15 @@
              org-agenda-use-time-grid       t
              org-agenda-include-diary       t
              org-log-done                   'note
-             diary-file                     "~/.dates"
+             org-lowest-priority            ?E
+             org-default-priority           ?C
+             diary-file                     "~/.notebooks/diary"
              org-agenda-files
              '("~/.notebooks/deadlines.org"
                "~/.notebooks/notes.org"
                "~/.notebooks/reminders.org")
              org-todo-keywords
-             '((sequence "TODO(t)" "NEXT(n)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
-               (sequence "BKLG(b)" "CURR(u)" "|" "READ(r)"))
+             '((sequence "BKLG(b)" "TODO(t)" "NEXT(n)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
              org-capture-templates
              '(("m" "Note for me" entry
                 (file+headline "~/.notebooks/notes.org" "Personal")
