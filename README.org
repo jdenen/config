@@ -5,6 +5,9 @@
      (unless (file-exists-p "~/.emacs.d")
        (copy-directory ".emacs.d" "~/.emacs.d" t nil t))
 
+     (unless (file-exists-p "~/.git-completion.bash")
+       (copy-file ".git-completion.bash" "~/" t t))
+
      (unwind-protect (progn
                        (epa-decrypt-file "private.org" "clear-text.org")
                        (org-babel-lob-ingest "clear-text.org"))
