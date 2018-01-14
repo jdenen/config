@@ -1,0 +1,2 @@
+# dot layers
+Directory for custom Spacemacs layers

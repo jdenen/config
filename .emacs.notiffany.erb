@@ -1,9 +1,0 @@
-(progn
-  (unless (boundp 'notiffany-original-background) (setq notiffany-original-background (face-background 'mode-line)))
-  (unless (boundp 'notiffany-original-foreground) (setq notiffany-original-foreground (face-foreground 'mode-line)))
-  (set-face-attribute 'mode-line nil :background "<%= bgcolor %>" :foreground "<%= color %>")
-  (message "<%= message %>")
-  (run-at-time "5 sec" nil (lambda ()
-                             (set-face-attribute 'mode-line nil
-                                                 :background notiffany-original-background
-                                                 :foreground notiffany-original-foreground))))
