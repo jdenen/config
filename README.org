@@ -99,7 +99,7 @@
      #+END_SRC
      ... tangles this block into =~/.templates/reminder.orgcaptmpl=:
      #+BEGIN_SRC text :tangle ~/.templates/reminder.orgcaptmpl :export none :results silent
-       * BKLG %^{Reminder}
+       * BKLG [#E] %^{Reminder}
      #+END_SRC
      ... uses this block to configure =org-mode=, =org-capture=, and =org-agenda=:
      #+NAME: org-config
