@@ -42,6 +42,18 @@
      #+END_SRC
 **** Emacs
      ... copies the submodule of my [[https://github.com/jdenen/spacemacs][Spacemacs]] fork into =~/.emacs.d=:
+**** Emacs packages
+     ... tangles this block into my Spacemacs configuration. This is specific to the Emacs packages
+     that I develop, so I like to configure them independent of my Spacemacs config.
+     #+NAME: emacs-packaging
+     #+BEGIN_SRC emacs-lisp
+       (use-package exercism
+         :load-path "~/Code/me/exercism.el")
+
+       (use-package mastodon
+         :load-path "~/Code/me/mastodon.el")
+     #+END_SRC
+
 **** Exercism
      ... tangles this block into =~/.exercism.json=, importing my =apiKey= from an another file:
      #+BEGIN_SRC js :tangle ~/.exercism.json :export none :results silent :noweb yes
@@ -303,7 +315,9 @@
        (defun dotspacemacs/user-config ()
          <<org-config>>
 
-         <<register-config>>)
+         <<register-config>>
+
+         <<emacs-packaging>>)
      #+END_SRC
 **** Vim
      ... tangles this block into =~/.vimrc=:
