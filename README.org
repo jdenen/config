@@ -218,9 +218,11 @@
                                                            (vinegar)
                                                            (yaml))
                        dotspacemacs-additional-packages '(ample-theme
+                                                          cask
                                                           copy-as-format
                                                           el-mock
-                                                          multiple-cursors)
+                                                          multiple-cursors
+                                                          package-lint)
                        dotspacemacs-excluded-packages '()
                        dotspacemacs-delete-orphan-packages t))
 
