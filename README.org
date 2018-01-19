@@ -130,11 +130,14 @@
              org-todo-keywords
              '((sequence "BKLG(b)" "TODO(t)" "NEXT(n)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
              org-capture-templates
-             '(("m" "Note for me" entry
+             '(("l" "To read" entry
+                (file+headline "~/.notebooks/reminders.org" "Reading list")
+                (file "~/.templates/reminder.orgcaptmpl"))
+               ("m" "Note for me" entry
                 (file+headline "~/.notebooks/notes.org" "Personal")
                 (file "~/.templates/note.orgcaptmpl"))
                ("r" "Reminder" entry
-                (file "~/.notebooks/reminders.org")
+                (file+headline "~/.notebooks/reminders.org" "Reminders")
                 (file "~/.templates/reminder.orgcaptmpl"))
                ("t" "Task" entry
                 (file+olp+datetree "~/.notebooks/deadlines.org")
