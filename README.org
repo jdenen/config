@@ -40,6 +40,14 @@
 
        eval "$(rbenv init -)"
      #+END_SRC
+**** Chrome
+     ... uses this block to configure Emacs for =atomic-chrome=:
+     #+NAME: atomic-chrome
+     #+BEGIN_SRC emacs-lisp :export none :results silent
+       (use-package atomic-chrome
+         :init
+         (atomic-chrome-start-server))
+     #+END_SRC
 **** Emacs
      ... copies the submodule of my [[https://github.com/jdenen/spacemacs][Spacemacs]] fork into =~/.emacs.d=:
 **** Emacs packages
@@ -233,6 +241,7 @@
                                                            (vinegar)
                                                            (yaml))
                        dotspacemacs-additional-packages '(ample-theme
+                                                          atomic-chrome
                                                           cask
                                                           copy-as-format
                                                           el-mock
@@ -317,7 +326,9 @@
 
          <<register-config>>
 
-         <<emacs-packaging>>)
+         <<emacs-packaging>>
+
+         <<atomic-chrome>>)
      #+END_SRC
 **** Vim
      ... tangles this block into =~/.vimrc=:
