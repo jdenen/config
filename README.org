@@ -42,8 +42,9 @@
      #+END_SRC
 **** Chrome
      ... uses this block to configure Emacs for =atomic-chrome=:
-     #+NAME: atomic-chrome
+     #+NAME: chrome-config
      #+BEGIN_SRC emacs-lisp :export none :results silent
+       ;; chrome config
        (use-package atomic-chrome
          :init
          (atomic-chrome-start-server))
@@ -55,9 +56,9 @@
      that I develop, so I like to configure them independent of my Spacemacs config.
      #+NAME: emacs-packaging
      #+BEGIN_SRC emacs-lisp
+       ;; Emacs packaging
        (use-package exercism
          :load-path "~/Code/me/exercism.el")
-
        (use-package mastodon
          :load-path "~/Code/me/mastodon.el")
      #+END_SRC
@@ -129,9 +130,7 @@
          "Show `org-agenda' with a global list of TODOs."
          (interactive)
          (org-agenda nil "n"))
-
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
-
        (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
              org-agenda-include-diary       t
@@ -185,7 +184,6 @@
          (let ((key (car pair))
                (place (cdr pair)))
            (set-register key `(file . ,place))))
-
        (spacemacs/set-leader-keys "oj" 'jump-to-register)
      #+END_SRC
 **** Ruby
@@ -329,14 +327,13 @@
                        dotspacemacs-pretty-docs nil))
 
        (defun dotspacemacs/user-init ())
+
        (defun dotspacemacs/user-config ()
-         <<org-config>>
-
-         <<register-config>>
-
+         <<chrome-config>>
          <<emacs-packaging>>
-
-         <<atomic-chrome>>)
+         <<org-config>>
+         <<python-config>>
+         <<register-config>>)
      #+END_SRC
 **** Vim
      ... tangles this block into =~/.vimrc=:
