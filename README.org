@@ -166,10 +166,17 @@
                 (file+headline "~/.notebooks/notes.org" "Work")
                 (file "~/.templates/note.orgcaptmpl"))))
      #+END_SRC
+**** Python
+     ... uses this block to configure Emacs for Python development:
+     #+NME: python-config
+     #+BEGIN_SRC emacs-lisp :export none :results silent
+       ;; Python config
+       (add-to-list 'pytest-project-root-files "Pipfile")
+     #+END_SRC
 **** Registers
      ... uses this block to configure Emacs registers:
      #+NAME: register-config
-     #+BEGIN_SRC emacs-lisp :export non :results silent
+     #+BEGIN_SRC emacs-lisp :export none :results silent
        ;; register-config
        (dolist (pair '((?c . "~/Code/me/dot/README.org")
                        (?d . "~/.notebooks/deadlines.org")
