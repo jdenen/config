@@ -253,7 +253,8 @@
                                                           copy-as-format
                                                           el-mock
                                                           multiple-cursors
-                                                          package-lint)
+                                                          package-lint
+                                                          panda-theme)
                        dotspacemacs-excluded-packages '()
                        dotspacemacs-delete-orphan-packages t))
 
@@ -270,7 +271,7 @@
                                                     (projects . 5))
                        dotspacemacs-startup-buffer-responsive t
                        dotspacemacs-scratch-mode 'emacs-lisp-mode
-                       dotspacemacs-themes '(ample)
+                       dotspacemacs-themes '(ample panda)
                        dotspacemacs-colorize-cursor-according-to-state t
                        dotspacemacs-default-font '("Droid Sans Mono"
                                                    :size 13
