@@ -60,9 +60,8 @@
        (use-package exercism
          :load-path "~/Code/me/exercism.el")
        (use-package mastodon
-         :load-path "~/Code/me/mastodon.el")
+         :load-path "~/Code/me/mastodon.el/lisp")
      #+END_SRC
-
 **** Exercism
      ... tangles this block into =~/.exercism.json=, importing my =apiKey= from an another file:
      #+BEGIN_SRC js :tangle ~/.exercism.json :export none :results silent :noweb yes
@@ -217,6 +216,7 @@
                        dotspacemacs-configuration-layer-path '("~/Code/me/dot/layers")
                        dotspacemacs-configuration-layers '((better-defaults)
                                                            (docker)
+                                                           (elixir)
                                                            (emacs-lisp)
                                                            (evil-commentary)
                                                            (git)
