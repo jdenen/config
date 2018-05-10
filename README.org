@@ -105,6 +105,18 @@
        [rerere]
        enabled = true
      #+END_SRC
+**** Kubernetes
+     ... uses this block to configure Emacs for K8s use:
+     #+NAME: kubernetes-config
+     #+BEGIN_SRC emacs-lisp :export none :results silent
+       (use-package kubernetes
+         :ensure t
+         :commands (kubernetes-overview))
+
+       (use-package kubernetes-evil
+         :ensure t
+         :after kubernetes)
+     #+END_SRC
 **** Org
      ... tangles this block into =~/.templates/deadline.orgcaptmpl=:
      #+BEGIN_SRC text :tangle ~/.templates/deadline.orgcaptmpl :export none :results silent
@@ -166,10 +178,10 @@
      #+END_SRC
 **** Python
      ... uses this block to configure Emacs for Python development:
-     #+NME: python-config
+     #+NAME: python-config
      #+BEGIN_SRC emacs-lisp :export none :results silent
        ;; Python config
-       (add-to-list 'pytest-project-root-files "Pipfile")
+       ;;(add-to-list 'pytest-project-root-files "Pipfile")
      #+END_SRC
 **** Registers
      ... uses this block to configure Emacs registers:
@@ -250,6 +262,8 @@
                                                           cask
                                                           copy-as-format
                                                           el-mock
+                                                          kubernetes
+                                                          kubernetes-evil
                                                           multiple-cursors
                                                           package-lint
                                                           panda-theme)
@@ -331,6 +345,7 @@
        (defun dotspacemacs/user-config ()
          <<chrome-config>>
          <<emacs-packaging>>
+         <<kubernetes-config>>
          <<org-config>>
          <<python-config>>
          <<register-config>>)
