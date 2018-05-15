@@ -51,6 +51,7 @@
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
        (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
+             diary-file "~/Notes/appointments"
              org-agenda-files
              '("~/Notes/backlog.org"
                "~/Notes/team.org"))
@@ -83,16 +84,19 @@
                 (file "~/.emacs.d/one-on-one.orgcaptmpl"))))
      #+END_SRC
 **** Templates
+      Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
         * BKLG [#C] %^{Summary}
           %?
       #+END_SRC
+      Take notes and collect action items for 1:1 meetings:
       #+BEGIN_SRC text :tangle ~/.emacs.d/one-on-one.orgcaptmpl
         * 1:1 with %^{Name} :tl:%^g
         ** Notes
            %?
         ** Action Items
       #+END_SRC
+      Take general meeting notes with this:
       #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
         * %^{Summary} :mtg:%^g
         ** Notes
@@ -305,7 +309,7 @@
          ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
          ;; quickly tweak the mode-line size to make separators look not too crappy.
          dotspacemacs-default-font '("Droid Sans Mono"
-                                     :size 14
+                                     :size 13
                                      :weight normal
                                      :width normal)
 
