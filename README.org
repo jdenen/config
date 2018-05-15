@@ -51,6 +51,7 @@
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
        (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
+             org-agenda-include-diary       t
              diary-file "~/Notes/appointments"
              org-agenda-files
              '("~/Notes/backlog.org"
