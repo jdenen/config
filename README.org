@@ -87,7 +87,7 @@
 **** Templates
       Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-        * BKLG [#C] %^{Summary}
+        * TODO [#C] %^{Summary}
           %?
       #+END_SRC
       Take notes and collect action items for 1:1 meetings:
