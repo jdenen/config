@@ -47,7 +47,9 @@
        (defun org-agenda-and-todos ()
          "Show `org-agenda' with a list of TODOs."
          (interactive)
-         (org-agenda nil "n"))
+         (org-agenda nil "n")
+         (org-agenda-goto-today)
+         (org-agenda-day-view))
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
        (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
