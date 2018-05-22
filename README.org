@@ -49,18 +49,17 @@
          (interactive)
          (org-agenda nil "d"))
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
-       (setq org-agenda-sticky              t
-             org-agenda-start-with-log-mode t
+       (setq org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
              org-agenda-include-diary       t
-             diary-file "~/Notes/appointments"
-             org-agenda-time-grid
-             '((daily today required-time)
-               (800 1200 1600 2000)
-               " ....." "----")
-             org-agenda-files
-             '("~/Notes/backlog.org"
-              "~/Notes/team.org"))
+             diary-file                     "~/Notes/appointments"
+             org-agenda-time-grid           '((daily today required-time)
+                                              (800 1200 1600 2000) " ....." "----")
+             org-agenda-files               '("~/Notes/triage.org"
+                                              "~/Notes/backlog.org"
+                                              "~/Notes/ignored.org"
+                                              "~/Notes/thoughts.org")
+             org-refile-targets             (quote ((org-agenda-files :tag . "refile"))))
        (setq org-agenda-custom-commands
              '(("d" "Daily agenda"
                 ((tags "TODO=\"WIP\""
@@ -96,10 +95,10 @@
                 (file+headline "~/Notes/triage.org" "Needs triage")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
                ("m" "Meeting" entry
-                (file+olp+datetree "~/Notes/meetings.org")
+                (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/meeting.orgcaptmpl"))
                ("o" "1:1" entry
-                (file+olp+datetree "~/Notes/meetings.org")
+                (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/one-on-one.orgcaptmpl"))))
      #+END_SRC
 **** Templates
