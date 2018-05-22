@@ -47,17 +47,33 @@
        (defun org-agenda-and-todos ()
          "Show `org-agenda' with a list of TODOs."
          (interactive)
-         (org-agenda nil "n")
-         (org-agenda-goto-today)
-         (org-agenda-day-view))
+         (org-agenda nil "d"))
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
-       (setq org-agenda-start-with-log-mode t
+       (setq org-agenda-sticky              t
+             org-agenda-start-with-log-mode t
              org-agenda-use-time-grid       t
              org-agenda-include-diary       t
              diary-file "~/Notes/appointments"
+             org-agenda-time-grid
+             '((daily today required-time)
+               (800 1200 1600 2000)
+               " ....." "----")
              org-agenda-files
              '("~/Notes/backlog.org"
-               "~/Notes/team.org"))
+              "~/Notes/team.org"))
+       (setq org-agenda-custom-commands
+             '(("d" "Daily agenda"
+                ((tags "TODO=\"WIP\""
+                       ((org-agenda-overriding-header "Works in progress:")))
+                 (tags "PRIORITY=\"A\""
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Highest priority:")))
+                 (agenda "" ((org-agenda-span 'day)
+                             (org-agenda-overriding-header "Today:")))
+                 (tags "TODO=\"TODO\""
+                       ((org-agenda-overriding-header "TODOs:")))
+                 (tags "TODO=\"BKLG\""
+                       ((org-agenda-overriding-header "Needs triage:")))))))
      #+END_SRC
 **** Babel
      #+NAME: org_babel
