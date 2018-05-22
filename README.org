@@ -92,20 +92,20 @@
              org-todo-keywords
              '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
              org-capture-templates
-             '(("b" "Backlog" entry
-                (file+olp+datetree "~/Notes/backlog.org")
+             '(("t" "Triage" entry
+                (file+headline "~/Notes/triage.org" "Needs triage")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
                ("m" "Meeting" entry
-                (file+olp+datetree "~/Notes/team.org")
+                (file+olp+datetree "~/Notes/meetings.org")
                 (file "~/.emacs.d/meeting.orgcaptmpl"))
                ("o" "1:1" entry
-                (file+olp+datetree "~/Notes/team.org")
+                (file+olp+datetree "~/Notes/meetings.org")
                 (file "~/.emacs.d/one-on-one.orgcaptmpl"))))
      #+END_SRC
 **** Templates
       Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-        * TODO [#C] %^{Summary}
+        * BKLG %^{Summary}
           %?
       #+END_SRC
       Take notes and collect action items for 1:1 meetings:
