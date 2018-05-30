@@ -162,6 +162,7 @@
            emacs-lisp
            evil-commentary
            git
+           groovy
            helm
            markdown
            (org :packages
@@ -179,6 +180,7 @@
            (shell-scripts :packages
                           (not fish-mode))
            syntax-checking
+           terraform
            vinegar
            yaml
            )
