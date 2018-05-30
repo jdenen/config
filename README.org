@@ -49,17 +49,13 @@
          (interactive)
          (org-agenda nil "d"))
        (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
-       (setq org-agenda-start-with-log-mode t
-             org-agenda-use-time-grid       t
-             org-agenda-include-diary       t
-             diary-file                     "~/Notes/appointments"
-             org-agenda-time-grid           '((daily today required-time)
-                                              (800 1200 1600 2000) " ....." "----")
-             org-agenda-files               '("~/Notes/triage.org"
-                                              "~/Notes/backlog.org"
-                                              "~/Notes/ignored.org"
-                                              "~/Notes/thoughts.org")
-             org-refile-targets             (quote ((org-agenda-files :tag . "refile"))))
+       (setq org-agenda-start-with-log-mode     t
+             org-agenda-use-time-grid           t
+             org-agenda-include-diary           t
+             diary-file                         "~/Notes/appointments"
+             org-agenda-time-grid               '((daily today required-time)
+                                                  (800 1200 1600 2000) " ....." "----")
+             org-agenda-files                   '("~/Notes/thoughts.org"))
        (setq org-agenda-custom-commands
              '(("d" "Daily agenda"
                 ((tags "TODO=\"WIP\""
@@ -91,34 +87,30 @@
              org-todo-keywords
              '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
              org-capture-templates
-             '(("t" "Triage" entry
-                (file+headline "~/Notes/triage.org" "Needs triage")
+             '(("c" "Quick capture" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
-               ("m" "Meeting" entry
+               ("m" "Meeting notes" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/meeting.orgcaptmpl"))
-               ("o" "1:1" entry
+               ("o" "TL notes" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/one-on-one.orgcaptmpl"))))
      #+END_SRC
 **** Templates
       Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-        * BKLG %^{Summary}
-          %?
+        * BKLG %^{Summary} :triage:
       #+END_SRC
       Take notes and collect action items for 1:1 meetings:
       #+BEGIN_SRC text :tangle ~/.emacs.d/one-on-one.orgcaptmpl
-        * 1:1 with %^{Name} :tl:%^g
-        ** Notes
-           %?
-        ** Action Items
+        * Talk with %^{Name} :tl:1v1:%^g
+        ** %?
       #+END_SRC
       Take general meeting notes with this:
       #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
         * %^{Summary} :mtg:%^g
-        ** Notes
-           - %?
+        ** %?
       #+END_SRC
 *** Spacemacs
     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :noweb yes
