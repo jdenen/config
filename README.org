@@ -20,9 +20,11 @@
      PS1_DATE="\[\033[32m\]\d"
      PS1_TIME="\[\033[1;36m\]\T"
      PS1_PWD="\[\033[0;37m\]\W"
-
      export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
-     export PATH="${PATH}:${HOME}/.rbenv/bin"
+
+     for relpath in "Library/Python/2.7/bin" ".rbenv/bin"; do
+         export PATH="${PATH}:${HOME}/${relpath}"
+     done
 
      eval "$(rbenv init -)"
    #+END_SRC
