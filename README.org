@@ -16,6 +16,7 @@
      alias g=git
      alias k=kubectl
      alias m=minikube
+     alias tf=terraform
 
      PS1_DATE="\[\033[32m\]\d"
      PS1_TIME="\[\033[1;36m\]\T"
