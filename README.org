@@ -47,6 +47,7 @@
 **** Agenda
      #+NAME: org_agenda
      #+BEGIN_SRC emacs-lisp
+       (require 'org-habit)
        (defun org-agenda-and-todos ()
          "Show `org-agenda' with a list of TODOs."
          (interactive)
