@@ -27,11 +27,8 @@
      PS1_PWD="\[\033[0;37m\]\W"
      export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
 
-     for relpath in "Library/Python/2.7/bin" ".rbenv/bin"; do
-         export PATH="${PATH}:${HOME}/${relpath}"
-     done
-
-     eval "$(rbenv init -)"
+     source $HOME/.asdf/asdf.sh
+     source $HOME/.asdf/completions/asdf.bash
    #+END_SRC
 ** Emacs
 *** Chrome
