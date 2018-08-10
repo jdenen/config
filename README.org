@@ -210,7 +210,9 @@
                                             atomic-chrome
                                             cask
                                             copy-as-format
+                                            discover
                                             el-mock
+                                            emojify
                                             package-lint
                                             )
 
