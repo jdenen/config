@@ -194,7 +194,8 @@
                           (not fish-mode))
            syntax-checking
            terraform
-           vinegar
+           (vinegar :variables
+                    vinegar-reuse-dired-buffer t)
            yaml
            )
 
