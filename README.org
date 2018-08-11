@@ -71,11 +71,13 @@
              org-agenda-files                   '("~/Notes/thoughts.org"))
        (setq org-agenda-custom-commands
              '(("d" "Daily agenda"
-                ((tags "TODO=\"WIP\""
-                       ((org-agenda-overriding-header "Works in progress:")))
-                 (tags "PRIORITY=\"A\""
+                ((tags "PRIORITY=\"A\""
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Highest priority:")))
+                 (tags "TODO=\"RETRO\""
+                       ((org-agenda-overriding-header "Retro items:")))
+                 (tags "TODO=\"CRAFT\""
+                       ((org-agenda-overriding-header "A&C items:")))
                  (agenda "" ((org-agenda-span 'day)
                              (org-agenda-overriding-header "Today:")))
                  (tags "TODO=\"TODO\""
@@ -98,32 +100,41 @@
              org-lowest-priority ?E
              org-default-priority ?C
              org-todo-keywords
-             '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)"))
+             '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
+               (sequence "CRAFT(a)" "RETRO(r)" "|"))
              org-capture-templates
              '(("c" "Quick capture" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
+               ("i" "Retro item" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/retro.orgcaptmpl"))
+               ("j" "Jira reminder" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/jira.orgcaptmpl"))
                ("m" "Meeting notes" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/meeting.orgcaptmpl"))
-               ("o" "TL notes" entry
-                (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/one-on-one.orgcaptmpl"))))
+                (file "~/.emacs.d/meeting.orgcaptmpl"))))
      #+END_SRC
 **** Templates
       Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-        * BKLG %^{Summary} :triage:
-      #+END_SRC
-      Take notes and collect action items for 1:1 meetings:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/one-on-one.orgcaptmpl
-        * Talk with %^{Name} :tl:1v1:%^g
-        ** %?
+        * BKLG %^{Summary} %^g
       #+END_SRC
       Take general meeting notes with this:
       #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
         * %^{Summary} :mtg:%^g
         ** %?
+      #+END_SRC
+      Create Jira cards based on these notes:
+      #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
+        * TODO [/] [#C] Create cards :jira:
+          - [ ] %?
+      #+END_SRC
+      Capture retrospective thoughts with:
+      #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
+        * %^{Type|RETRO|CRAFT} %^{Summary} %^g
+          %?
       #+END_SRC
 *** Spacemacs
     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :noweb yes
