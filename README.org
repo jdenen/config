@@ -29,6 +29,7 @@
      alias k=kubectl
      alias m=minikube
      alias tf=terraform
+     alias ls='ls -alF'
 
      PS1_DATE="\[\033[32m\]\d"
      PS1_TIME="\[\033[1;36m\]\T"
@@ -37,6 +38,8 @@
 
      source $HOME/.asdf/asdf.sh
      source $HOME/.asdf/completions/asdf.bash
+
+     export PATH=$PATH:~/.asdf/installs/python/stackless-3.5.4/bin
    #+END_SRC
 ** Emacs
 *** Chrome
