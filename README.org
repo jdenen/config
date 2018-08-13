@@ -224,6 +224,7 @@
                                             ample-theme
                                             atomic-chrome
                                             cask
+                                            cheat-sh
                                             copy-as-format
                                             discover
                                             el-mock
