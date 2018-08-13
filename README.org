@@ -43,6 +43,8 @@
 
      source $HOME/.asdf/asdf.sh
      source $HOME/.asdf/completions/asdf.bash
+
+     source ~/.sdkman/bin/sdkman-init.sh
    #+END_SRC
 ** Emacs
 *** Chrome
