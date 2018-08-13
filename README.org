@@ -16,12 +16,17 @@
          git clone git@github.com:$1 $2
      }
 
-     function asdf-latest {
-         package="${1}"
+     function asdf-install {
+         local package="${1}"
          asdf plugin-add $package
-         version=$(asdf list-all $package | tail -1)
-         asdf install $package $version
-         asdf global $package $version
+
+         asdf list-all $package
+
+         read -p "Which version? " version
+         echo "[INFO] Installing ${package} v${version}"
+
+         asdf install $package "${version}"
+         asdf global $package "${version}"
      }
 
      alias d=docker
@@ -38,8 +43,6 @@
 
      source $HOME/.asdf/asdf.sh
      source $HOME/.asdf/completions/asdf.bash
-
-     export PATH=$PATH:~/.asdf/installs/python/stackless-3.5.4/bin
    #+END_SRC
 ** Emacs
 *** Chrome
