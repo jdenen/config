@@ -114,7 +114,7 @@
              '(("c" "Quick capture" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
-               ("i" "Retro item" entry
+               ("i" "Retro/A&C item" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/retro.orgcaptmpl"))
                ("j" "Jira reminder" entry
