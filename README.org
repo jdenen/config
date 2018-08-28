@@ -86,6 +86,8 @@
                        ((org-agenda-overriding-header "Retro items:")))
                  (tags "TODO=\"CRAFT\""
                        ((org-agenda-overriding-header "A&C items:")))
+                 (tags "TODO=\"LEADS\""
+                       ((org-agenda-overriding-header "Leads items:")))
                  (agenda "" ((org-agenda-span 'day)
                              (org-agenda-overriding-header "Today:")))
                  (tags "TODO=\"TODO\""
@@ -109,12 +111,12 @@
              org-default-priority ?C
              org-todo-keywords
              '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
-               (sequence "CRAFT(a)" "RETRO(r)" "|"))
+               (sequence "CRAFT(a)" "RETRO(r)" "LEADS(l)" "|"))
              org-capture-templates
              '(("c" "Quick capture" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/reminder.orgcaptmpl"))
-               ("i" "Retro/A&C item" entry
+               ("i" "Retro/A&C/Leads" entry
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/retro.orgcaptmpl"))
                ("j" "Jira reminder" entry
@@ -141,7 +143,7 @@
       #+END_SRC
       Capture retrospective thoughts with:
       #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
-        * %^{Type|RETRO|CRAFT} %^{Summary} %^g
+        * %^{Type|RETRO|CRAFT|LEADS} %^{Summary} %^g
           %?
       #+END_SRC
 *** Spacemacs
