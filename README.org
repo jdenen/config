@@ -138,8 +138,8 @@
       #+END_SRC
       Create Jira cards based on these notes:
       #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
-        * TODO [/] [#C] Create cards :jira:
-          - [ ] %?
+        * TODO [#C] Create %^{Type} cards :jira:%^g
+          * %?
       #+END_SRC
       Capture retrospective thoughts with:
       #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
