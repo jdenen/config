@@ -10,24 +10,10 @@
   #+END_SRC
 ** Bash
    #+BEGIN_SRC sh :tangle ~/.bash_profile
+     . ~/.bashrc
+   #+END_SRC
+   #+BEGIN_SRC sh :tangle ~/.bashrc
      #!/usr/bin/env bash
-
-     function clone {
-         git clone git@github.com:$1 $2
-     }
-
-     function asdf-install {
-         local package="${1}"
-         asdf plugin-add $package
-
-         asdf list-all $package
-
-         read -p "Which version? " version
-         echo "[INFO] Installing ${package} v${version}"
-
-         asdf install $package "${version}"
-         asdf global $package "${version}"
-     }
 
      alias d=docker
      alias g=git
@@ -35,16 +21,26 @@
      alias m=minikube
      alias tf=terraform
      alias ls='ls -alF'
+     alias m-start='minikube start --memory 12288'
+
+     function context {
+         kubectl config get-contexts -o name
+         read -p "Context: " context
+         kubectl config use-context "${context}"
+     }
 
      PS1_DATE="\[\033[32m\]\d"
      PS1_TIME="\[\033[1;36m\]\T"
      PS1_PWD="\[\033[0;37m\]\W"
-     export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
 
      source $HOME/.asdf/asdf.sh
      source $HOME/.asdf/completions/asdf.bash
 
      source ~/.sdkman/bin/sdkman-init.sh
+
+     export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
+     export PATH=$PATH:~/bin
+     export KUBECONFIG=~/.dev_kube:~/.staging_kube:~/.prod_kube
    #+END_SRC
 ** Emacs
 *** Chrome
@@ -211,6 +207,7 @@
                  :variables
                  ruby-test-runner 'rspec
                  ruby-version-manager 'rbenv)
+           shell
            (shell-scripts :packages
                           (not fish-mode))
            syntax-checking
@@ -235,6 +232,7 @@
                                             copy-as-format
                                             discover
                                             el-mock
+                                            exec-path-from-shell
                                             emojify
                                             package-lint
                                             )
@@ -617,7 +615,9 @@
       Put your configuration code here, except for variables that should be set
       before packages are loaded."
         (setq-default evil-escape-key-sequence "lk")
+        (setq shell-command-switch "-ic")
         (golden-ratio-mode)
+        (exec-path-from-shell-initialize)
         <<chrome>>
         <<mastodon>>
         <<org_agenda>>
