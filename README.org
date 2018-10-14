@@ -122,6 +122,16 @@
                 (file+olp+datetree "~/Notes/thoughts.org")
                 (file "~/.emacs.d/meeting.orgcaptmpl"))))
      #+END_SRC
+**** RSS
+     #+BEGIN_SRC org :tangle ~/.rss.org
+       * Blogs                                                              :elfeed:
+       ** Software Development
+       *** DevOps                                                       :devops:ops:
+       *** Elixir                                                           :elixir:
+       **** https://elixirstatus.com/rss
+       *** Emacs                                                             :emacs:
+       **** http://planet.emacsen.org/atom.xml
+     #+END_SRC
 **** Templates
       Use this template for quick captures to triage later:
       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
@@ -188,6 +198,7 @@
            auto-completion
            better-defaults
            docker
+           (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
            elixir
            emacs-lisp
            evil-commentary
