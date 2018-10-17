@@ -686,4 +686,11 @@
 
      [rerere]
      enabled = true
+
+     [core]
+     excludesfile = ~/.gitignore
+   #+END_SRC
+
+   #+BEGIN_SRC conf :tangle ~/.gitignore
+     .DS_Store
    #+END_SRC
