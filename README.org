@@ -56,6 +56,17 @@
       (use-package mastodon
         :load-path "~/Code/me/mastodon.el/lisp")
     #+END_SRC
+*** Miscellaneous
+    #+NAME: misc
+    #+BEGIN_SRC emacs-lisp
+      (setq-default evil-escape-key-sequence "lk")
+      (setq shell-command-switch "-ic"
+            treemacs-fringe-indicator-mode nil
+            treemacs-use-follow-mode       t
+            treemacs-use-filewatch-mode    t)
+      (golden-ratio-mode)
+      (exec-path-from-shell-initialize)
+    #+END_SRC
 *** Org
 **** Agenda
      #+NAME: org_agenda
@@ -223,6 +234,7 @@
                           (not fish-mode))
            syntax-checking
            terraform
+           treemacs
            (vinegar :variables
                     vinegar-reuse-dired-buffer t)
            yaml
@@ -625,10 +637,7 @@
       configuration.
       Put your configuration code here, except for variables that should be set
       before packages are loaded."
-        (setq-default evil-escape-key-sequence "lk")
-        (setq shell-command-switch "-ic")
-        (golden-ratio-mode)
-        (exec-path-from-shell-initialize)
+        <<misc>>
         <<chrome>>
         <<mastodon>>
         <<org_agenda>>
