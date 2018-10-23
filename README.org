@@ -95,6 +95,8 @@
                        ((org-agenda-overriding-header "A&C items:")))
                  (tags "TODO=\"LEADS\""
                        ((org-agenda-overriding-header "Leads items:")))
+                 (tags "TODO=\"READ\""
+                       ((org-agenda-overriding-header "To read:")))
                  (agenda "" ((org-agenda-span 'day)
                              (org-agenda-overriding-header "Today:")))
                  (tags "TODO=\"TODO\""
@@ -112,27 +114,55 @@
 **** Capture
      #+NAME: org_capture
      #+BEGIN_SRC emacs-lisp
-       (setq org-log-done   'time
-             org-log-refile 'time
-             org-lowest-priority ?E
-             org-default-priority ?C
-             org-todo-keywords
-             '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
-               (sequence "CRAFT(a)" "RETRO(r)" "LEADS(l)" "|"))
-             org-capture-templates
-             '(("c" "Quick capture" entry
-                (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/reminder.orgcaptmpl"))
-               ("i" "Retro/A&C/Leads" entry
-                (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/retro.orgcaptmpl"))
-               ("j" "Jira reminder" entry
-                (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/jira.orgcaptmpl"))
-               ("m" "Meeting notes" entry
-                (file+olp+datetree "~/Notes/thoughts.org")
-                (file "~/.emacs.d/meeting.orgcaptmpl"))))
+              (setq org-log-done   'time
+                    org-log-refile 'time
+                    org-lowest-priority ?E
+                    org-default-priority ?C
+                    org-todo-keywords
+                    '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
+                      (sequence "CRAFT(a)" "RETRO(r)" "LEADS(l)" "READ(e)" "|"))
+                    org-capture-templates
+                    '(("c" "Quick capture" entry
+                       (file+olp+datetree "~/Notes/thoughts.org")
+                       (file "~/.emacs.d/reminder.orgcaptmpl"))
+                      ("i" "Retro/A&C/Leads" entry
+                       (file+olp+datetree "~/Notes/thoughts.org")
+                       (file "~/.emacs.d/retro.orgcaptmpl"))
+                      ("j" "Jira reminder" entry
+                       (file+olp+datetree "~/Notes/thoughts.org")
+                       (file "~/.emacs.d/jira.orgcaptmpl"))
+                      ("m" "Meeting notes" entry
+                       (file+olp+datetree "~/Notes/thoughts.org")
+                       (file "~/.emacs.d/meeting.orgcaptmpl"))
+                      ("r" "Read" entry
+                       (file+olp+datetree "~/Notes/thoughts.org")
+                       (file "~/.emacs.d/read.orgcaptmpl"))))
      #+END_SRC
+***** Templates
+       Use this template for quick captures to triage later:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
+         * BKLG %^{Summary} %^g
+       #+END_SRC
+       Take general meeting notes with this:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
+         * %^{Summary} :mtg:%^g
+         ** %?
+       #+END_SRC
+       Create Jira cards based on these notes:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
+         * TODO [#C] Create %^{Type} cards :jira:%^g
+           * %?
+       #+END_SRC
+       Capture retrospective thoughts with:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
+         * %^{Type|RETRO|CRAFT|LEADS} %^{Summary} %^g
+           %?
+       #+END_SRC
+       Capture items to read with a place for notes:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/read.orgcaptmpl
+         ,* READ %^{Title} (%^{Author}) :read:%^{Type|book|blog}:%^g
+         ,** %?
+       #+END_SRC
 **** RSS
      #+BEGIN_SRC org :tangle ~/.rss.org
        * Blogs                                                              :elfeed:
@@ -143,26 +173,6 @@
        *** Emacs                                                             :emacs:
        **** http://planet.emacsen.org/atom.xml
      #+END_SRC
-**** Templates
-      Use this template for quick captures to triage later:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-        * BKLG %^{Summary} %^g
-      #+END_SRC
-      Take general meeting notes with this:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
-        * %^{Summary} :mtg:%^g
-        ** %?
-      #+END_SRC
-      Create Jira cards based on these notes:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
-        * TODO [#C] Create %^{Type} cards :jira:%^g
-          * %?
-      #+END_SRC
-      Capture retrospective thoughts with:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
-        * %^{Type|RETRO|CRAFT|LEADS} %^{Summary} %^g
-          %?
-      #+END_SRC
 *** Spacemacs
     #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :noweb yes
       ;; -*- mode: emacs-lisp -*-
