@@ -86,18 +86,20 @@
                 ((tags "PRIORITY=\"A\""
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Highest priority:")))
+                 (tags "TODO=\"JIRA\""
+                       ((org-agenda-overriding-header "Jira:")))
+                 (agenda "" ((org-agenda-span 'day)
+                             (org-agenda-overriding-header "Today:")))
                  (tags "TODO=\"RETRO\""
                        ((org-agenda-overriding-header "Retro items:")))
-                 (tags "TODO=\"CRAFT\""
+                 (tags "TODO=\"ARTS\""
                        ((org-agenda-overriding-header "A&C items:")))
                  (tags "TODO=\"LEADS\""
                        ((org-agenda-overriding-header "Leads items:")))
-                 (tags "TODO=\"READ\""
-                       ((org-agenda-overriding-header "To read:")))
-                 (agenda "" ((org-agenda-span 'day)
-                             (org-agenda-overriding-header "Today:")))
                  (tags "TODO=\"TODO\""
                        ((org-agenda-overriding-header "TODOs:")))
+                 (tags "TODO=\"READ\""
+                       ((org-agenda-overriding-header "To read:")))
                  (tags "TODO=\"BKLG\""
                        ((org-agenda-overriding-header "Needs triage:")))))))
      #+END_SRC
@@ -111,54 +113,81 @@
 **** Capture
      #+NAME: org_capture
      #+BEGIN_SRC emacs-lisp
-              (setq org-log-done   'time
-                    org-log-refile 'time
-                    org-lowest-priority ?E
-                    org-default-priority ?C
-                    org-todo-keywords
-                    '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
-                      (sequence "CRAFT(a)" "RETRO(r)" "LEADS(l)" "READ(e)" "|"))
-                    org-capture-templates
-                    '(("c" "Quick capture" entry
-                       (file+olp+datetree "~/Notes/thoughts.org")
-                       (file "~/.emacs.d/reminder.orgcaptmpl"))
-                      ("i" "Retro/A&C/Leads" entry
-                       (file+olp+datetree "~/Notes/thoughts.org")
-                       (file "~/.emacs.d/retro.orgcaptmpl"))
-                      ("j" "Jira reminder" entry
-                       (file+olp+datetree "~/Notes/thoughts.org")
-                       (file "~/.emacs.d/jira.orgcaptmpl"))
-                      ("m" "Meeting notes" entry
-                       (file+olp+datetree "~/Notes/thoughts.org")
-                       (file "~/.emacs.d/meeting.orgcaptmpl"))
-                      ("r" "Read" entry
-                       (file+olp+datetree "~/Notes/thoughts.org")
-                       (file "~/.emacs.d/read.orgcaptmpl"))))
+       (setq org-log-done   'time
+             org-log-refile 'time
+             org-lowest-priority ?E
+             org-default-priority ?C
+             org-todo-keywords
+             '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
+               (sequence "ARTS(a)" "RETRO(r)" "LEADS(l)" "READ(e)" "JIRA(j)" "|"))
+             org-capture-templates
+             '(("c" "Quick capture" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/reminder.orgcaptmpl"))
+               ("i" "Retro/A&C/Leads" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/retro.orgcaptmpl"))
+               ("r" "Read")
+               ("rb" "Blog" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/blog.orgcaptmpl"))
+               ("rk" "Book" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/book.orgcaptmpl"))
+               ("j" "Jira")
+               ("jc" "Card" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/jira.orgcaptmpl"))
+               ("jg" "Grooming" entry
+                (file+olp+datetree "~/Notes/thoughts.org")
+                (file "~/.emacs.d/groom.orgcaptmpl"))))
      #+END_SRC
 ***** Templates
-       Use this template for quick captures to triage later:
-       #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-         * BKLG %^{Summary} %^g
+      Quickly capture generic stuff:
+      #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
+        * %^{Key|BKLG|TODO}%(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format " [#%s]" priority))) %^{Summary} %^g
+        %?
+      #+END_SRC
+      Capture miscellaneous team-specific items:
+      #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
+        * %^{Type|RETRO|ARTS|LEADS} %^{Summary} :oasis:%^g
+          %?
+      #+END_SRC
+****** To Card
+       Capture a single Jira card:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
+         * JIRA [#C] %^{Summary} :oasis:%^g
+           :PROPERTIES:
+           :Type: %^{Type|Story|Spike|Epic}
+           :Epic:
+           :Size:
+           :END:
+         ** Acceptance criteria
+            - %?
        #+END_SRC
-       Take general meeting notes with this:
-       #+BEGIN_SRC text :tangle ~/.emacs.d/meeting.orgcaptmpl
-         * %^{Summary} :mtg:%^g
+       Capture a grooming session:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/groom.orgcaptmpl
+         * JIRA [#A] %^{Epic} grooming :oasis:groom:
+         ** %^{Card summary}
+            :PROPERTIES:
+            :Type: %^{Type|Story|Spike}
+            :Epic: %\1
+            :Size:
+            :END:
+         *** Acceptance criteria
+             - %?
+       #+END_SRC
+
+****** To Read
+       Capture items to read with a place for notes:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/book.orgcaptmpl
+         * READ %^{Title} (%^{Author}) :read:book:%^g
          ** %?
        #+END_SRC
-       Create Jira cards based on these notes:
-       #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
-         * TODO [#C] Create %^{Type} cards :jira:%^g
-           * %?
-       #+END_SRC
-       Capture retrospective thoughts with:
-       #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
-         * %^{Type|RETRO|CRAFT|LEADS} %^{Summary} %^g
-           %?
-       #+END_SRC
-       Capture items to read with a place for notes:
-       #+BEGIN_SRC text :tangle ~/.emacs.d/read.orgcaptmpl
-         ,* READ %^{Title} (%^{Author}) :read:%^{Type|book|blog}:%^g
-         ,** %?
+       Capture blog posts from elfeed with:
+       #+BEGIN_SRC text :tangle ~/.emacs.d/blog.orgcaptmpl
+         * READ %:description :read:blog:%^g
+           %:link
        #+END_SRC
 **** RSS
      #+BEGIN_SRC org :tangle ~/.rss.org
