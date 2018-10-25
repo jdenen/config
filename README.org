@@ -60,10 +60,7 @@
     #+NAME: misc
     #+BEGIN_SRC emacs-lisp
       (setq-default evil-escape-key-sequence "lk")
-      (setq shell-command-switch "-ic"
-            treemacs-fringe-indicator-mode nil
-            treemacs-use-follow-mode       t
-            treemacs-use-filewatch-mode    t)
+      (setq shell-command-switch "-ic")
       (golden-ratio-mode)
       (exec-path-from-shell-initialize)
     #+END_SRC
@@ -227,6 +224,9 @@
            groovy
            helm
            markdown
+           (neotree :variables
+                    neo-theme 'nerd
+                    neo-vc-integration 'face)
            (org :packages
                 (not orgit org-present org-pomodoro org-plus-contrib)
                 :variables
@@ -244,7 +244,6 @@
                           (not fish-mode))
            syntax-checking
            terraform
-           treemacs
            (vinegar :variables
                     vinegar-reuse-dired-buffer t)
            yaml
