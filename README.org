@@ -60,7 +60,6 @@
     #+NAME: misc
     #+BEGIN_SRC emacs-lisp
       (setq-default evil-escape-key-sequence "lk")
-      (setq shell-command-switch "-ic")
       (golden-ratio-mode)
       (exec-path-from-shell-initialize)
     #+END_SRC
@@ -256,28 +255,13 @@
            groovy
            helm
            markdown
-           (neotree :variables
-                    neo-theme 'nerd
-                    neo-vc-integration 'face)
-           (org :packages
-                (not orgit org-present org-pomodoro org-plus-contrib)
-                :variables
-                org-enable-reveal-js-support t)
+           (org :packages (not orgit org-present org-pomodoro org-plus-contrib) :variables org-enable-reveal-js-support t)
            osx
-           (python :variables
-                   python-test-runner 'pytest)
-           (ruby :packages
-                 (not rvm)
-                 :variables
-                 ruby-test-runner 'rspec
-                 ruby-version-manager 'rbenv)
            shell
-           (shell-scripts :packages
-                          (not fish-mode))
+           (shell-scripts :packages (not fish-mode))
            syntax-checking
            terraform
-           (vinegar :variables
-                    vinegar-reuse-dired-buffer t)
+           (vinegar :variables vinegar-reuse-dired-buffer t)
            yaml
            )
 
