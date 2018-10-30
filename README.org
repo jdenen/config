@@ -192,11 +192,14 @@
 **** RSS
      #+BEGIN_SRC org :tangle ~/.rss.org
        * Blogs                                                              :elfeed:
+       ** Entertainment
+       *** The Setup
+          https://usesthis.com/feed.atom
        ** Software Development
-       *** DevOps                                                       :devops:ops:
-       *** Elixir                                                           :elixir:
+       *** DevOps                                                              :ops:
+       *** Elixir                                                               :ex:
        **** https://elixirstatus.com/rss
-       *** Emacs                                                             :emacs:
+       *** Emacs                                                                :el:
        **** http://planet.emacsen.org/atom.xml
      #+END_SRC
 *** Spacemacs
