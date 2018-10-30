@@ -322,6 +322,7 @@ To configure the machine using this file, run:
          ;; ----------------------------------------------------------------
          auto-completion
          better-defaults
+         copy-as-format
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
          elixir
@@ -353,7 +354,6 @@ To configure the machine using this file, run:
                                           atomic-chrome
                                           cask
                                           cheat-sh
-                                          copy-as-format
                                           discover
                                           el-mock
                                           exec-path-from-shell
