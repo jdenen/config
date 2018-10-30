@@ -92,6 +92,37 @@ To configure the machine using this file, run:
        :init
        (atomic-chrome-start-server))
    #+END_SRC
+** elixir
+   I'm running =mix test= with the =--no-start= flag a lot, so it should be convenient in Emacs.
+   #+NAME: mix-test
+   #+BEGIN_SRC emacs-lisp
+     (defun mix-test-with-no-start (fun)
+       (let ((alchemist-mix-test-default-options "--no-start"))
+         (funcall fun)))
+
+     (defun mix-test-this-buffer-no-start ()
+       "Run `alchemist-mix-test-this-buffer' with '--no-start'."
+       (interactive)
+       (mix-test-with-no-start 'alchemist-mix-test-this-buffer))
+
+     (defun mix-test-at-point-no-start ()
+       "Run `alchemist-mix-test-at-point' with '--no-start'."
+       (interactive)
+       (mix-test-with-no-start 'alchemist-mix-test-at-point))
+
+     (defun mix-test-no-start ()
+       "Run `alchemist-mix-test' with '--no-start'."
+       (interactive)
+       (mix-test-with-no-start 'alchemist-mix-test))
+   #+END_SRC
+   To make it even more convenient, set leader keys for these functions in =elixir-mode=.
+   #+NAME: mix-keys
+   #+BEGIN_SRC emacs-lisp
+     (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+       "tA" 'mix-test-no-start
+       "tB" 'mix-test-this-buffer-no-start
+       "tT" 'mix-test-at-point-no-start)
+   #+END_SRC
 ** mastodon
    I maintain [[https://github.com/jdenen/mastodon.el.git][mastodon.el]], the Emacs client for [[https://mastodon.social][Mastodon]], so I'll always want to use
    my local development version.
@@ -710,6 +741,8 @@ To configure the machine using this file, run:
       <<misc>>
       <<chrome>>
       <<mastodon>>
+      <<mix-test>>
+      <<mix-keys>>
       <<org_agenda>>
       <<org_babel>>
       <<org_capture>>
