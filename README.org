@@ -266,10 +266,11 @@ To configure the machine using this file, run:
 *** rss
     #+BEGIN_SRC org :tangle ~/.rss.org
       * Blogs                                                              :elfeed:
-      ** Entertainment
-      *** The Setup
-         https://usesthis.com/feed.atom
+      ** Entertainment                                                          :e:
+      *** https://usesthis.com/feed.atom
       ** Software Development
+      *** Computer Science                                                     :cs:
+      **** https://blog.acolyer.org/feed/
       *** DevOps                                                              :ops:
       *** Elixir                                                               :ex:
       **** https://elixirstatus.com/rss
