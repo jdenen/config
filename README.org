@@ -278,6 +278,21 @@ To configure the machine using this file, run:
       *** Emacs                                                                :el:
       **** http://planet.emacsen.org/atom.xml
     #+END_SRC
+** packages
+   Install some non-layered packages.
+   #+NAME: extra_packages
+   #+BEGIN_SRC emacs-lisp
+     '(ample-theme
+       atomic-chrome
+       cask
+       cheat-sh
+       discover
+       el-mock
+       exec-path-from-shell
+       emojify
+       hasklig-mode
+       package-lint)
+   #+END_SRC
 * spacemacs
   Configure [[https://github.com/syl20bnr/spacemacs.git][Spacemacs]] using a bunch of the Emacs configuration above.
   #+BEGIN_SRC emacs-lisp :tangle ~/.spacemacs :noweb yes
@@ -351,18 +366,8 @@ To configure the machine using this file, run:
        ;; To use a local version of a package, use the `:location' property:
        ;; '(your-package :location "~/path/to/your-package/")
        ;; Also include the dependencies as they will not be resolved automatically.
-       dotspacemacs-additional-packages '(
-                                          ample-theme
-                                          atomic-chrome
-                                          cask
-                                          cheat-sh
-                                          discover
-                                          el-mock
-                                          exec-path-from-shell
-                                          emojify
-                                          hasklig-mode
-                                          package-lint
-                                          )
+       dotspacemacs-additional-packages
+       <<extra_packages>>
 
        ;; A list of packages that cannot be updated.
        dotspacemacs-frozen-packages '()
