@@ -137,6 +137,7 @@ To configure the machine using this file, run:
      (setq-default evil-escape-key-sequence "lk")
      (golden-ratio-mode)
      (exec-path-from-shell-initialize)
+     (add-hook 'prog-mode-hook 'hasklig-mode)
    #+END_SRC
 ** org
 *** agenda
@@ -359,6 +360,7 @@ To configure the machine using this file, run:
                                           el-mock
                                           exec-path-from-shell
                                           emojify
+                                          hasklig-mode
                                           package-lint
                                           )
 
@@ -481,7 +483,7 @@ To configure the machine using this file, run:
 
        ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
        ;; quickly tweak the mode-line size to make separators look not too crappy.
-       dotspacemacs-default-font '("DroidSansMono Nerd Font"
+       dotspacemacs-default-font '("Hasklig"
                                    :size 14
                                    :weight normal
                                    :width normal)
