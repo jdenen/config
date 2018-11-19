@@ -132,6 +132,14 @@ To configure the machine using this file, run:
        :load-path "~/Code/me/mastodon.el/lisp")
    #+END_SRC
 ** miscellaneous
+   A little about me:
+   #+NAME: me
+   #+BEGIN_SRC emacs-lisp
+     (setq user-full-name    "Johnson Denen"
+           user-mail-address "johnson.denen@gmail.com")
+   #+END_SRC
+
+   Some random configuration:
    #+NAME: misc
    #+BEGIN_SRC emacs-lisp
      (setq-default evil-escape-key-sequence "lk")
@@ -747,6 +755,7 @@ To configure the machine using this file, run:
     configuration.
     Put your configuration code here, except for variables that should be set
     before packages are loaded."
+      <<me>>
       <<misc>>
       <<chrome>>
       <<mastodon>>
