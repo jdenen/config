@@ -115,7 +115,7 @@ To configure the machine using this file, run:
    #+END_SRC
 ** miscellaneous
    A little about me:
-   #+NAME: me
+   #+NAME: user_info
    #+BEGIN_SRC emacs-lisp
      (setq user-full-name    "Johnson Denen"
            user-mail-address "johnson.denen@gmail.com")
@@ -739,7 +739,7 @@ To configure the machine using this file, run:
     configuration.
     Put your configuration code here, except for variables that should be set
     before packages are loaded."
-      <<me>>
+      <<user_info>>
       <<misc>>
       <<chrome>>
       <<mastodon>>
