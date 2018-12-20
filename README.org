@@ -280,6 +280,7 @@ To configure the machine using this file, run:
        el-mock
        exec-path-from-shell
        emojify
+       forge
        hasklig-mode
        package-lint)
    #+END_SRC
@@ -342,6 +343,7 @@ To configure the machine using this file, run:
          markdown
          (org :packages (not orgit org-present org-pomodoro org-plus-contrib) :variables org-enable-reveal-js-support t)
          osx
+         search-engine
          shell
          (shell-scripts :packages (not fish-mode))
          syntax-checking
