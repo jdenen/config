@@ -46,7 +46,7 @@ To configure the machine using this file, run:
 
     export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
     export PATH=$PATH:~/bin
-    export KUBECONFIG=~/.dev_kube:~/.staging_kube:~/.prod_kube
+    export KUBECONFIG=~/.dev_kube:~/.staging_kube
   #+END_SRC
 * .gitignore
   Setup a default ignore list to be pointed to in =~/.gitconfig=.
