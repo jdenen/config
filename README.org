@@ -128,6 +128,7 @@ To configure the machine using this file, run:
      (golden-ratio-mode)
      (exec-path-from-shell-initialize)
      (add-hook 'prog-mode-hook 'hasklig-mode)
+     (setq forge-topic-list-limit '(60 . 0))
    #+END_SRC
 ** org
 *** agenda
