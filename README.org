@@ -105,6 +105,16 @@ To configure the machine using this file, run:
        "sB" 'alchemist-iex-compile-this-buffer-and-go
        "sM" 'alchemist-iex-reload-module-and-go)
    #+END_SRC
+
+   Here's a convenience function for creating a new =mix= project.
+   #+NAME: mix-new
+   #+BEGIN_SRC emacs-lisp
+     (defun mix-new ()
+       (interactive)
+       (let* ((project (read-string "Project name: "))
+              (cmd (format "mix new %s" project)))
+         (compile cmd)))
+   #+END_SRC
 ** mastodon
    I maintain [[https://github.com/jdenen/mastodon.el.git][mastodon.el]], the Emacs client for [[https://mastodon.social][Mastodon]], so I'll always want to use
    my local development version.
@@ -744,8 +754,8 @@ To configure the machine using this file, run:
       <<misc>>
       <<chrome>>
       <<mastodon>>
-      <<mix-test>>
       <<mix-keys>>
+      <<mix-new>>
       <<org_agenda>>
       <<org_babel>>
       <<org_capture>>
