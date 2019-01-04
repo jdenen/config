@@ -137,8 +137,19 @@ To configure the machine using this file, run:
      (setq-default evil-escape-key-sequence "lk")
      (golden-ratio-mode)
      (exec-path-from-shell-initialize)
-     (add-hook 'prog-mode-hook 'hasklig-mode)
      (setq forge-topic-list-limit '(60 . 0))
+     (add-hook 'prog-mode-hook
+               (lambda ()
+                 (push '(">=" . ?\u2265) prettify-symbols-alist)
+                 (push '("<=" . ?\u2264) prettify-symbols-alist)
+                 (push '("!=" . ?\u2260) prettify-symbols-alist)
+                 (push '("==" . ?\u2A75) prettify-symbols-alist)
+                 (push '("=~" . ?\u2245) prettify-symbols-alist)
+                 (push '("<-" . ?\u2190) prettify-symbols-alist)
+                 (push '("->" . ?\u2192) prettify-symbols-alist)
+                 (push '("<-" . ?\u2190) prettify-symbols-alist)
+                 (push '("fn" . ?\u03BB) prettify-symbols-alist)
+                 (push '("|>" . ?\u25B7) prettify-symbols-alist)))
    #+END_SRC
 ** org
 *** agenda
@@ -292,7 +303,6 @@ To configure the machine using this file, run:
        exec-path-from-shell
        emojify
        forge
-       hasklig-mode
        package-lint)
    #+END_SRC
 * spacemacs
@@ -492,7 +502,7 @@ To configure the machine using this file, run:
 
        ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
        ;; quickly tweak the mode-line size to make separators look not too crappy.
-       dotspacemacs-default-font '("Hasklig"
+       dotspacemacs-default-font '("Fira Code"
                                    :size 14
                                    :weight normal
                                    :width normal)
@@ -742,7 +752,7 @@ To configure the machine using this file, run:
     configuration.
     It is mostly for variables that should be set before packages are loaded.
     If you are unsure, try setting them in `dotspacemacs/user-config' first."
-      )
+      (global-prettify-symbols-mode))
 
     (defun dotspacemacs/user-config ()
       "Configuration for user code:
