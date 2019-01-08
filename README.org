@@ -109,31 +109,26 @@ To configure the machine using this file, run:
        :init
        (add-to-list 'exec-path "~/Code/me/dot/elixir-ls/release/"))
 
-     (require 'elixir-mode)
-     (require 'lsp-mode)
-     (require 'lsp-ui)
-     (require 'company-lsp)
-
      (require 'lsp-mode)
      (require 'lsp-clients)
      (require 'lsp-ui)
-     (require 'company)
+     (require 'company-lsp)
 
      (setq lsp-ui-flycheck-enable 1)
      (push 'company-lsp company-backends)
 
      (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-     (add-hook
-      'elixir-mode-hook
-      (lambda ()
-        (lsp)
-        (flycheck-mode)
-        (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
+     (add-hook 'elixir-mode-hook
+               (lambda ()
+                 (lsp)
+                 (flycheck-mode)
+                 (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
      (spacemacs/declare-prefix-for-mode 'elixir-mode
        "mt" "tests" "testing related functionality")
      (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+       "gb" 'pop-global-mark
        "tb" 'exunit-verify-all
        "ta" 'exunit-verify
        "tk" 'exunit-rerun
