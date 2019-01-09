@@ -43,6 +43,7 @@ To configure the machine using this file, run:
     PS1_TIME="\[\033[1;36m\]\T"
     PS1_PWD="\[\033[0;37m\]\W"
 
+    source /usr/local/etc/profile.d/z.sh
     source $HOME/.asdf/asdf.sh
     source $HOME/.asdf/completions/asdf.bash
 
