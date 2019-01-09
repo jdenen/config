@@ -15,10 +15,6 @@ To configure the machine using this file, run:
     source ~/.bashrc
   #+END_SRC
 * .bashrc
-  #+BEGIN_SRC sh :tangle ~/bin/elixirls :shebang "#!/usr/bin/env bash"
-    sh ~/Code/me/dot/elixir-ls/release/language_server.sh
-  #+END_SRC
-
   #+BEGIN_SRC sh :tangle ~/.bashrc
     #!/usr/bin/env bash
 
@@ -101,39 +97,14 @@ To configure the machine using this file, run:
    I like REPL based development. Lets make it more convenient.
    #+NAME: mix-keys
    #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :commands lsp
-       :ensure t
-       :diminish lsp-mode
-       :hook
-       (elixir-mode . lsp)
-       :init
-       (add-to-list 'exec-path "~/Code/me/dot/elixir-ls/release/"))
+     (defun alchemist-iex-reload-module-and-go ()
+       (interactive)
+       (alchemist-iex-reload-module)
+       (pop-to-buffer (process-buffer (alchemist-iex-process))))
 
-     (require 'lsp-mode)
-     (require 'lsp-clients)
-     (require 'lsp-ui)
-     (require 'company-lsp)
-
-     (setq lsp-ui-flycheck-enable 1)
-     (push 'company-lsp company-backends)
-
-     (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-
-     (add-hook 'elixir-mode-hook
-               (lambda ()
-                 (lsp)
-                 (flycheck-mode)
-                 (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
-
-     (spacemacs/declare-prefix-for-mode 'elixir-mode
-       "mt" "tests" "testing related functionality")
      (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
-       "gb" 'pop-global-mark
-       "tb" 'exunit-verify-all
-       "ta" 'exunit-verify
-       "tk" 'exunit-rerun
-       "tt" 'exunit-verify-single)
+       "sB" 'alchemist-iex-compile-this-buffer-and-go
+       "sM" 'alchemist-iex-reload-module-and-go)
    #+END_SRC
 
    Here's a convenience function for creating a new =mix= project.
@@ -329,10 +300,8 @@ To configure the machine using this file, run:
        cask
        cheat-sh
        discover
-       eglot
        el-mock
        exec-path-from-shell
-       exunit
        emojify
        forge
        package-lint)
@@ -387,13 +356,12 @@ To configure the machine using this file, run:
          copy-as-format
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
-         (elixir :packages (not alchemist))
+         elixir
          emacs-lisp
          evil-commentary
          git
          groovy
          helm
-         lsp
          markdown
          (org :packages (not orgit org-present org-pomodoro org-plus-contrib) :variables org-enable-reveal-js-support t)
          osx
