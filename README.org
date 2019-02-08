@@ -35,18 +35,14 @@ To configure the machine using this file, run:
         kubectl config use-context "${context}"
     }
 
-    PS1_DATE="\[\033[32m\]\d"
-    PS1_TIME="\[\033[1;36m\]\T"
-    PS1_PWD="\[\033[0;37m\]\W"
-
     source /usr/local/etc/profile.d/z.sh
     source $HOME/.asdf/asdf.sh
     source $HOME/.asdf/completions/asdf.bash
 
+    source ~/Code/pillar/oasis/team-configs/configs/pair-bashrc
     source ~/.sdkman/bin/sdkman-init.sh
 
-    export PS1="$PS1_DATE $PS1_TIME\n$PS1_PWD\[\033[0m\] $ "
-    export PATH=$PATH:~/bin
+    export PATH=$PATH:~/bin:~/Code/pillar/oasis/team-configs/bin
     export KUBECONFIG=~/.dev_kube:~/.staging_kube
   #+END_SRC
 * .gitignore
