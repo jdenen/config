@@ -160,7 +160,7 @@ To configure the machine using this file, run:
       (defun org-agenda-and-todos ()
         "Show `org-agenda' with a list of TODOs."
         (interactive)
-        (org-agenda nil "d"))
+        (org-agenda nil "c"))
       (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
       (setq org-agenda-start-with-log-mode     t
             org-agenda-use-time-grid           t
@@ -170,26 +170,11 @@ To configure the machine using this file, run:
                                                  (800 1200 1600 2000) " ....." "----")
             org-agenda-files                   '("~/Notes/thoughts.org"))
       (setq org-agenda-custom-commands
-            '(("d" "Daily agenda"
-               ((tags "PRIORITY=\"A\""
-                      ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                       (org-agenda-overriding-header "Highest priority:")))
-                (tags "TODO=\"JIRA\""
-                      ((org-agenda-overriding-header "Jira:")))
-                (agenda "" ((org-agenda-span 'day)
-                            (org-agenda-overriding-header "Today:")))
-                (tags "TODO=\"RETRO\""
-                      ((org-agenda-overriding-header "Retro items:")))
-                (tags "TODO=\"ARTS\""
-                      ((org-agenda-overriding-header "A&C items:")))
-                (tags "TODO=\"LEADS\""
-                      ((org-agenda-overriding-header "Leads items:")))
-                (tags "TODO=\"TODO\""
-                      ((org-agenda-overriding-header "TODOs:")))
-                (tags "TODO=\"READ\""
-                      ((org-agenda-overriding-header "To read:")))
-                (tags "TODO=\"BKLG\""
-                      ((org-agenda-overriding-header "Needs triage:")))))))
+            '(("c" "Custom"
+               ((tags-todo "oasis|pillar/!TODO" ((org-agenda-overriding-header "Work:")))
+                (tags-todo "-oasis-pillar/!TODO" ((org-agenda-overriding-header "Not Work:")))
+                (agenda "" ((org-agenda-span 'week) (org-agenda-overriding-header "")))
+                (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
     #+END_SRC
 *** babel
     #+NAME: org_babel
@@ -203,25 +188,15 @@ To configure the machine using this file, run:
     #+BEGIN_SRC emacs-lisp
       (setq org-log-done   'time
             org-log-refile 'time
-            org-lowest-priority ?E
-            org-default-priority ?C
+            org-lowest-priority ?F
+            org-default-priority ?F
             org-todo-keywords
-            '((sequence "BKLG(b)" "TODO(t)" "WIP(w)" "|" "DONE(d)" "CNCL(c)")
-              (sequence "ARTS(a)" "RETRO(r)" "LEADS(l)" "READ(e)" "JIRA(j)" "|"))
+            '((sequence "TODO(t)" "|" "DONE(d)" "CNCL(c)")
+              (sequence "BKLG(b)" "|"))
             org-capture-templates
             '(("c" "Quick capture" entry
                (file+olp+datetree "~/Notes/thoughts.org")
                (file "~/.emacs.d/reminder.orgcaptmpl"))
-              ("i" "Retro/A&C/Leads" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/retro.orgcaptmpl"))
-              ("r" "Read")
-              ("rb" "Blog" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/blog.orgcaptmpl"))
-              ("rk" "Book" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/book.orgcaptmpl"))
               ("j" "Jira")
               ("jc" "Card" entry
                (file+olp+datetree "~/Notes/thoughts.org")
@@ -233,50 +208,32 @@ To configure the machine using this file, run:
 **** Templates
      Quickly capture generic stuff:
      #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-       * %^{Key|BKLG|TODO}%(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format " [#%s]" priority))) %^{Summary} %^g
-       %?
+       * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format " [#%s]" priority))) %^{Summary} %^g
      #+END_SRC
-     Capture miscellaneous team-specific items:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/retro.orgcaptmpl
-       * %^{Type|RETRO|ARTS|LEADS} %^{Summary} :oasis:%^g
-         %?
+     Capture a single Jira card:
+     #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
+       * TODO [#C] %^{Summary} :oasis:jira:%^g
+        :PROPERTIES:
+        :Type: %^{Type|Story|Spike|Epic}
+        :Epic:
+        :Size:
+        :END:
+       ** Acceptance criteria
+         - %?
+       ** Technical notes
      #+END_SRC
-***** To Card
-      Capture a single Jira card:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
-        * JIRA [#C] %^{Summary} :oasis:%^g
+     Capture a grooming session:
+     #+BEGIN_SRC text :tangle ~/.emacs.d/groom.orgcaptmpl
+       * TODO [#A] %^{Epic} grooming :oasis:groom:
+       ** %^{Card summary}
           :PROPERTIES:
-          :Type: %^{Type|Story|Spike|Epic}
-          :Epic:
+          :Type: %^{Type|Story|Spike}
+          :Epic: %\1
           :Size:
           :END:
-        ** Acceptance criteria
+       *** Acceptance criteria
            - %?
-      #+END_SRC
-      Capture a grooming session:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/groom.orgcaptmpl
-        * JIRA [#A] %^{Epic} grooming :oasis:groom:
-        ** %^{Card summary}
-           :PROPERTIES:
-           :Type: %^{Type|Story|Spike}
-           :Epic: %\1
-           :Size:
-           :END:
-        *** Acceptance criteria
-            - %?
-      #+END_SRC
-
-***** To Read
-      Capture items to read with a place for notes:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/book.orgcaptmpl
-        * READ %^{Title} (%^{Author}) :read:book:%^g
-        ** %?
-      #+END_SRC
-      Capture blog posts from elfeed with:
-      #+BEGIN_SRC text :tangle ~/.emacs.d/blog.orgcaptmpl
-        * READ %:description :read:blog:%^g
-          %:link
-      #+END_SRC
+     #+END_SRC
 *** rss
     #+BEGIN_SRC org :tangle ~/.rss.org
       * Blogs                                                              :elfeed:
