@@ -43,7 +43,7 @@ To configure the machine using this file, run:
     source ~/.sdkman/bin/sdkman-init.sh
 
     export PATH=$PATH:~/bin:~/Code/pillar/oasis/team-configs/bin
-    export KUBECONFIG=~/.dev_kube:~/.staging_kube
+    export KUBECONFIG=~/.kube/kubeconfig
   #+END_SRC
 * .gitignore
   Setup a default ignore list to be pointed to in =~/.gitconfig=.
