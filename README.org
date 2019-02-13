@@ -169,7 +169,10 @@ To configure the machine using this file, run:
             '(("c" "Custom"
                ((tags-todo "oasis|pillar/!TODO" ((org-agenda-overriding-header "Work:")))
                 (tags-todo "-oasis-pillar/!TODO" ((org-agenda-overriding-header "Not Work:")))
-                (agenda "" ((org-agenda-span 'week) (org-agenda-overriding-header "")))
+                (agenda "" ((org-agenda-span 'week)
+                            (org-agenda-overriding-header "")
+                            (org-agenda-skip-deadline-if-done t)
+                            (org-deadline-warning-days 7)))
                 (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
     #+END_SRC
 *** babel
@@ -230,13 +233,45 @@ To configure the machine using this file, run:
      #+BEGIN_SRC text :tangle ~/.emacs.d/groom.orgcaptmpl
        * TODO [#A] %^{Epic} grooming :oasis:groom:
        ** %^{Card summary}
-          :PROPERTIES:
-          :Type: %^{Type|Story|Spike}
-          :Epic: %\1
-          :Size:
-          :END:
+         :PROPERTIES:
+         :Type: %^{Type|Story|Spike}
+         :Epic: %\1
+         :Size:
+         :END:
        *** Acceptance criteria
-           - %?
+          - %?
+       ** Title
+         :PROPERTIES:
+         :Type:
+         :Epic: %\1
+         :Size:
+         :END:
+       *** Acceptance criteria
+          -
+       ** Title
+         :PROPERTIES:
+         :Type:
+         :Epic: %\1
+         :Size:
+         :END:
+       *** Acceptance criteria
+          -
+       ** Title
+         :PROPERTIES:
+         :Type:
+         :Epic: %\1
+         :Size:
+         :END:
+       *** Acceptance criteria
+          -
+       ** Title
+         :PROPERTIES:
+         :Type:
+         :Epic: %\1
+         :Size:
+         :END:
+       *** Acceptance criteria
+          -
      #+END_SRC
 *** rss
     #+BEGIN_SRC org :tangle ~/.rss.org
