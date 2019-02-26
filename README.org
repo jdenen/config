@@ -131,7 +131,6 @@ To configure the machine using this file, run:
    Some random configuration:
    #+NAME: misc
    #+BEGIN_SRC emacs-lisp
-     (setq-default evil-escape-key-sequence "lk")
      (golden-ratio-mode)
      (exec-path-from-shell-initialize)
      (setq forge-topic-list-limit '(60 . 0))
