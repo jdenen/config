@@ -1,3 +1,0 @@
-[submodule "elixir-ls"]
-	path = elixir-ls
-	url = https://github.com/elixir-lsp/elixir-ls.git
