@@ -82,6 +82,23 @@ To configure the machine using this file, run:
     excludesfile = ~/.gitignore
   #+END_SRC
 * emacs
+** autosave
+   #+NAME: autosave
+   #+BEGIN_SRC emacs-lisp
+     (defun save-if-buffer-name ()
+       (when buffer-file-name (save-buffer)))
+
+     (add-hook 'window-configuration-change-hook 'save-if-buffer-name)
+     (add-hook 'focus-out-hook (lambda () (evil-write-all nil)))
+
+     (defadvice evil-window-left (before evil-window-left-now activate) (save-if-buffer-name))
+     (defadvice evil-window-right (before evil-window-right-now activate) (save-if-buffer-name))
+     (defadvice evil-window-up (before evil-window-up-now activate) (save-if-buffer-name))
+     (defadvice evil-window-down (before evil-window-down-now activate) (save-if-buffer-name))
+     (defadvice switch-to-buffer (before switch-to-buffer-now activate) (save-if-buffer-name))
+     (defadvice other-window (before other-window-now activate) (save-if-buffer-name))
+     (defadvice ace-window (before ace-window-now activate) (save-if-buffer-name))
+   #+END_SRC
 ** chrome
    #+NAME: chrome
    #+BEGIN_SRC emacs-lisp
@@ -758,6 +775,7 @@ To configure the machine using this file, run:
     before packages are loaded."
       <<user_info>>
       <<misc>>
+      <<autosave>>
       <<chrome>>
       <<mastodon>>
       <<mix-keys>>
