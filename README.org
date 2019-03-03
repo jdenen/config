@@ -176,10 +176,10 @@ To configure the machine using this file, run:
                ((tags-todo "oasis|pillar/!TODO" ((org-agenda-overriding-header "Work:")))
                 (tags-todo "-oasis-pillar/!TODO" ((org-agenda-overriding-header "Not Work:")))
                 (agenda "" ((org-agenda-span 'week)
-                            (org-agenda-overriding-header "")
+                            (org-agenda-overriding-header " ")
                             (org-agenda-skip-deadline-if-done t)
                             (org-deadline-warning-days 7)))
-                (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
+                (tags-todo "/!BLKG" ((org-agenda-overriding-header "Ice box:")))))))
     #+END_SRC
 *** babel
     #+NAME: org_babel
