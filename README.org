@@ -26,15 +26,6 @@ To configure the machine using this file, run:
     alias ls='ls -alF'
     alias m-start='minikube start --memory 12288'
 
-    function kc {
-        echo "Current context: $(kubectl config current-context)"
-
-        kubectl config get-contexts -o name
-        read -p "Context: " context
-
-        kubectl config use-context "${context}"
-    }
-
     source /usr/local/etc/profile.d/z.sh
     source $HOME/.asdf/asdf.sh
     source $HOME/.asdf/completions/asdf.bash
