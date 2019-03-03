@@ -39,10 +39,9 @@ To configure the machine using this file, run:
     source $HOME/.asdf/asdf.sh
     source $HOME/.asdf/completions/asdf.bash
 
-    source ~/Code/pillar/oasis/team-configs/configs/pair-bashrc
     source ~/.sdkman/bin/sdkman-init.sh
 
-    export PATH=$PATH:~/bin:~/Code/pillar/oasis/team-configs/bin
+    export PATH=$PATH:~/bin:~/code/team-configs/bin
     export KUBECONFIG=~/.kube/kubeconfig
   #+END_SRC
 * .gitignore
@@ -135,7 +134,7 @@ To configure the machine using this file, run:
    #+NAME: mastodon
    #+BEGIN_SRC emacs-lisp
      (use-package mastodon
-       :load-path "~/Code/me/mastodon.el/lisp")
+       :load-path "~/code/mastodon.el/lisp")
    #+END_SRC
 ** miscellaneous
    A little about me:
