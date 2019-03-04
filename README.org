@@ -119,6 +119,18 @@ To configure the machine using this file, run:
               (cmd (format "mix new %s" project)))
          (compile cmd)))
    #+END_SRC
+
+   I'm experimenting with =eglot= and =elixir_ls=.
+   #+NAME: elixir-ls
+   #+BEGIN_SRC emacs-lisp
+     (use-package eglot :ensure t)
+     (add-to-list 'eglot-server-programs '(elixir-mode . ("/Users/johnson/.elixir/release/language_server.sh")))
+     (add-hook 'elixir-mode-hook 'eglot-ensure)
+     (add-hook 'before-save-hook 'elixir-format)
+
+     (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+       "h." 'eglot-help-at-point)
+   #+END_SRC
 ** mastodon
    I maintain [[https://github.com/jdenen/mastodon.el.git][mastodon.el]], the Emacs client for [[https://mastodon.social][Mastodon]], so I'll always want to use
    my local development version.
@@ -302,6 +314,7 @@ To configure the machine using this file, run:
        cask
        cheat-sh
        discover
+       eglot
        el-mock
        exec-path-from-shell
        emojify
@@ -358,7 +371,7 @@ To configure the machine using this file, run:
          copy-as-format
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
-         elixir
+         (elixir :packages (not company))
          emacs-lisp
          evil-commentary
          git
@@ -764,14 +777,25 @@ To configure the machine using this file, run:
     Put your configuration code here, except for variables that should be set
     before packages are loaded."
       <<user_info>>
+
       <<misc>>
+
       <<autosave>>
+
       <<chrome>>
+
       <<mastodon>>
+
       <<mix-keys>>
+
       <<mix-new>>
+
+      <<elixir-ls>>
+
       <<org_agenda>>
+
       <<org_babel>>
+
       <<org_capture>>
       )
 
