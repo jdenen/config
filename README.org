@@ -138,7 +138,9 @@ To configure the machine using this file, run:
    #+NAME: mastodon
    #+BEGIN_SRC emacs-lisp
      (use-package mastodon
-       :load-path "~/code/mastodon.el/lisp")
+       :load-path "~/code/mastodon.el/lisp"
+       :config
+       (mastodon-discover))
    #+END_SRC
 ** miscellaneous
    A little about me:
@@ -317,6 +319,7 @@ To configure the machine using this file, run:
        discover
        eglot
        el-mock
+       emojify
        exec-path-from-shell
        emojify
        forge
