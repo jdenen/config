@@ -39,6 +39,7 @@ To configure the machine using this file, run:
   Setup a default ignore list to be pointed to in =~/.gitconfig=.
   #+BEGIN_SRC conf :tangle ~/.gitignore
     .DS_Store
+    .elixir_ls/
   #+END_SRC
 * .gitconfig
   #+BEGIN_SRC conf :tangle ~/.gitconfig
