@@ -120,7 +120,11 @@ To configure the machine using this file, run:
        :init
        (add-to-list 'exec-path "/Users/johnson/.elixir/release"))
 
-     (add-hook 'before-save-hook 'elixir-format)
+     (defun my/elixir-format ()
+       (when (eq major-mode 'elixir-mode)
+         (elixir-format)))
+
+     (add-hook 'before-save-hook 'my/elixir-format)
    #+END_SRC
 ** mastodon
    I maintain [[https://github.com/jdenen/mastodon.el.git][mastodon.el]], the Emacs client for [[https://mastodon.social][Mastodon]], so I'll always want to use
