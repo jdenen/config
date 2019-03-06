@@ -98,19 +98,6 @@ To configure the machine using this file, run:
        (atomic-chrome-start-server))
    #+END_SRC
 ** elixir
-   I like REPL based development. Lets make it more convenient.
-   #+NAME: mix-keys
-   #+BEGIN_SRC emacs-lisp
-     (defun alchemist-iex-reload-module-and-go ()
-       (interactive)
-       (alchemist-iex-reload-module)
-       (pop-to-buffer (process-buffer (alchemist-iex-process))))
-
-     (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
-       "sB" 'alchemist-iex-compile-this-buffer-and-go
-       "sM" 'alchemist-iex-reload-module-and-go)
-   #+END_SRC
-
    Here's a convenience function for creating a new =mix= project.
    #+NAME: mix-new
    #+BEGIN_SRC emacs-lisp
@@ -121,16 +108,19 @@ To configure the machine using this file, run:
          (compile cmd)))
    #+END_SRC
 
-   I'm experimenting with =eglot= and =elixir_ls=.
+   I'm experimenting with =lsp-mode= and =elixir_ls=.
    #+NAME: elixir-ls
    #+BEGIN_SRC emacs-lisp
-     (use-package eglot :ensure t)
-     (add-to-list 'eglot-server-programs '(elixir-mode . ("/Users/johnson/.elixir/release/language_server.sh")))
-     (add-hook 'elixir-mode-hook 'eglot-ensure)
-     (add-hook 'before-save-hook 'elixir-format)
+     (use-package lsp-mode
+       :commands lsp
+       :ensure t
+       :diminish lsp-mode
+       :hook
+       (elixir-mode . lsp)
+       :init
+       (add-to-list 'exec-path "/Users/johnson/.elixir/release"))
 
-     (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
-       "h." 'eglot-help-at-point)
+     (add-hook 'before-save-hook 'elixir-format)
    #+END_SRC
 ** mastodon
    I maintain [[https://github.com/jdenen/mastodon.el.git][mastodon.el]], the Emacs client for [[https://mastodon.social][Mastodon]], so I'll always want to use
@@ -375,12 +365,13 @@ To configure the machine using this file, run:
          copy-as-format
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
-         (elixir :packages (not company))
+         (elixir :packages (not alchemist))
          emacs-lisp
          evil-commentary
          git
          groovy
          helm
+         lsp
          markdown
          (org :packages (not orgit org-present org-pomodoro org-plus-contrib) :variables org-enable-reveal-js-support t)
          osx
