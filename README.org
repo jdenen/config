@@ -32,6 +32,20 @@ To configure the machine using this file, run:
 
     source ~/.sdkman/bin/sdkman-init.sh
 
+    function git_toplevel {
+        topdir=$(git rev-parse --show-toplevel 2>/dev/null)
+        if [[ ! -z $topdir ]]; then
+            echo "($(basename $topdir)) "
+        else
+            echo ""
+        fi
+    }
+
+    function my_prompt {
+        export PS1="\$(git_toplevel)\W \\$\[$(tput sgr0)\] "
+    }
+
+    export PROMPT_COMMAND="my_prompt"
     export PATH=$PATH:~/bin:~/code/team-configs/bin
     export KUBECONFIG=~/.kube/kubeconfig
   #+END_SRC
