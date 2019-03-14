@@ -24,6 +24,7 @@ To configure the machine using this file, run:
     alias m=minikube
     alias tf=terraform
     alias ls='ls -alF'
+    alias kp=kube-prompt
     alias m-start='minikube start --memory 12288'
 
     source /usr/local/etc/profile.d/z.sh
