@@ -25,13 +25,9 @@ To configure the machine using this file, run:
     alias tf=terraform
     alias ls='ls -alF'
     alias kp=kube-prompt
-    alias m-start='minikube start --memory 12288'
 
-    source /usr/local/etc/profile.d/z.sh
     source $HOME/.asdf/asdf.sh
     source $HOME/.asdf/completions/asdf.bash
-
-    source ~/.sdkman/bin/sdkman-init.sh
 
     function git_toplevel {
         topdir=$(git rev-parse --show-toplevel 2>/dev/null)
@@ -93,10 +89,8 @@ To configure the machine using this file, run:
    #+BEGIN_SRC emacs-lisp
      (defun save-if-buffer-name ()
        (when buffer-file-name (save-buffer)))
-
      (add-hook 'window-configuration-change-hook 'save-if-buffer-name)
      (add-hook 'focus-out-hook (lambda () (evil-write-all nil)))
-
      (defadvice evil-window-left (before evil-window-left-now activate) (save-if-buffer-name))
      (defadvice evil-window-right (before evil-window-right-now activate) (save-if-buffer-name))
      (defadvice evil-window-up (before evil-window-up-now activate) (save-if-buffer-name))
@@ -126,19 +120,9 @@ To configure the machine using this file, run:
    I'm experimenting with =lsp-mode= and =elixir_ls=.
    #+NAME: elixir-ls
    #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :commands lsp
-       :ensure t
-       :diminish lsp-mode
-       :hook
-       (elixir-mode . lsp)
-       :init
-       (add-to-list 'exec-path "/Users/johnson/.elixir/release"))
-
      (defun my/elixir-format ()
        (when (eq major-mode 'elixir-mode)
          (elixir-format)))
-
      (add-hook 'before-save-hook 'my/elixir-format)
    #+END_SRC
 ** mastodon
@@ -384,13 +368,12 @@ To configure the machine using this file, run:
          copy-as-format
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
-         (elixir :packages (not alchemist))
+         elixir
          emacs-lisp
          evil-commentary
          git
          groovy
          helm
-         lsp
          markdown
          (org :packages (not orgit org-present org-pomodoro org-plus-contrib) :variables org-enable-reveal-js-support t)
          osx
@@ -791,25 +774,13 @@ To configure the machine using this file, run:
     Put your configuration code here, except for variables that should be set
     before packages are loaded."
       <<user_info>>
-
       <<misc>>
-
       <<autosave>>
-
       <<chrome>>
-
-      <<mastodon>>
-
       <<mix-keys>>
-
       <<mix-new>>
-
-      <<elixir-ls>>
-
       <<org_agenda>>
-
       <<org_babel>>
-
       <<org_capture>>
       )
 
@@ -827,7 +798,7 @@ To configure the machine using this file, run:
      ;; If there is more than one, they won't work right.
      '(package-selected-packages
        (quote
-        (yasnippet-snippets yapfify yaml-mode unfill smeargle ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements pbcopy package-lint ox-reveal osx-trash osx-dictionary orgit org-projectile org-category-capture org-mime org-download org-brain ob-elixir mwim mmm-mode minitest markdown-toc markdown-mode magit-gitflow live-py-mode launchctl insert-shebang importmagic epc ctable concurrent deferred hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck-mix flycheck-credo flycheck-bashate flycheck evil-org evil-magit magit git-commit ghub let-alist with-editor evil-commentary el-mock dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat cython-mode copy-as-format company-statistics company-shell company-anaconda chruby cask package-build shut-up bundler inf-ruby auto-yasnippet yasnippet atomic-chrome websocket anaconda-mode pythonic ample-theme alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file neotree nameless move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+        (yasnippet-snippets yapfify yaml-mode unfill smeargle ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements pbcopy package-lint ox-reveal osx-trash osx-dictionary orgit org-projectile org-category-capture org-mime org-download org-brain ob-elixir mwim mmm-mode minitest markdown-toc markdown-mode magit-gitflow live-py-mode launchctl insert-shebang importmagic epc ctable concurrent deferred hy-mode htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck-mix flycheck-credo flycheck-bashate flycheck evil-org evil-magit magit git-commit ghub let-alist with-editor evil-commentary el-mock dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat cython-mode copy-as-format company-statistics company-shell company-anaconda chruby cask package-build shut-up bundler inf-ruby auto-yasnippet yasnippet atomic-chrome websocket anaconda-mode pythonic ample-theme alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file neotree nameless move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
     (custom-set-faces
      ;; custom-set-faces was added by Custom.
      ;; If you edit it by hand, you could mess it up, so be careful.
