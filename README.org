@@ -189,79 +189,24 @@ To configure the machine using this file, run:
               ("d" "Deadline" entry
                (file+olp+datetree "~/Notes/thoughts.org")
                (file "~/.emacs.d/deadline.orgcaptmpl"))
-              ("j" "Jira")
-              ("jc" "Card" entry
+              ("n" "Note" entry
                (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/jira.orgcaptmpl"))
-              ("jg" "Grooming" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/groom.orgcaptmpl"))))
+               (file "~/.emacs.d/note.orgcaptmpl"))))
     #+END_SRC
 **** Templates
      Quickly capture a todo:
      #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-       * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format " [#%s]" priority))) %^{Summary} %^g
+       * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
      #+END_SRC
      Quickly capture a deadline:
      #+BEGIN_SRC text :tangle ~/.emacs.d/deadline.orgcaptmpl
        * %^{Summary} %^g
          DEADLINE: %^{Deadline}t
      #+END_SRC
-     Capture a single Jira card:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/jira.orgcaptmpl
-       * TODO [#C] %^{Summary} :oasis:jira:%^g
-        :PROPERTIES:
-        :Type: %^{Type|Story|Spike|Epic}
-        :Epic:
-        :Size:
-        :END:
-       ** Acceptance criteria
-         - %?
-       ** Technical notes
-     #+END_SRC
-     Capture a grooming session:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/groom.orgcaptmpl
-       * TODO [#A] %^{Epic} grooming :oasis:groom:
-       ** %^{Card summary}
-         :PROPERTIES:
-         :Type: %^{Type|Story|Spike}
-         :Epic: %\1
-         :Size:
-         :END:
-       *** Acceptance criteria
-          - %?
-       ** Title
-         :PROPERTIES:
-         :Type:
-         :Epic: %\1
-         :Size:
-         :END:
-       *** Acceptance criteria
-          -
-       ** Title
-         :PROPERTIES:
-         :Type:
-         :Epic: %\1
-         :Size:
-         :END:
-       *** Acceptance criteria
-          -
-       ** Title
-         :PROPERTIES:
-         :Type:
-         :Epic: %\1
-         :Size:
-         :END:
-       *** Acceptance criteria
-          -
-       ** Title
-         :PROPERTIES:
-         :Type:
-         :Epic: %\1
-         :Size:
-         :END:
-       *** Acceptance criteria
-          -
+     Quickly capture a note:
+     #+BEGIN_SRC text :tangle ~/.emacs.d/note.orgcaptmpl
+       * %^{Summary} %^g
+       ** %?
      #+END_SRC
 *** rss
     #+BEGIN_SRC org :tangle ~/.rss.org
