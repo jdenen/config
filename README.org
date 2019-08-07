@@ -276,6 +276,8 @@ To configure the machine using this file, run:
       **** https://elixirstatus.com/rss
       *** Emacs                                                                :el:
       **** http://planet.emacsen.org/atom.xml
+      *** GitHub                                                              :oss:
+      **** https://github.com/jdenen.private.atom?token=ABDURTZ2KXFPRP7WARDIEW53J6UVA
     #+END_SRC
 ** packages
    Install some non-layered packages.
