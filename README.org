@@ -292,6 +292,7 @@ To configure the machine using this file, run:
          docker
          (elfeed :variables rmh-elfeed-org-files (list "~/.rss.org"))
          elixir
+         erlang
          emacs-lisp
          evil-commentary
          git
