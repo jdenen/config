@@ -107,7 +107,7 @@ This literate configuration file sets up a machine for Elixir development. Use
      git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
      cd ~/.emacs.d
      git checkout develop
-     mkdir -p private/my-elixir
+     mkdir -p private/my-elixir private/my-org
    #+END_SRC
 
 ** elixir
@@ -212,74 +212,93 @@ This literate configuration file sets up a machine for Elixir development. Use
        "da" 'my-elixir/dialyze-project
        "du" 'my-elixir/dialyze-umbrella)
    #+END_SRC
-** org
-*** agenda
-    #+NAME: org_agenda
-    #+BEGIN_SRC emacs-lisp
+* org
+  I heavily rely on =org-mode= to live my life.
+
+  The =org-agenda= is how I interface with =org=. I have a very specific agenda screen
+  that breaks TODOs down into my preferred categories and shows my upcoming
+  appointments/deadlines/iterations/etc.
+
+  #+NAME: org-agenda-ui
+  #+BEGIN_SRC emacs-lisp
+    (setq org-agenda-start-with-log-mode t
+          org-agenda-include-diary       t
+          org-agenda-use-time-grid       t
+          org-agenda-time-grid           '((daily today required-time)
+                                           (800 1200 1600 2000) " ....." "----"))
+
+    (setq org-agenda-custom-commands
+          '(("c" "Custom"
+             ((tags-todo "oss/!TODO" ((org-agenda-overriding-header "Open source:")))
+              (tags-todo "work/!TODO" ((org-agenda-overriding-header "Work:")))
+              (agenda "" ((org-agenda-span 'week)
+                          (org-agenda-overriding-header " ")
+                          (org-agenda-skip-deadline-if-done t)
+                          (org-deadline-warning-days 7)))
+              (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
+  #+END_SRC
+
+  I track my life in a single =.org= file. The last bit of configuration ensures I'm
+  using the right file.
+
+  #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/packages.el :noweb yes
+    (defconst my-org-packages
+      '((org :location built-in)
+        (org-agenda :location built-in)))
+
+    (defun my-org/post-init-org ()
       (require 'org-habit)
-      (defun org-agenda-and-todos ()
-        "Show `org-agenda' with a list of TODOs."
-        (interactive)
-        (org-agenda nil "c"))
-      (spacemacs/set-leader-keys "aoa" 'org-agenda-and-todos)
-      (setq org-agenda-start-with-log-mode     t
-            org-agenda-use-time-grid           t
-            org-agenda-include-diary           t
-            diary-file                         "~/Notes/appointments"
-            org-agenda-time-grid               '((daily today required-time)
-                                                 (800 1200 1600 2000) " ....." "----")
-            org-agenda-files                   '("~/Notes/thoughts.org"))
-      (setq org-agenda-custom-commands
-            '(("c" "Custom"
-               ((tags-todo "oasis|pillar/!TODO" ((org-agenda-overriding-header "Work:")))
-                (tags-todo "-oasis-pillar/!TODO" ((org-agenda-overriding-header "Not Work:")))
-                (agenda "" ((org-agenda-span 'week)
-                            (org-agenda-overriding-header " ")
-                            (org-agenda-skip-deadline-if-done t)
-                            (org-deadline-warning-days 7)))
-                (tags-todo "/!BLKG" ((org-agenda-overriding-header "Ice box:")))))))
-    #+END_SRC
-*** babel
-    #+NAME: org_babel
-    #+BEGIN_SRC emacs-lisp
-      (org-babel-do-load-languages
-       'org-babel-load-languages '((shell . t)
-                                   (emacs-lisp . t)
-                                   (conf . t)))
-    #+END_SRC
-*** capture
-    #+NAME: org_capture
-    #+BEGIN_SRC emacs-lisp
-      (setq org-log-done   'time
-            org-log-refile 'time
-            org-lowest-priority ?F
+      (setq diary-file           "~/Notes/appointments"
+            org-agenda-files     '("~/Notes/thoughts.org")
+            org-log-done         'time
+            org-log-refile       'time
+            org-lowest-priority  ?F
             org-default-priority ?F
-            org-todo-keywords
-            '((sequence "TODO(t)" "|" "DONE(d)" "CNCL(c)")
-              (sequence "BKLG(b)" "|"))
-            org-capture-templates
-            '(("c" "Quick capture" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/reminder.orgcaptmpl"))
-              ("d" "Deadline" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/deadline.orgcaptmpl"))
-              ("n" "Note" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/note.orgcaptmpl"))))
-    #+END_SRC
-**** Templates
-     Quickly capture a todo:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-       * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
-     #+END_SRC
-     Quickly capture a deadline:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/deadline.orgcaptmpl
-       * %^{Summary} %^g
-         DEADLINE: %^{Deadline}t
-     #+END_SRC
-     Quickly capture a note:
-     #+BEGIN_SRC text :tangle ~/.emacs.d/note.orgcaptmpl
-       * %^{Summary} %^g
-       ** %?
-     #+END_SRC
+            org-todo-keywords    '((sequence "TODO(t)" "|" "DONE(d)" "CNCL(c)")
+                                   (sequence "BKLG(b)" "|"))))
+
+    (defun my-org/post-init-org-agenda ()
+      <<org-agenda-ui>>)
+  #+END_SRC
+
+  I want my specific =org-agenda= UI configuration to be easily accessible. This creates
+  a function to access my agenda setup and binds it to =SPC a o a=.
+
+  #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/funcs.el
+    (defun my-org/agenda ()
+      (interactive)
+      (org-agenda nil "c"))
+  #+END_SRC
+
+  #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/keybindings.el
+    (spacemacs/set-leader-keys "aoa" 'my-org/agenda)
+  #+END_SRC
+* capture
+  #+NAME: org_capture
+  #+BEGIN_SRC emacs-lisp
+    (setq org-capture-templates
+          '(("c" "Quick capture" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/reminder.orgcaptmpl"))
+            ("d" "Deadline" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/deadline.orgcaptmpl"))
+            ("n" "Note" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/note.orgcaptmpl"))))
+  #+END_SRC
+** Templates
+   Quickly capture a todo:
+   #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
+     * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
+   #+END_SRC
+   Quickly capture a deadline:
+   #+BEGIN_SRC text :tangle ~/.emacs.d/deadline.orgcaptmpl
+     * %^{Summary} %^g
+       DEADLINE: %^{Deadline}t
+   #+END_SRC
+   Quickly capture a note:
+   #+BEGIN_SRC text :tangle ~/.emacs.d/note.orgcaptmpl
+     * %^{Summary} %^g
+     ** %?
+   #+END_SRC
