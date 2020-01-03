@@ -4,7 +4,7 @@
 #+PROPERTY: header-args :export none :results silent
 
 This literate configuration file sets up a machine for Elixir development. Use
-=(org-babel-tangle)= in this file in Emacs to propogate its configuration.
+=(org-babel-tangle)= in this file in Emacs to propagate its configuration.
 
 * asdf
   I use =asdf= to configure Erlang and Elixir versions. Versions can be specified both globally
@@ -110,11 +110,10 @@ This literate configuration file sets up a machine for Elixir development. Use
      mkdir -p private/my-elixir private/my-org
    #+END_SRC
 
-   My .spacemacs changes can be found in this [[file:.spacemacs][repo]]. They're required to configure =elixir=,
-   =lsp=, and my custom layers.
+   My [[file:.spacemacs][.spacemacs]] changes are required to configure =elixir=, =lsp=, and custom layers.
 
-   To use, link it to =$HOME/.spacemacs=. Any future changes will be incorporated once pulled
-   from GitHub.
+   It should be linked to =$HOME/.spacemacs= so any future changes will be incorporated
+   automatically once they're pulled from GitHub.
 
    #+BEGIN_SRC sh :export none
      ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
@@ -148,7 +147,7 @@ This literate configuration file sets up a machine for Elixir development. Use
 
    The =lsp= layer adds a ton of keybindings and options, but most of them aren't
    supported by the Elixir implementation. The layer also hides its buffer formatting
-   function behind an otherwise-useless prefix key. I would prefer that prefix (===)
+   function behind an otherwise-useless prefix key. I would prefer that prefix (=\==)
    run the formatter.
 
    #+NAME: lsp-kbd
@@ -171,7 +170,7 @@ This literate configuration file sets up a machine for Elixir development. Use
    #+END_SRC
 
    The rest of the my Elixir layer's =packages.el= file configures =exunit.el=, making unit
-   tests easy to run. Test functions are hidden behind the =t= prefix. Use =SPC m t= or =, t=
+   tests easy to run. Test functions are hidden behind the =t= prefix. Use =SPC m t= or =\, t=
    to access them.
 
    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/packages.el :noweb yes
@@ -197,7 +196,7 @@ This literate configuration file sets up a machine for Elixir development. Use
          <<lsp-ignore>>))
    #+END_SRC
 
-   I'm a big fan in =dialyzer=. Here are some functions to run it and present its output
+   I'm a big fan of =dialyzer=. These functions to run dialyzer and present its output
    in the same way =exunit= does.
 
    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/funcs.el
@@ -225,7 +224,7 @@ This literate configuration file sets up a machine for Elixir development. Use
 * org
   I heavily rely on =org-mode= to live my life.
 
-  The =org-agenda= is how I interface with =org=. I have a very specific agenda screen
+  =org-agenda= is how I interface with =org=. I have a very specific agenda screen
   that breaks TODOs down into my preferred categories and shows my upcoming
   appointments/deadlines/iterations/etc.
 
