@@ -244,6 +244,7 @@ This literate configuration file sets up a machine for Elixir development. Use
                           (org-agenda-overriding-header " ")
                           (org-agenda-skip-deadline-if-done t)
                           (org-deadline-warning-days 7)))
+              (tags-todo "-oss-work/!TODO" ((org-agenda-overriding-header "Other:")))
               (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
   #+END_SRC
 
