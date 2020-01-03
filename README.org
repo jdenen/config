@@ -110,6 +110,16 @@ This literate configuration file sets up a machine for Elixir development. Use
      mkdir -p private/my-elixir private/my-org
    #+END_SRC
 
+   My .spacemacs changes can be found in this [[file:.spacemacs][repo]]. They're required to configure =elixir=,
+   =lsp=, and my custom layers.
+
+   To use, link it to =$HOME/.spacemacs=. Any future changes will be incorporated once pulled
+   from GitHub.
+
+   #+BEGIN_SRC sh :export none
+     ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
+   #+END_SRC
+
 ** elixir
    This file does NOT install Erlang/Elixir. Manually run these commands to do so:
 
