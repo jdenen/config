@@ -238,6 +238,44 @@ This literate configuration file sets up a machine for Elixir development. Use
               (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
   #+END_SRC
 
+  I capture TODOs, thoughts, appointments, etc with =org-capture=.
+
+  #+NAME: org-captures
+  #+BEGIN_SRC emacs-lisp
+    (setq org-capture-templates
+          '(("c" "Quick capture" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/private/reminder.orgcaptmpl"))
+            ("d" "Deadline" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/private/deadline.orgcaptmpl"))
+            ("n" "Note" entry
+             (file+olp+datetree "~/Notes/thoughts.org")
+             (file "~/.emacs.d/private/note.orgcaptmpl"))))
+  #+END_SRC
+
+  The first template is to capture something quickly. I name the thought, give it priority
+  and some tags. I'll usually come back to it later for triage.
+
+  #+BEGIN_SRC text :tangle ~/.emacs.d/private/reminder.orgcaptmpl
+    * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
+  #+END_SRC
+
+  The second template is for capturing TODOs with deadlines.
+
+  #+BEGIN_SRC text :tangle ~/.emacs.d/private/deadline.orgcaptmpl
+    * %^{Summary} %^g
+      DEADLINE: %^{Deadline}t
+  #+END_SRC
+
+  The last template is to capture a note that will not be acted upon. It's for reference
+  or it's something I'll want to find later.
+
+  #+BEGIN_SRC text :tangle ~/.emacs.d/private/note.orgcaptmpl
+    * %^{Summary} %^g
+      %?
+  #+END_SRC
+
   I track my life in a single =.org= file. The last bit of configuration ensures I'm
   using the right file.
 
@@ -258,7 +296,8 @@ This literate configuration file sets up a machine for Elixir development. Use
                                    (sequence "BKLG(b)" "|"))))
 
     (defun my-org/post-init-org-agenda ()
-      <<org-agenda-ui>>)
+      <<org-agenda-ui>>
+      <<org-captures>>)
   #+END_SRC
 
   I want my specific =org-agenda= UI configuration to be easily accessible. This creates
@@ -273,32 +312,3 @@ This literate configuration file sets up a machine for Elixir development. Use
   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/keybindings.el
     (spacemacs/set-leader-keys "aoa" 'my-org/agenda)
   #+END_SRC
-* capture
-  #+NAME: org_capture
-  #+BEGIN_SRC emacs-lisp
-    (setq org-capture-templates
-          '(("c" "Quick capture" entry
-             (file+olp+datetree "~/Notes/thoughts.org")
-             (file "~/.emacs.d/reminder.orgcaptmpl"))
-            ("d" "Deadline" entry
-             (file+olp+datetree "~/Notes/thoughts.org")
-             (file "~/.emacs.d/deadline.orgcaptmpl"))
-            ("n" "Note" entry
-             (file+olp+datetree "~/Notes/thoughts.org")
-             (file "~/.emacs.d/note.orgcaptmpl"))))
-  #+END_SRC
-** Templates
-   Quickly capture a todo:
-   #+BEGIN_SRC text :tangle ~/.emacs.d/reminder.orgcaptmpl
-     * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
-   #+END_SRC
-   Quickly capture a deadline:
-   #+BEGIN_SRC text :tangle ~/.emacs.d/deadline.orgcaptmpl
-     * %^{Summary} %^g
-       DEADLINE: %^{Deadline}t
-   #+END_SRC
-   Quickly capture a note:
-   #+BEGIN_SRC text :tangle ~/.emacs.d/note.orgcaptmpl
-     * %^{Summary} %^g
-     ** %?
-   #+END_SRC
