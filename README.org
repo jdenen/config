@@ -6,16 +6,17 @@
 This literate configuration file sets up a machine for Elixir development. Use
 =(org-babel-tangle)= in this file in Emacs to propogate its configuration.
 
-This file does not install software that it configures. You must install
-=asdf=, =erlang=, =elixir=, =elixir-ls=, =docker=, =kubectl=, etc.
-
-This configuration does NOT install Spacemacs, and you should switch to the =develop=
-branch when using it. I run on =develop= and can't say whether this will
-work or not on =master=.
-
 * asdf
   I use =asdf= to configure Erlang and Elixir versions. Versions can be specified both globally
   and on a per-project basis.
+
+  This file does NOT install =asdf=. Manually run these commands to do so:
+
+  #+BEGIN_SRC sh :export none
+    git clone https://github.com/asdf-vm/asdf ~/.asdf
+    cd ~/.asdf
+    git checkout "$(git describe --abbrev=0 --tags)"
+  #+END_SRC
 
   =asdf= requires this to be added to =.bashrc=:
 
@@ -99,7 +100,29 @@ work or not on =master=.
    I'm trying to keep my =~/.spacemacs= file very vanilla. Most of my Emacs configuration
    is in custom layers. This results in fewer =.spacemacs= diffs and should make Spacemacs
    updates easier.
+
+   This file does NOT install Spacemacs. Manually run these commands to do so:
+
+   #+BEGIN_SRC sh :export none
+     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+     cd ~/.emacs.d
+     git checkout develop
+     mkdir -p private/my-elixir
+   #+END_SRC
+
 ** elixir
+   This file does NOT install Erlang/Elixir. Manually run these commands to do so:
+
+   #+BEGIN_SRC sh :export none
+     asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+     asdf install erlang 22.2
+     asdf global erlang 22.2
+
+     asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+     asdf install elixir 1.9.4
+     asdf global elixir 1.9.4
+   #+END_SRC
+
    My =.spacemacs= configures =elixir-mode= to use =lsp= as its backend.
 
    This configuration file does NOT install elixir-ls and expects it to be installed
