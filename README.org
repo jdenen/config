@@ -1,29 +1,33 @@
-#+TITLE: config
-#+AUTHOR: Johnson Denen
-#+BABEL: :cache yes
-#+PROPERTY: header-args :export none :results silent
+* config
 
-My dotfiles for working with Elixir
+  My dotfiles for working with Elixir
 
-* Usage
+** Usage
 
-  This repo is a collection of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
+   This repo is a collection of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
 
-  Open each =.org= file in Emacs and use ~M-x org-babel-tangle~ to provision
-  your machine with its configuration.
+   Open each =.org= file in Emacs and use ~M-x org-babel-tangle~ to provision
+   your machine with its configuration.
 
-  *WARNING*: ~M-x org-babel-tangle~ will overwrite any existing configuration
-  files already present on your machine. In the case of =bash.org=, this would
-  rewrite your =~/.bash_profile= and =~/.bashrc= files.
+   *WARNING*: ~M-x org-babel-tangle~ will overwrite any existing configuration
+   files already present on your machine. In the case of =bash.org=, this would
+   rewrite your =~/.bash_profile= and =~/.bashrc= files.
 
-* Install
+** Install
 
-  Link [[file:.spacemacs][.spacemacs]] to your =$HOME= directory to include any future changes
-  automatically.
+   Link [[file:.spacemacs][.spacemacs]] to your =$HOME= directory to include any future changes
+   automatically.
 
-  #+BEGIN_SRC sh :export none
-    ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
-  #+END_SRC
+   #+BEGIN_SRC sh :export none
+     ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
+   #+END_SRC
 
-  Some of the =.org= files include =Installation= sections. These manual, one-time
-  steps are suggested to ensure everything just works (TM).
+   Running =emacs.org= will create layers under =~/.emacs.d/private=, but some
+   subdirectories *MUST* be added manually:
+
+   #+BEGIN_SRC sh :export none
+     mkdir -p ~/.emacs.d/private/my-{elixir,org}
+   #+END_SRC
+
+   Some of the =.org= files include =Installation= sections. These manual, one-time
+   steps are suggested to ensure everything just works (TM).
