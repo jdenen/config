@@ -4,7 +4,7 @@
 
 ** Usage
 
-   This repo is a collection of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
+   This repo is a [[file:config/][collection]] of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
 
    Open each =.org= file in Emacs and use ~M-x org-babel-tangle~ to provision
    your machine with its configuration.
