@@ -6,19 +6,19 @@
 
    This repo is a [[file:config/][collection]] of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
 
-   Open each =.org= file in Emacs and use ~M-x org-babel-tangle~ to provision
-   your machine with its configuration.
+   Open each =config/*.org= file in Emacs and use ~M-x org-babel-tangle~ to
+   provision your machine with its configuration.
 
    *WARNING*: ~M-x org-babel-tangle~ will overwrite any existing configuration
-   files already present on your machine. In the case of =bash.org=, this would
-   rewrite your =~/.bash_profile= and =~/.bashrc= files.
+   files already present on your machine. If you were to execute
+   =config/bash.org=, for example, you would rewrite your =~/.bash_profile= and
+   =~/.bashrc= files.
 
 *** Spacemacs
 
-    I'm trying to keep my =~/.spacemacs= file very vanilla.
-    Most of my Emacs configuration will be done in custom layers. This results in
-    fewer =.spacemacs= changes and /should/ make updating Spacemacs easier in the
-    future.
+    I'm trying to keep my =~/.spacemacs= file very vanilla. Most of my Emacs
+    configuration will be done in custom layers. This results in fewer =.spacemacs=
+    changes and /should/ make updating Spacemacs easier in the future.
 
     The dotfile configures Spacemacs for hybrid navigation and searching with
     =ag=. It also configures my layers, both standard and custom.
@@ -32,12 +32,12 @@
      ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
    #+END_SRC
 
-   Running =emacs.org= will create layers under =~/.emacs.d/private=, but some
-   subdirectories *MUST* be added manually:
+   Executing =config/{elixir,org}.org= will create layers under =~/.emacs.d/private=,
+   but some subdirectories *MUST* be added manually:
 
    #+BEGIN_SRC sh :export none
      mkdir -p ~/.emacs.d/private/my-{elixir,org}
    #+END_SRC
 
-   Some of the =.org= files include =Installation= sections. These manual, one-time
-   steps are suggested to ensure everything just works (TM).
+   A few of the =config/*.org= files include =Installation= sections. These manual,
+   one-time steps are suggested to ensure everything just works (TM).
