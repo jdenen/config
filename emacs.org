@@ -165,7 +165,7 @@
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-use-time-grid t
             org-agenda-time-grid     '((daily today required-time)
-                                       (800 1200 1600 2000) " ....." "----"))
+                                       (800 1200 1600 2000) " ..." ""))
 
       (setq org-agenda-custom-commands
             '(("c" "Custom"
