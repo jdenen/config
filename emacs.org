@@ -4,17 +4,8 @@
   fewer =.spacemacs= changes and /should/ make updating Spacemacs easier in the
   future.
 
-  My [[file:.spacemacs][.spacemacs]] configures Spacemacs for hybrid navigation and searching with =ag=.
-  It also configures my layers, both standard and custom.
-
-  It should be linked to =$HOME/.spacemacs= so any future changes will be incorporated
-  automatically once they're pulled from GitHub.
-
-  This is NOT yet part of executing =emacs.org=. Run these steps manually:
-
-  #+BEGIN_SRC sh :export none
-    ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
-  #+END_SRC
+  My [[file:.spacemacs][.spacemacs]] file configures Spacemacs for hybrid navigation and searching with
+  =ag=. It also configures my layers, both standard and custom.
 
 ** Layers
    The following configuration blocks will be added to files in

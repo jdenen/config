@@ -1,10 +1,29 @@
-#+TITLE: Machine configuration
+#+TITLE: config
 #+AUTHOR: Johnson Denen
 #+BABEL: :cache yes
 #+PROPERTY: header-args :export none :results silent
 
-This is my setup for Elixir development. I use =asdf= to manage Erlang/Elixir
-versions, =git= for version control, and Emacs for just about everything else.
+My dotfiles for working with Elixir
 
-Each piece is configured in its own =.org= file. Each =.org= file is a literate
-config file and can be executed with =(org-babel-tangle)= in Emacs.
+* Usage
+
+  This repo is a collection of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
+
+  Open each =.org= file in Emacs and use ~M-x org-babel-tangle~ to provision
+  your machine with its configuration.
+
+  *WARNING*: ~M-x org-babel-tangle~ will overwrite any existing configuration
+  files already present on your machine. In the case of =bash.org=, this would
+  rewrite your =~/.bash_profile= and =~/.bashrc= files.
+
+* Install
+
+  Link [[file:.spacemacs][.spacemacs]] to your =$HOME= directory to include any future changes
+  automatically.
+
+  #+BEGIN_SRC sh :export none
+    ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
+  #+END_SRC
+
+  Some of the =.org= files include =Installation= sections. These manual, one-time
+  steps are suggested to ensure everything just works (TM).
