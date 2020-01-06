@@ -1,0 +1,48 @@
+* git
+
+  Because much of my work is on macOS, I must ignore =.DS_Store= files
+  everywhere. And because I use LSP with Emacs, a =.elixir_ls/= directory
+  is added to all of my projects. To make life easy, this is written to
+  =~/.gitignore=:
+
+  #+BEGIN_SRC conf :tangle ~/.gitignore
+    .DS_Store
+    .elixir_ls/
+  #+END_SRC
+
+  Most of my Git configuration is self-explanatory. I prefer =--graph=
+  on all diffs, as I think it's easier to read. I want to add =--prune=
+  to =git fetch= and =--rebase= to =git pull= by default.
+
+  And I turn on rerere:
+
+  #+BEGIN_SRC conf :tangle ~/.gitconfig
+    [user]
+    name = Johnson Denen
+    email = johnson.denen@gmail.com
+
+    [alias]
+    log = log --graph
+
+    [color]
+    ui = true
+
+    [diff]
+    renames = true
+
+    [fetch]
+    prune = true
+
+    [pull]
+    rebase = true
+
+    [push]
+    default = simple
+    ff = false
+
+    [rerere]
+    enabled = true
+
+    [core]
+    excludesfile = ~/.gitignore
+  #+END_SRC

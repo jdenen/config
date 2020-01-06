@@ -1,0 +1,38 @@
+* asdf
+
+  =asdf= is how I manage Erlang/Elixir versions locally and enforce them
+  on my projects. Versions can be specified both globally and on a
+  per-project basis.
+
+  Executing this =.org= file will write the following to =~/.tool-versions=:
+
+  #+BEGIN_SRC conf :tangle ~/.tool-versions
+    erlang 22.2
+    elixir 1.9.4
+  #+END_SRC
+
+** Installation
+
+   This file does NOT install =asdf=. Run these commands to do so yourself:
+
+   #+BEGIN_SRC sh :export none
+     git clone https://github.com/asdf-vm/asdf ~/.asdf
+     cd ~/.asdf
+     git checkout "$(git describe --abbrev=0 --tags)"
+
+     echo -e "\nsource $HOME/.asdf/asdf.sh" >> ~/.bashrc
+     echo -e "\nsource $HOME/.asdf/completions/asdf.bash" >> ~/.bashrc
+   #+END_SRC
+
+   It also does not install my Erlang/Elixir versions. Run these commands
+   to do so:
+
+   #+BEGIN_SRC sh :export none
+     asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+     asdf install erlang 22.2
+     asdf global erlang 22.2
+
+     asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+     asdf install elixir 1.9.4
+     asdf global elixir 1.9.4
+   #+END_SRC

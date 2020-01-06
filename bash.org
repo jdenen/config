@@ -1,0 +1,26 @@
+* bash
+
+  I often -- but not always -- work on macOS, so =~/.bash_profile= sources
+  =~/.bashrc= after executing this =.org= file.
+
+  #+BEGIN_SRC sh :tangle ~/.bash_profile
+    #!/usr/bin/env bash
+    source $HOME/.bashrc
+  #+END_SRC
+
+  Because most of my work is done in Emacs, I try to keep my =.bashrc= simple:
+
+  #+BEGIN_SRC sh :tangle ~/.bashrc :noweb yes
+    #!/usr/bin/env bash
+
+    alias k=kubectl
+    alias m=minikube
+    alias tf=terraform
+    alias ls='ls -alF'
+
+    export KUBECONFIG=~/.kube/kubeconfig
+    export PATH=$PATH:~/bin
+
+    source $HOME/.asdf/asdf.sh
+    source $HOME/.asdf/completions/asdf.bash
+  #+END_SRC
