@@ -1,3 +1,6 @@
+#+BABEL: :cache yes
+#+PROPERTY: header-args :export none :results silent
+
 * emacs
   I use [[https://github.com/syl20bnr/spacemacs][Spacemacs]], and I'm trying to keep my =~/.spacemacs= file very vanilla.
   Most of my Emacs configuration will be done in custom layers. This results in
@@ -7,239 +10,231 @@
   My [[file:.spacemacs][.spacemacs]] file configures Spacemacs for hybrid navigation and searching with
   =ag=. It also configures my layers, both standard and custom.
 
-** Layers
-   The following configuration blocks will be added to files in
-   =~/.emacs.d/private= as part of my custom layers. But you must create their
-   subdirectories manually:
+** Elixir
 
-   #+BEGIN_SRC sh :export none
-     mkdir -p ~/.emacs.d/private/my-{elixir,org}
+   Spacemacs is configured to use the default Elixir layer with LSP as its
+   backend, but the LSP layer has a few shortcomings for Elixir development.
+
+   First and foremost, watching files for changes doesn't work well with Elixir
+   out of the box. This is because =lsp-mode= watches subdirectories you would
+   expect to be ignored in an Elixir project. Those subdirectories need to be
+   appended to the =lsp-mode= defaults:
+
+   #+NAME: lsp-ignore
+   #+BEGIN_SRC emacs-lisp
+     (customize-push-and-save 'lsp-file-watch-ignored
+                              '("deps/" "_build/" ".elixir_ls/"))
    #+END_SRC
 
-*** Elixir
+   Next, the LSP layer adds a bunch of keybindings that aren't supported by
+   =elixir-ls=. The layer also hides its buffer formatting function behind an
+   otherwise-useless prefix key. The following block removes the unimplemented
+   function keybindings and moves buffer formatting to ~SPC m =~:
 
-    Spacemacs is configured to use the default Elixir layer with LSP as its
-    backend, but the LSP layer has a few shortcomings for Elixir development.
+   #+NAME: lsp-kbd
+   #+BEGIN_SRC emacs-lisp
+     (with-eval-after-load 'elixir-mode
+       (define-key spacemacs-lsp-mode-map (kbd "a") nil)
+       (define-key spacemacs-lsp-mode-map (kbd "r") nil)
+       (define-key spacemacs-lsp-mode-map (kbd "x") nil)
+       (define-key spacemacs-lsp-mode-map (kbd "=") 'lsp-format-buffer))
+   #+END_SRC
 
-    First and foremost, watching files for changes doesn't work well with Elixir
-    out of the box. This is because =lsp-mode= watches subdirectories you would
-    expect to be ignored in an Elixir project. Those subdirectories need to be
-    appended to the =lsp-mode= defaults:
+   The last issue with Elixir and LSP is running tests. With =alchemist=, it's
+   really easy to run tests inside of Emacs. I want that to be the case with
+   the LSP backend too, so my layer adds =exunit.el=. Like alchemist, test execution
+   functions can be found under the ~SPC m t~ prefix key.
 
-    #+NAME: lsp-ignore
-    #+BEGIN_SRC emacs-lisp
-      (customize-push-and-save 'lsp-file-watch-ignored
-                               '("deps/" "_build/" ".elixir_ls/"))
-    #+END_SRC
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/packages.el :noweb yes
+     (defconst my-elixir-packages
+       '(exunit lsp-mode))
 
-    Next, the LSP layer adds a bunch of keybindings that aren't supported by
-    =elixir-ls=. The layer also hides its buffer formatting function behind an
-    otherwise-useless prefix key. The following block removes the unimplemented
-    function keybindings and moves buffer formatting to ~SPC m =~:
+     (defun my-elixir/init-exunit ()
+       (use-package exunit
+         :config
+         (exec-path-from-shell-initialize)
+         (spacemacs/declare-prefix-for-mode 'elixir-mode "mt" "test" "mix test")
+         (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+           "ta" 'exunit-verify-all
+           "tb" 'exunit-verify
+           "tt" 'exunit-verify-single
+           "tr" 'exunit-rerun
+           "tu" 'exunit-verify-all-in-umbrella)))
 
-    #+NAME: lsp-kbd
-    #+BEGIN_SRC emacs-lisp
-      (with-eval-after-load 'elixir-mode
-        (define-key spacemacs-lsp-mode-map (kbd "a") nil)
-        (define-key spacemacs-lsp-mode-map (kbd "r") nil)
-        (define-key spacemacs-lsp-mode-map (kbd "x") nil)
-        (define-key spacemacs-lsp-mode-map (kbd "=") 'lsp-format-buffer))
-    #+END_SRC
+     (defun my-elixir/post-init-lsp-mode ()
+       (use-package lsp-mode
+         :config
+         <<lsp-kbd>>
+         <<lsp-ignore>>))
+   #+END_SRC
 
-    The last issue with Elixir and LSP is running tests. With =alchemist=, it's
-    really easy to run tests inside of Emacs. I want that to be the case with
-    the LSP backend too, so my layer adds =exunit.el=. Like alchemist, test execution
-    functions can be found under the ~SPC m t~ prefix key.
+   I'm a dialyzer fan and user. Running ~mix dialyzer~ inside Emacs should be
+   as easy as running ~mix test~ is with =exunit.el=. The next block adds some
+   functions to make it so. Dialyzer's output should look like =exunit.el= output, too.
 
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/packages.el :noweb yes
-      (defconst my-elixir-packages
-        '(exunit lsp-mode))
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/funcs.el
+     (defun my-elixir/mix-do (task directory)
+       (let ((default-directory directory))
+         (exunit-do-compile (s-join " " `("mix" ,task)))))
 
-      (defun my-elixir/init-exunit ()
-        (use-package exunit
-          :config
-          (exec-path-from-shell-initialize)
-          (spacemacs/declare-prefix-for-mode 'elixir-mode "mt" "test" "mix test")
-          (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
-            "ta" 'exunit-verify-all
-            "tb" 'exunit-verify
-            "tt" 'exunit-verify-single
-            "tr" 'exunit-rerun
-            "tu" 'exunit-verify-all-in-umbrella)))
+     (defun my-elixir/dialyze-project ()
+       (interactive)
+       (my-elixir/mix-do "dialyzer" (exunit-project-root)))
 
-      (defun my-elixir/post-init-lsp-mode ()
-        (use-package lsp-mode
-          :config
-          <<lsp-kbd>>
-          <<lsp-ignore>>))
-    #+END_SRC
+     (defun my-elixir/dialyze-umbrella ()
+       (interactive)
+       (my-elixir/mix-do "dialyzer" (exunit-umbrella-project-root)))
+   #+END_SRC
 
-    I'm a dialyzer fan and user. Running ~mix dialyzer~ inside Emacs should be
-    as easy as running ~mix test~ is with =exunit.el=. The next block adds some
-    functions to make it so. Dialyzer's output should look like =exunit.el= output, too.
+   Dialyzer functions can be executed under the ~SPC m d~ prefix:
 
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/funcs.el
-      (defun my-elixir/mix-do (task directory)
-        (let ((default-directory directory))
-          (exunit-do-compile (s-join " " `("mix" ,task)))))
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/keybindings.el
+     (spacemacs/declare-prefix-for-mode 'elixir-mode "md" "dialyzer" "mix dialyzer")
+     (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+       "da" 'my-elixir/dialyze-project
+       "du" 'my-elixir/dialyze-umbrella)
+   #+END_SRC
 
-      (defun my-elixir/dialyze-project ()
-        (interactive)
-        (my-elixir/mix-do "dialyzer" (exunit-project-root)))
+** Org
 
-      (defun my-elixir/dialyze-umbrella ()
-        (interactive)
-        (my-elixir/mix-do "dialyzer" (exunit-umbrella-project-root)))
-    #+END_SRC
+   If you can't tell from this repository, I use =org-mode=. I'm an everyday
+   user of =org-capture= and =org-agenda=.
 
-    Dialyzer functions can be executed under the ~SPC m d~ prefix:
+   Capture templates let me get my thoughts/ideas/TODOs into =org-mode= quickly.
+   I use a few templates, like the following. It lets me get something down fast
+   and triage it later.
 
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/keybindings.el
-      (spacemacs/declare-prefix-for-mode 'elixir-mode "md" "dialyzer" "mix dialyzer")
-      (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
-        "da" 'my-elixir/dialyze-project
-        "du" 'my-elixir/dialyze-umbrella)
-    #+END_SRC
+   #+BEGIN_SRC text :tangle ~/.emacs.d/private/reminder.orgcaptmpl
+     * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
+   #+END_SRC
 
-*** Org
+   I often capture TODOs with a deadline. This is my template for it.
 
-    If you can't tell from this repository, I use =org-mode=. I'm an everyday
-    user of =org-capture= and =org-agenda=.
+   #+BEGIN_SRC text :tangle ~/.emacs.d/private/deadline.orgcaptmpl
+     * %^{Summary} %^g
+       DEADLINE: %^{Deadline}t
+   #+END_SRC
 
-    Capture templates let me get my thoughts/ideas/TODOs into =org-mode= quickly.
-    I use a few templates, like the following. It lets me get something down fast
-    and triage it later.
+   My last template is to capture a note that won't be acted upon. It's for
+   reference.
 
-    #+BEGIN_SRC text :tangle ~/.emacs.d/private/reminder.orgcaptmpl
-      * TODO %(let* ((input (upcase (read-string "Priority [A-E]: "))) (priority (string-trim input))) (if (string-empty-p priority) "" (format "[#%s]" priority))) %^{Summary} %^g
-    #+END_SRC
+   #+BEGIN_SRC text :tangle ~/.emacs.d/private/note.orgcaptmpl
+     * %^{Summary} %^g
+       %?
+   #+END_SRC
 
-    I often capture TODOs with a deadline. This is my template for it.
+   Access to these templates should be easy. Spacemacs' =org= layer adds
+   ~SPC a o c~ for capture. This configuration block makes the templates immediately
+   available to that keybinding.
 
-    #+BEGIN_SRC text :tangle ~/.emacs.d/private/deadline.orgcaptmpl
-      * %^{Summary} %^g
-        DEADLINE: %^{Deadline}t
-    #+END_SRC
+   #+NAME: org-capture-keys
+   #+BEGIN_SRC emacs-lisp
+     (setq org-capture-templates
+           '(("c" "Quick capture" entry
+              (file+olp+datetree "~/Notes/thoughts.org")
+              (file "~/.emacs.d/private/reminder.orgcaptmpl"))
+             ("d" "Deadline" entry
+              (file+olp+datetree "~/Notes/thoughts.org")
+              (file "~/.emacs.d/private/deadline.orgcaptmpl"))
+             ("n" "Note" entry
+              (file+olp+datetree "~/Notes/thoughts.org")
+              (file "~/.emacs.d/private/note.orgcaptmpl"))))
+   #+END_SRC
 
-    My last template is to capture a note that won't be acted upon. It's for
-    reference.
+   Capturing notes and TODOs would be useless without an interface to make
+   sense of them all. I use a custom =org-agenda= to do just that. It breaks TODOs
+   and backlog items into categories based on tags and priorities, while
+   displaying my day in a time grid.
 
-    #+BEGIN_SRC text :tangle ~/.emacs.d/private/note.orgcaptmpl
-      * %^{Summary} %^g
-        %?
-    #+END_SRC
+   #+NAME: org-agenda-ui
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-use-time-grid t
+           org-agenda-time-grid     '((daily today required-time)
+                                      (800 1200 1600 2000) " ..." ""))
 
-    Access to these templates should be easy. Spacemacs' =org= layer adds
-    ~SPC a o c~ for capture. This configuration block makes the templates immediately
-    available to that keybinding.
+     (setq org-agenda-custom-commands
+           '(("c" "Custom"
+              ((tags-todo "oss/!TODO" ((org-agenda-overriding-header "Open source:")))
+               (tags-todo "work/!TODO" ((org-agenda-overriding-header "Work:")))
+               (agenda "" ((org-agenda-span 'week)
+                           (org-agenda-overriding-header " ")
+                           (org-agenda-skip-deadline-if-done t)
+                           (org-deadline-warning-days 7)))
+               (tags-todo "-oss-work/!TODO" ((org-agenda-overriding-header "Other:")))
+               (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
+   #+END_SRC
 
-    #+NAME: org-capture-keys
-    #+BEGIN_SRC emacs-lisp
-      (setq org-capture-templates
-            '(("c" "Quick capture" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/private/reminder.orgcaptmpl"))
-              ("d" "Deadline" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/private/deadline.orgcaptmpl"))
-              ("n" "Note" entry
-               (file+olp+datetree "~/Notes/thoughts.org")
-               (file "~/.emacs.d/private/note.orgcaptmpl"))))
-    #+END_SRC
+   My =org-agenda= UI should be easily accessible, but the default keybinding
+   requires traversing an extra menu. The following function takes me directly to
+   my preferred agenda view:
 
-    Capturing notes and TODOs would be useless without an interface to make
-    sense of them all. I use a custom =org-agenda= to do just that. It breaks TODOs
-    and backlog items into categories based on tags and priorities, while
-    displaying my day in a time grid.
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/funcs.el
+     (defun my-org/agenda ()
+       (interactive)
+       (org-agenda nil "c"))
+   #+END_SRC
 
-    #+NAME: org-agenda-ui
-    #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-use-time-grid t
-            org-agenda-time-grid     '((daily today required-time)
-                                       (800 1200 1600 2000) " ..." ""))
+   The =my-org/agenda= function is bound globally to ~SPC a o a~:
 
-      (setq org-agenda-custom-commands
-            '(("c" "Custom"
-               ((tags-todo "oss/!TODO" ((org-agenda-overriding-header "Open source:")))
-                (tags-todo "work/!TODO" ((org-agenda-overriding-header "Work:")))
-                (agenda "" ((org-agenda-span 'week)
-                            (org-agenda-overriding-header " ")
-                            (org-agenda-skip-deadline-if-done t)
-                            (org-deadline-warning-days 7)))
-                (tags-todo "-oss-work/!TODO" ((org-agenda-overriding-header "Other:")))
-                (tags-todo "/!BKLG" ((org-agenda-overriding-header "Ice box:")))))))
-    #+END_SRC
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/keybindings.el
+     (spacemacs/set-leader-keys "aoa" 'my-org/agenda)
+   #+END_SRC
 
-    My =org-agenda= UI should be easily accessible, but the default keybinding
-    requires traversing an extra menu. The following function takes me directly to
-    my preferred agenda view:
+   My action items are tracked in =org-mode= with statuses of =TODO= or =BKLG=.
+   They can be marked complete with statuses of =DONE= or =CNCL=. When an item is
+   completed, a timestamp is logged.
 
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/funcs.el
-      (defun my-org/agenda ()
-        (interactive)
-        (org-agenda nil "c"))
-    #+END_SRC
+   Action items can have priorities of =A= through =F=. =F= is the lowest (and
+   default) priority.
 
-    The =my-org/agenda= function is bound globally to ~SPC a o a~:
+   #+NAME: org-todo-config
+   #+BEGIN_SRC emacs-lisp
+     (setq org-log-done         'time
+           org-log-refile       'time
+           org-lowest-priority  ?F
+           org-default-priority ?F
+           org-todo-keywords    '((sequence "TODO(t)" "|" "DONE(d)" "CNCL(c)")
+                                  (sequence "BKLG(b)" "|")))
+   #+END_SRC
 
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/keybindings.el
-      (spacemacs/set-leader-keys "aoa" 'my-org/agenda)
-    #+END_SRC
+   I use a diary file to track significant dates and one-off events. Birthdays,
+   anniversaries, and doctor appointments all go into a diary file. And of course,
+   that diary file should show up in my =org-agenda=:
 
-    My action items are tracked in =org-mode= with statuses of =TODO= or =BKLG=.
-    They can be marked complete with statuses of =DONE= or =CNCL=. When an item is
-    completed, a timestamp is logged.
+   #+NAME: org-agenda-diary
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-include-diary t
+           diary-file               "~/Notes/appointments")
+   #+END_SRC
 
-    Action items can have priorities of =A= through =F=. =F= is the lowest (and
-    default) priority.
+   By default, =org-agenda= doesn't show the day's events. I prefer it show
+   when I mark an action item as =DONE=, for example.
 
-    #+NAME: org-todo-config
-    #+BEGIN_SRC emacs-lisp
-      (setq org-log-done         'time
-            org-log-refile       'time
-            org-lowest-priority  ?F
-            org-default-priority ?F
-            org-todo-keywords    '((sequence "TODO(t)" "|" "DONE(d)" "CNCL(c)")
-                                   (sequence "BKLG(b)" "|")))
-    #+END_SRC
+   #+NAME: org-agenda-show-log
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-start-with-log-mode t)
+   #+END_SRC
 
-    I use a diary file to track significant dates and one-off events. Birthdays,
-    anniversaries, and doctor appointments all go into a diary file. And of course,
-    that diary file should show up in my =org-agenda=:
+   The final bit of =org= configuration opts into =org-habit= and points
+   everything at my =.org= file.
 
-    #+NAME: org-agenda-diary
-    #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-include-diary t
-            diary-file               "~/Notes/appointments")
-    #+END_SRC
+   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/packages.el :noweb yes
+     (defconst my-org-packages
+       '((org :location built-in)
+         (org-agenda :location built-in)))
 
-    By default, =org-agenda= doesn't show the day's events. I prefer it show
-    when I mark an action item as =DONE=, for example.
+     (defun my-org/post-init-org ()
+       (require 'org-habit)
+       (setq org-agenda-files '("~/Notes/thoughts.org")))
 
-    #+NAME: org-agenda-show-log
-    #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-start-with-log-mode t)
-    #+END_SRC
+     (defun my-org/post-init-org-agenda ()
+       <<org-agenda-ui>>
+       <<org-agenda-show-log>>
+       <<org-agenda-diary>>
+       <<org-todo-config>>
+       <<org-capture-keys>>)
+   #+END_SRC
 
-    The final bit of =org= configuration opts into =org-habit= and points
-    everything at my =.org= file.
-
-    #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-org/packages.el :noweb yes
-      (defconst my-org-packages
-        '((org :location built-in)
-          (org-agenda :location built-in)))
-
-      (defun my-org/post-init-org ()
-        (require 'org-habit)
-        (setq org-agenda-files '("~/Notes/thoughts.org")))
-
-      (defun my-org/post-init-org-agenda ()
-        <<org-agenda-ui>>
-        <<org-agenda-show-log>>
-        <<org-agenda-diary>>
-        <<org-todo-config>>
-        <<org-capture-keys>>)
-    #+END_SRC
 
 ** Installation
    This file does NOT install Spacemacs or elixir-ls. Run these commands

@@ -1,3 +1,6 @@
+#+BABEL: :cache yes
+#+PROPERTY: header-args :export none :results silent
+
 * git
 
   Because much of my work is on macOS, I must ignore =.DS_Store= files

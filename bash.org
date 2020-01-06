@@ -1,3 +1,6 @@
+#+BABEL: :cache yes
+#+PROPERTY: header-args :export none :results silent
+
 * bash
 
   I often -- but not always -- work on macOS, so =~/.bash_profile= sources

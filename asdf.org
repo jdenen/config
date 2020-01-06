@@ -1,3 +1,6 @@
+#+BABEL: :cache yes
+#+PROPERTY: header-args :export none :results silent
+
 * asdf
 
   =asdf= is how I manage Erlang/Elixir versions locally and enforce them
