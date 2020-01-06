@@ -2,14 +2,6 @@
 #+PROPERTY: header-args :export none :results silent
 
 * emacs
-  I use [[https://github.com/syl20bnr/spacemacs][Spacemacs]], and I'm trying to keep my =~/.spacemacs= file very vanilla.
-  Most of my Emacs configuration will be done in custom layers. This results in
-  fewer =.spacemacs= changes and /should/ make updating Spacemacs easier in the
-  future.
-
-  My [[file:.spacemacs][.spacemacs]] file configures Spacemacs for hybrid navigation and searching with
-  =ag=. It also configures my layers, both standard and custom.
-
 ** Elixir
 
    Spacemacs is configured to use the default Elixir layer with LSP as its

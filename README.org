@@ -13,6 +13,16 @@
    files already present on your machine. In the case of =bash.org=, this would
    rewrite your =~/.bash_profile= and =~/.bashrc= files.
 
+*** Spacemacs
+
+    I'm trying to keep my =~/.spacemacs= file very vanilla.
+    Most of my Emacs configuration will be done in custom layers. This results in
+    fewer =.spacemacs= changes and /should/ make updating Spacemacs easier in the
+    future.
+
+    The dotfile configures Spacemacs for hybrid navigation and searching with
+    =ag=. It also configures my layers, both standard and custom.
+
 ** Install
 
    Link [[file:.spacemacs][.spacemacs]] to your =$HOME= directory to include any future changes
