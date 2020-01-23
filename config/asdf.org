@@ -10,7 +10,7 @@
   Executing this =.org= file will write the following to =~/.tool-versions=:
 
   #+BEGIN_SRC conf :tangle ~/.tool-versions
-    erlang 22.2
+    erlang 22.2.1
     elixir 1.9.4
   #+END_SRC
 
