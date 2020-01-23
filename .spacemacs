@@ -55,6 +55,7 @@ This function should only modify configuration layer settings."
              elixir-ls-path "~/.elixirls/release")
      osx
      vinegar
+     yaml
      my-elixir
      my-org
      )
