@@ -46,6 +46,8 @@
         (exec-path-from-shell-initialize)
         (spacemacs/declare-prefix-for-mode 'elixir-mode "mt" "test" "mix test")
         (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+          "t <tab>" 'exunit-toggle-file-and-test
+          "t <backtab>" 'exunit-toggle-file-and-test-other-window
           "ta" 'exunit-verify-all
           "tb" 'exunit-verify
           "tt" 'exunit-verify-single
