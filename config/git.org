@@ -11,6 +11,7 @@
   #+BEGIN_SRC conf :tangle ~/.gitignore
     .DS_Store
     .elixir_ls/
+    TODOs.org
   #+END_SRC
 
   Most of my Git configuration is self-explanatory. I prefer =--graph=
