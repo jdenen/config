@@ -14,7 +14,7 @@
   #+NAME: lsp-ignore
   #+BEGIN_SRC emacs-lisp
     (customize-push-and-save 'lsp-file-watch-ignored
-                             '("deps/" "_build/" ".elixir_ls/"))
+                             '("deps/" "_build/" ".elixir_ls/" "helm/" ".github/" ".dialyzer/"))
   #+END_SRC
 
   Next, the LSP layer adds a bunch of keybindings that aren't supported by
