@@ -20,6 +20,7 @@
     alias m=minikube
     alias tf=terraform
     alias ls='ls -alF'
+    alias cf='aws cloudformation'
 
     export KUBECONFIG=~/.kube/kubeconfig
     export PATH=$PATH:~/bin
