@@ -7,11 +7,19 @@
   on my projects. Versions can be specified both globally and on a
   per-project basis.
 
+  I'm also a big Kubernetes user. =asdf= manages the tools I use to interact
+  with Kuberenetes.
+
   Executing this =.org= file will write the following to =~/.tool-versions=:
 
   #+BEGIN_SRC conf :tangle ~/.tool-versions
     erlang 22.2.1
     elixir 1.9.4
+
+    kubectl 1.17.2
+    kubectx 0.8.0
+    k9s 0.12.0
+    helm 3.0.3
   #+END_SRC
 
 ** Installation
