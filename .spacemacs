@@ -32,15 +32,19 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
-     ;; ----------------------------------------------------------------
+   '(;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     docker
+     (elixir :variables
+             elixir-backend 'lsp
+             elixir-ls-path "~/.elixirls/release")
      emacs-lisp
+     erlang
      git
      helm
      (lsp :variables
@@ -48,16 +52,12 @@ This function should only modify configuration layer settings."
           lsp-ui-doc-enable nil
           lsp-ui-sideline-enable nil)
      markdown
+     my-elixir
+     my-org
      org
-     treemacs
-     (elixir :variables
-             elixir-backend 'lsp
-             elixir-ls-path "~/.elixirls/release")
      osx
      vinegar
      yaml
-     my-elixir
-     my-org
      )
 
    ;; List of additional packages that will be installed without being
@@ -480,4 +480,21 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(lsp-file-watch-ignored
+   (quote
+    (".dialyzer/" ".github/" "helm/" ".elixir_ls/" "_build/" "deps/" "[/\\\\]\\.git$" "[/\\\\]\\.hg$" "[/\\\\]\\.bzr$" "[/\\\\]_darcs$" "[/\\\\]\\.svn$" "[/\\\\]_FOSSIL_$" "[/\\\\]\\.idea$" "[/\\\\]\\.ensime_cache$" "[/\\\\]\\.eunit$" "[/\\\\]node_modules$" "[/\\\\]\\.fslckout$" "[/\\\\]\\.tox$" "[/\\\\]\\.stack-work$" "[/\\\\]\\.bloop$" "[/\\\\]\\.metals$" "[/\\\\]target$" "[/\\\\]\\.deps$" "[/\\\\]build-aux$" "[/\\\\]autom4te.cache$" "[/\\\\]\\.reference$")))
+ '(package-selected-packages
+   (quote
+    (helm-gtags ggtags erlang counsel-gtags counsel swiper ivy dockerfile-mode docker tablist json-mode docker-tramp json-snatcher json-reformat yaml-mode fill-column-indicator yasnippet-snippets ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill treemacs-projectile treemacs-magit treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el password-generator paradox overseer osx-trash osx-dictionary osx-clipboard orgit org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-bullets org-brain open-junk-file ob-elixir nameless mwim move-text mmm-mode markdown-toc magit-svn magit-gitflow macrostep lsp-ui lsp-treemacs lorem-ipsum link-hint launchctl indent-guide hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy font-lock+ flycheck-pos-tip flycheck-package flycheck-mix flycheck-elsa flycheck-credo flx-ido fancy-battery eyebrowse exunit expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs company-statistics company-lsp column-enforce-mode clean-aindent-mode centered-cursor-mode auto-yasnippet auto-highlight-symbol auto-compile ample-theme alchemist aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
