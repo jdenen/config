@@ -38,7 +38,7 @@
 
   #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/private/my-elixir/packages.el :noweb yes
     (defconst my-elixir-packages
-      '(exunit lsp-mode popwin))
+      '(exunit lsp-mode))
 
     (defun my-elixir/init-exunit ()
       (use-package exunit
@@ -59,12 +59,6 @@
         :config
         <<lsp-kbd>>
         <<lsp-ignore>>))
-
-    (defun my-elixir/post-init-popwin ()
-      (use-package popwin
-        :config
-        (push '("*exunit-compilation*" :dedicated t :position right :stick t)
-              popwin:special-display-config)))
   #+END_SRC
 
   I'm a dialyzer fan and user. Running ~mix dialyzer~ inside Emacs should be
