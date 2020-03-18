@@ -28,7 +28,7 @@
       (define-key spacemacs-lsp-mode-map (kbd "a") nil)
       (define-key spacemacs-lsp-mode-map (kbd "r") nil)
       (define-key spacemacs-lsp-mode-map (kbd "x") nil)
-      (define-key spacemacs-lsp-mode-map (kbd "=") 'lsp-format-buffer))
+      (define-key spacemacs-lsp-mode-map (kbd "=") 'my-elixir/format-buffer))
   #+END_SRC
 
   The last issue with Elixir and LSP is running tests. With =alchemist=, it's
