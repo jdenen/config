@@ -91,6 +91,7 @@
       (interactive)
       (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root)))
             (default-directory (exunit-project-root)))
+        (save-buffer)
         (shell-command (s-join " " `("mix" "format" ,file-to-format)))))
 
     (defun my-elixir/dialyze-umbrella ()
