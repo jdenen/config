@@ -74,9 +74,27 @@
       (interactive)
       (my-elixir/mix-do "dialyzer" (exunit-project-root)))
 
+    (defun my-elixir/format-buffer ()
+      (interactive)
+      (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root)))
+            (default-directory (exunit-project-root)))
+        (shell-command (s-join " " `("mix" "format" ,file-to-format)))))
+
     (defun my-elixir/dialyze-umbrella ()
       (interactive)
       (my-elixir/mix-do "dialyzer" (exunit-umbrella-project-root)))
+
+    (defun my-elixir/test-unit ()
+      (interactive)
+      (my-elixir/mix-do "test.unit" (exunit-umbrella-project-root)))
+
+    (defun my-elixir/test-int ()
+      (interactive)
+      (my-elixir/mix-do "test.int" (exunit-umbrella-project-root)))
+
+    (defun my-elixir/test-e2e ()
+      (interactive)
+      (my-elixir/mix-do "test.e2e" (exunit-umbrella-project-root)))
   #+END_SRC
 
   Dialyzer functions can be executed under the ~SPC m d~ prefix:
