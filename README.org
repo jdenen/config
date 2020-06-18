@@ -3,41 +3,11 @@
   My dotfiles for working with Elixir
 
 ** Usage
+Run =git clone git@github.com:jdenen/config $HOME/.doom.d= and install [[https://github.com/hlissner/doom-emacs][doom]].
 
-   This repo is a [[file:config/][collection]] of [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files.
+There are also [[file:config/][some]] [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files to setup a machine outside of Emacs. Open
+each =config/*.org= file and run =org-babel-tangle=.
 
-   Open each =config/*.org= file in Emacs and use ~M-x org-babel-tangle~ to
-   provision your machine with its configuration.
-
-   *WARNING*: ~M-x org-babel-tangle~ will overwrite any existing configuration
-   files already present on your machine. If you were to execute
-   =config/bash.org=, for example, you would rewrite your =~/.bash_profile= and
-   =~/.bashrc= files.
-
-*** Spacemacs
-
-    I'm trying to keep my =~/.spacemacs= file very vanilla. Most of my Emacs
-    configuration will be done in custom layers. This results in fewer =.spacemacs=
-    changes and /should/ make updating Spacemacs easier in the future.
-
-    The dotfile configures Spacemacs for hybrid navigation and searching with
-    =ag=. It also configures my layers, both standard and custom.
-
-** Install
-
-   Link [[file:.spacemacs][.spacemacs]] to your =$HOME= directory to include any future changes
-   automatically.
-
-   #+BEGIN_SRC sh :export none
-     ln -s "$(git rev-parse --show-toplevel)/.spacemacs" ~/.spacemacs
-   #+END_SRC
-
-   Executing =config/{elixir,org}.org= will create layers under =~/.emacs.d/private=,
-   but some subdirectories *MUST* be added manually:
-
-   #+BEGIN_SRC sh :export none
-     mkdir -p ~/.emacs.d/private/my-{elixir,org}
-   #+END_SRC
-
-   A few of the =config/*.org= files include =Installation= sections. These manual,
-   one-time steps are suggested to ensure everything just works (TM).
+*WARNING*: =org-babel-tangle= will overwrite any existing configuration files already present on your
+machine. If you were to execute =config/bash.org=, for example, you would rewrite your
+=~/.bash_profile= and =~/.bashrc= files.
