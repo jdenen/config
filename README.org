@@ -1,7 +1,13 @@
-* config
+* Emacs <> Elixir
 
-Emacs + Elixir configuration
+macOS machine configuration
 
+** oh-my-zsh
+Install =oh-my-zsh=:
+
+#+BEGIN_SRC :export none :eval query
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#+END_SRC
 ** brew
 Install Homebrew:
 
@@ -61,7 +67,6 @@ Ignore some files by default via =~/.gitignore=:
 .elixir_ls/
 TODOs.org
 #+END_SRC
-
 ** asdf
 Install =asdf=:
 
