@@ -45,9 +45,15 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
+
+;;; Code:
+
 (package! exunit)
 (package! ample-theme)
 (package! lsp-elixir)
+(package! mix)
 (package! magit-status-advice
   :recipe (:host github
            :repo "jdenen/magit-status-advice"))
+
+;;; packages.el ends here

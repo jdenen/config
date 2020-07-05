@@ -68,36 +68,27 @@
         lsp-ui-sideline-code-actions-prefix "!!"
         company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix))
 
-;; Some functions to make working with projects and umbrellas easier.
-(defun mix/do (task directory)
-  "Run mix TASK in DIRECTORY."
-  (let ((default-directory directory))
-    (exunit-do-compile (s-join " " `("mix" ,task)))))
+(use-package! exunit
+  :hook elixir-mode)
 
-(defun mix/credo (&optional all-p)
-  "Run credo. Optionally set ALL-P to run credo strictly."
-  (interactive)
-  (mix/do (format "credo %s" (if all-p "-A" "-a")) (exunit-project-root)))
+(use-package! lsp-elixir
+  :hook (elixir-mode . lsp))
 
-(defun mix/credo-umbrella (&optional all-p)
-  "Run credo against the umbrella project. Optionally set ALL-P to run credo strictly."
-  (interactive)
-  (mix/do (format "credo %s" (if all-p "-A" "-a")) (exunit-umbrella-project-root)))
+(use-package! mix
+  :hook (elixir-mode . mix-minor-mode)
+  :config (setq compilation-scroll-output t))
 
-(defun mix/deps.get ()
-  "Run deps.get."
+(defun mix/mix ()
+  "Run mix command in project or sub-project."
   (interactive)
-  (mix/do "deps.get" (exunit-project-root)))
+  (let ((mix-start-in-umbrella nil))
+    (mix-execute-task)))
 
-(defun mix/dialyzer ()
-  "Run dialyzer."
+(defun mix/mix-umbrella ()
+  "Run mix command in umbrella project."
   (interactive)
-  (mix/do "dialyzer" (exunit-project-root)))
-
-(defun mix/dialyzer-umbrella ()
-  "Run dialyzer against the umbrella project."
-  (interactive)
-  (mix/do "dialyzer" (exunit-umbrella-project-root)))
+  (let ((mix-start-in-umbrella t))
+    (mix-execute-task)))
 
 (defun mix/format-buffer ()
   "Format current buffer."
@@ -105,28 +96,8 @@
   (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root)))
         (default-directory (exunit-project-root)))
     (save-buffer)
-    (shell-command (s-join " " `("mix" "format" ,file-to-format)))))
-
-(defun mix/test.unit ()
-  "Run test.unit alias."
-  (interactive)
-  (mix/do "test.unit" (exunit-umbrella-project-root)))
-
-(defun mix/test.int ()
-  "Run test.int alias."
-  (interactive)
-  (mix/do "test.int" (exunit-umbrella-project-root)))
-
-(defun mix/test.e2e ()
-  "Run test.e2e alias."
-  (interactive)
-  (mix/do "test.e2e" (exunit-umbrella-project-root)))
-
-(use-package! exunit
-  :hook elixir-mode)
-
-(use-package! lsp-elixir
-  :hook (elixir-mode . lsp))
+    (shell-command (s-join " " `("mix" "format" ,file-to-format)))
+    (find-file file-to-format)))
 
 ;; Elixir specific commands can be run from an `elixir-mode' buffer
 ;; with the leading keys of `SPC m'.
@@ -134,20 +105,10 @@
       :localleader
       ;; SPC m ...
       :desc "Format buffer" :ne "=" #'mix/format-buffer
-      :desc "Get dependencies" :ne "!" #'mix/deps.get
-      ;; SPC m a ...
-      :prefix ("a" . "Aliases")
-      :desc "Unit tests" :ne "u" #'mix/test.unit
-      :desc "Integration tests" :ne "i" #'mix/test.int
-      :desc "E2E tests" :ne "e" #'mix/test.e2e
-      ;; SPC m d ...
-      :prefix ("d" . "Dialyzer")
-      :desc "App" :ne "a" #'mix/dialyzer
-      :desc "Umbrella" :ne "u" #'mix/dialyzer-umbrella
+      :desc "Run mix in project" :ne "m" #'mix/mix
+      :desc "Run mix in umbrella" :ne "u" #'mix/mix-umbrella
       ;; SPC m l ...
       :prefix ("l" . "Linting")
-      :desc "App" :ne "a" #'mix/credo
-      :desc "Umbrella" :ne "u" #'mix/credo-umbrella
       :desc "Next error" :ne "n" #'flycheck-next-error
       :desc "Previous error" :ne "N" #'flycheck-previous-error
       :desc "List errors" :ne "l" #'flycheck-list-errors
