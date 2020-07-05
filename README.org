@@ -18,7 +18,14 @@ Install Homebrew:
 Install command line tools:
 
 #+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls
+brew install git ripgrep fd gnutls sd
+#+END_SRC
+** user
+Replace my name and email with your own:
+
+#+BEGIN_SRC sh :export none :eval query
+rg "Johnson Denen" --files-with-matches | xargs sd -s "Johnson Denen" "Your name"
+rg "johnson.denen@gmail.com" --files-with-matches | xargs sd -s "johnson.denen@gmail.com" "Your email"
 #+END_SRC
 ** git
 Install Homebrew's Git:
