@@ -70,30 +70,37 @@
 
 ;; Some functions to make working with projects and umbrellas easier.
 (defun mix/do (task directory)
+  "Run mix TASK in DIRECTORY."
   (let ((default-directory directory))
     (exunit-do-compile (s-join " " `("mix" ,task)))))
 
 (defun mix/credo (&optional all-p)
+  "Run credo. Optionally set ALL-P to run credo strictly."
   (interactive)
   (mix/do (format "credo %s" (if all-p "-A" "-a")) (exunit-project-root)))
 
 (defun mix/credo-umbrella (&optional all-p)
+  "Run credo against the umbrella project. Optionally set ALL-P to run credo strictly."
   (interactive)
   (mix/do (format "credo %s" (if all-p "-A" "-a")) (exunit-umbrella-project-root)))
 
 (defun mix/deps.get ()
+  "Run deps.get."
   (interactive)
   (mix/do "deps.get" (exunit-project-root)))
 
 (defun mix/dialyzer ()
+  "Run dialyzer."
   (interactive)
   (mix/do "dialyzer" (exunit-project-root)))
 
 (defun mix/dialyzer-umbrella ()
+  "Run dialyzer against the umbrella project."
   (interactive)
   (mix/do "dialyzer" (exunit-umbrella-project-root)))
 
 (defun mix/format-buffer ()
+  "Format current buffer."
   (interactive)
   (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root)))
         (default-directory (exunit-project-root)))
@@ -101,14 +108,17 @@
     (shell-command (s-join " " `("mix" "format" ,file-to-format)))))
 
 (defun mix/test.unit ()
+  "Run test.unit alias."
   (interactive)
   (mix/do "test.unit" (exunit-umbrella-project-root)))
 
 (defun mix/test.int ()
+  "Run test.int alias."
   (interactive)
   (mix/do "test.int" (exunit-umbrella-project-root)))
 
 (defun mix/test.e2e ()
+  "Run test.e2e alias."
   (interactive)
   (mix/do "test.e2e" (exunit-umbrella-project-root)))
 
@@ -157,3 +167,5 @@
 ;; magit
 (use-package! magit-status-advice
   :config (magit-status-advice-mode))
+
+;;; config.el ends here
