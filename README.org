@@ -105,12 +105,15 @@ elixir 1.10.3-otp-23
 java openjdk-14.0.1
 #+END_SRC
 ** lsp
-Download and build =elixir-ls=. You may need to install new versions of Erlang/Elixir
-per =~/.elixirls/.tool-versions=.
+Download and build ElixirLS:
 
 #+BEGIN_SRC sh :export none :eval query
 git clone https://github.com/elixir-lsp/elixir-ls ~/.elixirls
 cd ~/.elixirls
+
+asdf install $(rg -N erlang .tool-versions)
+asdf install $(rg -N elixir .tool-versions)
+
 mix do deps.get, compile, elixir_ls.release -o release
 #+END_SRC
 ** emacs
