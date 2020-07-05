@@ -129,4 +129,27 @@
 (use-package! magit-status-advice
   :config (magit-status-advice-mode))
 
+(use-package! auto-highlight-symbol
+  :config
+  (setq ahs-case-fold-search nil
+        ahs-default-range 'ahs-range-whole-buffer
+        ahs-idle-timer 0
+        ahs-idle-interval 0.25))
+
+(defhydra ahs/hydra-menu ()
+  "Hydra for searching and editing symbol under point."
+  ("e" ahs-edit-mode "edit")
+  ("r" ahs-change-range "range")
+  ("n" evil-ex-search-next "next")
+  ("N" evil-ex-search-previous "prev"))
+
+(defun ahs/search ()
+  "Search for symbol under point and enter `auto-highlight-symbol' hydra."
+  (interactive)
+  (auto-highlight-symbol-mode t)
+  (evil-ex-search-word-forward)
+  (ahs/hydra-menu/body))
+
+(map! :desc "Search under point" :m "*" #'ahs/search)
+
 ;;; config.el ends here

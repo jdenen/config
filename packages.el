@@ -48,6 +48,7 @@
 
 ;;; Code:
 
+(package! auto-highlight-symbol)
 (package! exunit)
 (package! ample-theme)
 (package! lsp-elixir)
