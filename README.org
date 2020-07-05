@@ -1,13 +1,144 @@
 * config
 
-  My dotfiles for working with Elixir
+Emacs + Elixir configuration
 
-** Usage
-Run =git clone git@github.com:jdenen/config $HOME/.doom.d= and install [[https://github.com/hlissner/doom-emacs][doom]].
+** brew
+Install Homebrew:
 
-There are also [[file:config/][some]] [[https://thewanderingcoder.com/2015/02/literate-emacs-configuration/][literate]] configuration files to setup a machine outside of Emacs. Open
-each =config/*.org= file and run =org-babel-tangle=.
+#+BEGIN_SRC sh :export none :eval query
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+#+END_SRC
 
-*WARNING*: =org-babel-tangle= will overwrite any existing configuration files already present on your
-machine. If you were to execute =config/bash.org=, for example, you would rewrite your
-=~/.bash_profile= and =~/.bashrc= files.
+Install command line tools:
+
+#+BEGIN_SRC sh :export none :eval query
+brew install git ripgrep fd gnutls
+#+END_SRC
+** git
+Install Homebrew's Git:
+
+#+BEGIN_SRC sh :export none :eval query
+brew install git
+#+END_SRC
+
+Set Git defaults via =~/.gitconfig=:
+
+#+BEGIN_SRC conf :tangle ~/.gitconfig
+[user]
+name = Johnson Denen
+email = johnson.denen@gmail.com
+
+[alias]
+log = log --graph
+
+[color]
+ui = true
+
+[diff]
+renames = true
+
+[fetch]
+prune = true
+
+[pull]
+rebase = true
+
+[push]
+default = simple
+ff = false
+
+[rerere]
+enabled = true
+
+[core]
+excludesfile = ~/.gitignore
+#+END_SRC
+
+Ignore some files by default via =~/.gitignore=:
+
+#+BEGIN_SRC conf :tangle ~/.gitignore
+.DS_Store
+.elixir_ls/
+TODOs.org
+#+END_SRC
+
+** asdf
+Install =asdf=:
+
+#+BEGIN_SRC sh :export none eval: query
+git clone https://github.com/asdf-vm/asdf ~/.asdf
+cd ~/.asdf
+git checkout "$(git describe --abbrev=0 --tags)"
+
+echo -e "\nsource $HOME/.asdf/.asdf.sh" >> ~/.zshrc
+#+END_SRC
+** elixir
+Install build tools, wxWidgets (observer support), and Java (jinterface):
+
+#+BEGIN_SRC sh :export none :eval query
+brew install autoconf wxmac
+asdf plugin add java
+asdf install java openjdk-14.0.1
+#+END_SRC
+
+Install Erlang with doc support:
+
+#+BEGIN_SRC sh :export none :eval query
+export KERL_BUILD_DOCS=yes
+asdf plugin add erlang
+asdf install erlang 23.0.2
+#+END_SRC
+
+Install Elixir:
+
+#+BEGIN_SRC sh :export none :eval query
+asdf plugin add elixir
+asdf install elixir 1.10.3-otp-23
+mix do local.hex --force, local.rebar --force
+#+END_SRC
+
+Set global defaults with =~/.tool-versions=:
+
+#+BEGIN_SRC conf :tangle ~/.tool-versions
+erlang 23.0.2
+elixir 1.10.3-otp-23
+java openjdk-14.0.1
+#+END_SRC
+** lsp
+Download and build =elixir-ls=. You may need to install new versions of Erlang/Elixir
+per =~/.elixirls/.tool-versions=.
+
+#+BEGIN_SRC sh :export none :eval query
+git clone https://github.com/elixir-lsp/elixir-ls ~/.elixirls
+cd ~/.elixirls
+mix do deps.get, compile, elixir_ls.release -o release
+#+END_SRC
+** emacs
+Install Emacs from Homebrew:
+
+#+BEGIN_SRC sh :export none :eval query
+brew tap d12frosted/emacs-plus
+brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon
+#+END_SRC
+** doom
+Download and install =doom=:
+
+#+BEGIN_SRC :export none :eval query
+git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+~/.emacs.d/bin/doom install
+#+END_SRC
+
+Overwrite default configuration with mine:
+
+#+BEGIN_SRC sh :export none :eval query
+rm ~/.doom.d/{config,init,packages}.el
+ln -s "${PWD}/config.el" ~/.doom.d/config.el
+ln -s "${PWD}/init.el" ~/.doom.d/init.el
+ln -s "${PWD}/packages.el" ~/.doom.d/packages.el
+#+END_SRC
+
+Sync =doom= packages and configuration is complete:
+
+#+BEGIN_SRC sh :export none :eval query
+~/.emacs.d/bin/doom sync
+#+END_SRC
