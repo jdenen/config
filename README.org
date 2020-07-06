@@ -75,7 +75,7 @@ Ignore some files by default via =~/.gitignore=:
 #+BEGIN_SRC conf :tangle ~/.gitignore
 .DS_Store
 .elixir_ls/
-TODOs.org
+todo.org
 #+END_SRC
 *** gpg
 Create a GPG key per your requirements and grab your key's fingerprint:
