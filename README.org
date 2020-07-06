@@ -92,12 +92,19 @@ git config --global user.signingkey $YOUR_KEY_FINGERPRINT
 ** asdf
 Install =asdf=:
 
-#+BEGIN_SRC sh :export none eval: query
+#+BEGIN_SRC sh :export none :eval query
 git clone https://github.com/asdf-vm/asdf ~/.asdf
 cd ~/.asdf
 git checkout "$(git describe --abbrev=0 --tags)"
 
 echo -e "\nsource $HOME/.asdf/.asdf.sh" >> ~/.zshrc
+#+END_SRC
+** direnv
+Install =direnv=:
+
+#+BEGIN_SRC sh :export none :eval query
+asdf plugin add direnv
+asdf install direnv 2.21.3
 #+END_SRC
 ** nodejs
 Install NodeJS:
