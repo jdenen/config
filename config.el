@@ -68,6 +68,9 @@
         lsp-ui-sideline-code-actions-prefix "!!"
         company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix))
 
+(use-package! exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
+
 (use-package! exunit
   :hook elixir-mode)
 

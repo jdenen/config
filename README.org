@@ -56,6 +56,9 @@ prune = true
 [pull]
 rebase = true
 
+[commit]
+gpgsign = true
+
 [push]
 default = simple
 ff = false
@@ -73,6 +76,18 @@ Ignore some files by default via =~/.gitignore=:
 .DS_Store
 .elixir_ls/
 TODOs.org
+#+END_SRC
+*** gpg
+Create a GPG key per your requirements and grab your key's fingerprint:
+
+#+BEGIN_SRC sh :export none :eval no
+gpg --list-secret-keys --keyid-format LONG
+#+END_SRC
+
+Add it to Git's user configuration:
+
+#+BEGIN_SRC sh :export none :eval no
+git config --global user.signingkey $YOUR_KEY_FINGERPRINT
 #+END_SRC
 ** asdf
 Install =asdf=:

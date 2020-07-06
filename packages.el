@@ -48,6 +48,7 @@
 
 ;;; Code:
 
+(package! exec-path-from-shell)
 (package! auto-highlight-symbol)
 (package! exunit)
 (package! ample-theme)
