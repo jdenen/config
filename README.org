@@ -145,15 +145,6 @@ asdf plugin add elixir
 asdf install elixir 1.10.3-otp-23
 mix do local.hex --force, local.rebar --force
 #+END_SRC
-
-Set global defaults with =~/.tool-versions=:
-
-#+BEGIN_SRC conf :tangle ~/.tool-versions
-erlang 23.0.2
-elixir 1.10.3-otp-23
-java openjdk-14.0.1
-nodejs 11.15.0
-#+END_SRC
 ** lsp
 Download and build ElixirLS:
 
@@ -194,4 +185,15 @@ Sync =doom= packages and configuration is complete:
 
 #+BEGIN_SRC sh :export none :eval query
 ~/.emacs.d/bin/doom sync
+#+END_SRC
+** versions
+Set global defaults with =~/.tool-versions=:
+
+#+BEGIN_SRC conf :tangle ~/.tool-versions
+erlang 23.0.2
+elixir 1.10.3-otp-23
+java openjdk-14.0.1
+nodejs 11.15.0
+postgres 10.13
+direnv 2.21.3
 #+END_SRC
