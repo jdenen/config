@@ -114,6 +114,13 @@ asdf plugin add nodejs
 bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
 asdf install nodejs 11.15.0
 #+END_SRC
+** postgres
+Install =postgres=, mostly for the =psql= CLI tool:
+
+#+BEGIN_SRC :export none :eval query
+asdf plugin add postgres
+asdf install postgres 10.13
+#+END_SRC
 ** elixir
 Install build tools, wxWidgets (observer support), and Java (jinterface):
 
