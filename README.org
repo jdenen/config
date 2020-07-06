@@ -18,7 +18,7 @@ Install Homebrew:
 Install command line tools:
 
 #+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls sd
+brew install git ripgrep fd gnutls sd gpg
 #+END_SRC
 ** user
 Replace my name and email with your own:
@@ -84,6 +84,14 @@ git checkout "$(git describe --abbrev=0 --tags)"
 
 echo -e "\nsource $HOME/.asdf/.asdf.sh" >> ~/.zshrc
 #+END_SRC
+** nodejs
+Install NodeJS:
+
+#+BEGIN_SRC sh :export none :eval query
+asdf plugin add nodejs
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+asdf install nodejs 11.15.0
+#+END_SRC
 ** elixir
 Install build tools, wxWidgets (observer support), and Java (jinterface):
 
@@ -115,6 +123,7 @@ Set global defaults with =~/.tool-versions=:
 erlang 23.0.2
 elixir 1.10.3-otp-23
 java openjdk-14.0.1
+nodejs 11.15.0
 #+END_SRC
 ** lsp
 Download and build ElixirLS:
