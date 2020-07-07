@@ -18,7 +18,13 @@ Install Homebrew:
 Install command line tools:
 
 #+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls sd gpg
+brew install git ripgrep fd gnutls sd gpg ctop
+#+END_SRC
+
+Install Docker:
+
+#+BEGIN_SRC sh :export none :eval query
+brew cask install docker
 #+END_SRC
 ** user
 Replace my name and email with your own:
