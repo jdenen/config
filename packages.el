@@ -49,6 +49,7 @@
 ;;; Code:
 
 (package! exec-path-from-shell)
+(package! direnv)
 (package! auto-highlight-symbol)
 (package! exunit)
 (package! ample-theme)

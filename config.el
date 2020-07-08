@@ -71,6 +71,11 @@
 (use-package! exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
+(use-package! direnv
+  :config
+  (direnv-mode)
+  (setq direnv-always-show-summary nil))
+
 (use-package! exunit
   :hook elixir-mode)
 
