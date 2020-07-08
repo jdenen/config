@@ -18,7 +18,7 @@ Install Homebrew:
 Install command line tools:
 
 #+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls sd gpg ctop pre-commit
+brew install git ripgrep fd gnutls sd gpg ctop pre-commit pinentry-mac
 #+END_SRC
 
 Install Docker:
@@ -94,6 +94,12 @@ Add it to Git's user configuration:
 
 #+BEGIN_SRC sh :export none :eval no
 git config --global user.signingkey $YOUR_KEY_FINGERPRINT
+#+END_SRC
+
+Use GUI =pinentry= for ease of use with Magit:
+
+#+BEGIN_SRC sh :export ~/.gnupg/gpg-agent.conf
+pinentry-program /usr/local/bin/pinentry-mac
 #+END_SRC
 ** asdf
 Install =asdf=:
