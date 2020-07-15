@@ -2,11 +2,34 @@
 
 macOS machine configuration
 
-** oh-my-zsh
-Install =oh-my-zsh=:
+** antigen
+Install =antigen= for oh-my-zsh bundle management:
 
-#+BEGIN_SRC :export none :eval query
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#+BEGIN_SRC sh :export none :eval query
+curl -L git.io/antigen > ~/antigen.zsh
+#+END_SRC
+** oh-my-zsh
+Write this to =~/.zshrc=:
+
+#+BEGIN_SRC sh :tangle ~/.zshrc :eval no
+source ~/antigen.zsh
+antigen use oh-my-zsh
+
+antigen bundle asdf
+antigen bundle docker
+antigen bundle emacs
+antigen bundle git
+antigen bundle osx
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+antigen theme bureau
+
+antigen apply
+
+eval "$(direnv hook zsh)"
+
+alias ls='ls -aFG'
 #+END_SRC
 ** brew
 Install Homebrew:
