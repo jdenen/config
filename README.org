@@ -41,7 +41,7 @@ Install Homebrew:
 Install command line tools:
 
 #+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls sd gpg ctop pre-commit pinentry-mac
+brew install git ripgrep fd gnutls sd gpg ctop pre-commit pinentry-mac cmake libvterm
 #+END_SRC
 
 Install Docker:
