@@ -37,6 +37,7 @@
 ;;
 ;; The only notable change here is toggling dialyzer off.
 (after! lsp-clients
+  (setq lsp-file-watch-ignored (append lsp-file-watch-ignored '("deps/" "_build/" ".elixir_ls/" "assets/" ".circleci/" "docs/")))
   (lsp-register-client
    (make-lsp-client :new-connection
                     (lsp-stdio-connection
@@ -77,7 +78,7 @@
   (setq direnv-always-show-summary nil))
 
 (use-package! exunit
-  :hook elixir-mode)
+  :hook (elixir-mode . exunit-mode))
 
 (use-package! lsp-elixir
   :hook (elixir-mode . lsp))
