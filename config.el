@@ -131,8 +131,9 @@
       :desc "Toggle file" :ne "<tab>" #'exunit-toggle-file-and-test
       :desc "Toggle file other window" :ne "<backtab>" #'exunit-toggle-file-and-test-other-window)
 
-;; Map general shell execution to `SPC !'
-(map! :leader :desc "Run shell command" :ne "!" #'shell-command)
+(map! :leader
+      :desc "Run shell command" :ne "!" #'shell-command
+      :prefix "w" :ne "C-d" #'ace-delete-window)
 
 ;; magit
 (use-package! magit-status-advice
