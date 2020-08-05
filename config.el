@@ -133,7 +133,8 @@
 
 (map! :leader
       :desc "Run shell command" :ne "!" #'shell-command
-      :prefix "w" :ne "C-d" #'ace-delete-window)
+      :prefix "w" :ne "C-d" #'ace-delete-window
+      :prefix "w" :ne "C-p" #'projectile-find-file-other-window)
 
 ;; magit
 (use-package! magit-status-advice
