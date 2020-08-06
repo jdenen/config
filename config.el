@@ -163,4 +163,15 @@
 
 (map! :desc "Search under point" :m "*" #'ahs/search)
 
+(defun projectile-yank-line-number ()
+  "Copy current line in file to clipboard, relative to project root."
+  (interactive)
+  (let* ((line-no (number-to-string (line-number-at-pos)))
+         (path-from-root (file-relative-name (buffer-file-name) (projectile-project-root)))
+         (from-root-with-line (concat path-from-root ":" line-no)))
+    (kill-new from-root-with-line)
+    (message from-root-with-line)))
+
+(map! :leader :prefix "p" :ne "y" #'projectile-yank-line-number)
+
 ;;; config.el ends here
