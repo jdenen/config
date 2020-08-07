@@ -57,7 +57,9 @@
 ;;
 ;; I keep UI docs on but position them pretty far out of the way.
 (after! lsp-ui
-  (setq lsp-ui-doc-enable t
+  (setq lsp-ui-peek-mode t
+        lsp-ui-peek-always-show t
+        lsp-ui-doc-enable t
         lsp-ui-doc-delay 1.5
         lsp-ui-doc-max-height 20
         lsp-ui-doc-max-width 80
@@ -68,6 +70,10 @@
         lsp-ui-imenu-kind-position 'left
         lsp-ui-sideline-code-actions-prefix "!!"
         company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix))
+
+(map! :prefix "g"
+      :ne "p" #'lsp-ui-peek-find-definitions
+      :ne "P" #'lsp-ui-peek-find-references)
 
 (use-package! exec-path-from-shell
   :init (exec-path-from-shell-initialize))
