@@ -1,0 +1,200 @@
+#+TITLE: Doom Files
+#+STARTUP: inlineimages nofold
+
+From Emacs, write configuration to disk by using =C-c C-c= on the following
+code block.
+
+#+BEGIN_SRC sh :export none :results silent :eval yes
+~/.emacs.d/bin/org-tangle doom.org
+#+END_SRC
+
+You may or may not need to re-sync Doom. =C-c C-c= this block do to so.
+
+#+BEGIN_SRC sh :export none :results silent :eval yes
+~/.emacs.d/bin/doom sync
+#+END_SRC
+
+Execute this bit of Lisp to ensure configuration is reloaded in Doom. Do
+this every time you make a change to =doom.org=.
+
+#+BEGIN_SRC emacs-lisp :export none :results silent :eval yes
+(doom/reload)
+#+END_SRC
+
+** Table of Contents :TOC_3:noexport:
+  - [[#configel][config.el]]
+  - [[#packagesel][packages.el]]
+  - [[#initel][init.el]]
+
+** config.el
+Place your private configuration here. Remember, you do not need to run
+=doom sync= after modifying this file.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el :eval no
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq display-line-numbers-type t
+      doom-font "Hasklig-14"
+      doom-theme 'doom-one
+      org-directory "~/Documents/org/"
+      user-full-name "Johnson Denen"
+      user-mail-address "johnson.denen@gmail.com")
+
+;; package config
+(use-package! exunit
+  :hook (elixir-mode . exunit-mode))
+
+(use-package! lsp-mode
+  :hook (elixir-mode . lsp)
+  :init (setq lsp-elixir-dialyzer-enabled nil
+              lsp-elixir-project-dir ""))
+
+(use-package! mix
+  :hook (elixir-mode . mix-minor-mode)
+  :config (setq compilation-scroll-output t))
+
+;; package hooks
+(after! lsp-clients
+  (let ((ignore-list (append lsp-file-watch-ignored
+                             '("deps/" "_build/" ".elixir_ls/" "assets/" "docs/"))))
+    (setq lsp-file-watch-ignored ignore-list)))
+
+(after! lsp-ui
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-doc-delay 1.5
+        lsp-ui-doc-max-height 20
+        lsp-ui-doc-max-width 80
+        lsp-ui-doc-use-childframe t
+        lsp-ui-doc-position 'top
+        lsp-ui-doc-use-webkit nil
+        lsp-ui-sideline-ignore-duplicate t))
+
+;; functions
+(defun mix/execute-task-umbrella ()
+  "Run mix command in umbrella project."
+  (interactive)
+  (let ((mix-start-in-umbrella t))
+    (mix-execute-task)))
+
+(defun mix/format-buffer ()
+  "Format current buffer. Save before running formatter command."
+  (interactive)
+  (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root))))
+    (save-buffer)
+    (shell-command (s-join " " `("mix" "format" ,file-to-format)))
+    ;; reload file after possible changes
+    (find-file file-to-format)))
+
+(defun projectile-yank-line-number ()
+  "Copy current line in file to clipboard, relative to project root."
+  (interactive)
+  (let* ((line-no (number-to-string (line-number-at-pos)))
+         (path-from-root (file-relative-name (buffer-file-name) (projectile-project-root)))
+         (from-root-with-line (concat path-from-root ":" line-no)))
+    (kill-new from-root-with-line)
+    (message from-root-with-line)))
+
+;; keybindings
+(map! :leader :prefix "p"
+      :ne "y" #'projectile-yank-line-number)
+
+(map! :leader :prefix "w"
+      :ne "C-d" #'ace-delete-window
+      :ne "C-p" #' #'projectile-find-file-other-window)
+
+(map! :mode elixir-mode
+      :localleader
+      :ne "=" #'mix/format-buffer
+      :ne "m" #'mix-execute-task
+      :ne "u" #'mix/execute-task-umbrella
+      :prefix ("t" . "Testing")
+      :ne "<backtab>" #'exunit-toggle-file-and-test-other-window
+      :ne "<tab>" #'exunit-toggle-file-and-test
+      :ne "a" #'exunit-verify-all
+      :ne "b" #'exunit-verify
+      :ne "r" #'exunit-rerun
+      :ne "t" #'exunit-verify-single
+      :ne "u" #'exunit-verify-all-in-umbrella)
+#+END_SRC
+** packages.el
+To install a package with Doom, you must declare them here and run =doom sync=
+on the command line, then restart Emacs for the changes to take effect -- or
+use =M-x doom/reload=.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/packages.el :eval no
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+(package! alchemist :disable t)
+(package! exunit)
+(package! mix)
+(unpin! lsp-mode)
+#+END_SRC
+
+** init.el
+This file controls what Doom modules are enabled and what order they load
+in. Remember to run =doom sync= after modifying it.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/init.el :eval no
+;;; init.el -*- lexical-binding: t; -*-
+(doom! :input
+       :completion
+       company                        ; the ultimate code completion backend
+       ivy                            ; a search engine for love and life
+
+       :ui
+       doom                           ; what makes DOOM look the way it does
+       doom-dashboard                 ; a nifty splash screen for Emacs
+       doom-quit                      ; DOOM quit-message prompts when you quit Emacs
+       hl-todo                        ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       (ligatures +hasklig)           ; ligatures and symbols to make your code pretty again
+       modeline                       ; snazzy, Atom-inspired modeline, plus API
+       ophints                        ; highlight the region an operation acts on
+       (popup +defaults)              ; tame sudden yet inevitable temporary windows
+       ;;tabs                         ; a tab bar for Emacs
+       vc-gutter                      ; vcs diff in the fringe
+       vi-tilde-fringe                ; fringe tildes to mark beyond EOB
+       (window-select +switch-window) ; visually switch windows
+       workspaces                     ; tab emulation, persistence & separate workspaces
+       ;;zen                          ; distraction-free coding or writing
+
+       :editor
+       (evil +everywhere)             ; come to the dark side, we have cookies
+       file-templates                 ; auto-snippets for empty files
+       fold                           ; (nigh) universal code folding
+       ;;(format +onsave)             ; automated prettiness
+       snippets                       ; my elves. They type so I don't have to
+
+       :emacs
+       dired                          ; making dired pretty [functional]
+       electric                       ; smarter, keyword-based electric-indent
+       undo                           ; persistent, smarter undo for your inevitable mistakes
+       vc                             ; version-control and Emacs, sitting in a tree
+
+       :checkers
+       syntax                         ; tasing you for every semicolon you forget
+
+       :tools
+       direnv
+       editorconfig                   ; let someone else argue about tabs vs spaces
+       (eval +overlay)                ; run code, run (also, repls)
+       lookup                         ; navigate your code and its documentation
+       lsp
+       magit                          ; a git porcelain for Emacs
+       ;;taskrunner                   ; taskrunner for all your projects
+
+       :os
+       (:if IS-MAC macos)             ; improve compatibility with macOS
+       ;;tty                          ; improve the terminal Emacs experience
+
+       :lang
+       elixir                         ; erlang done right
+       emacs-lisp                     ; drown in parentheses
+       erlang                         ; an elegant language for a more civilized age
+       json                           ; At least it ain't XML
+       markdown                       ; writing docs for people to ignore
+       org                            ; organize your plain life in plain text
+       sh                             ; she sells {ba,z,fi}sh shells on the C xor
+
+       :config
+       (default +bindings +smartparens))
+#+END_SRC
+

@@ -1,0 +1,63 @@
+#+TITLE: Git Files
+#+STARTUP: inlineimages nofold
+
+In Emacs, use =C-c C-c= on the following block or execute the commands
+in a terminal.
+#+BEGIN_SRC sh :export none :results silent :eval yes
+~/.emacs.d/bin/org-tangle git.org
+
+key=$(gpg --list-secret-keys --keyid-format LONG | grep -e "^sec" | cut -d'/' -f2 | cut -d' ' -f1)
+git config --global user.signingkey $key
+#+END_SRC
+
+** Table of Contents :TOC_3:noexport:
+  - [[#gitconfig][.gitconfig]]
+  - [[#gitignore][.gitignore]]
+  - [[#gpg-agentconf][.gpg-agent.conf]]
+
+** .gitconfig
+#+BEGIN_SRC conf :tangle ~/.gitconfig
+[user]
+name = Johnson Denen
+email = johnson.denen@gmail.com
+
+[alias]
+log = log --graph
+
+[color]
+ui = true
+
+[diff]
+renames = true
+
+[fetch]
+prune = true
+
+[pull]
+rebase = true
+
+[commit]
+gpgsign = true
+
+[push]
+default = simple
+ff = false
+
+[rerere]
+enabled = true
+
+[core]
+excludesfile = ~/.gitignore
+
+#+END_SRC
+** .gitignore
+#+BEGIN_SRC conf :tangle ~/.gitignore
+.DS_Store
+.elixir_ls/
+todo.org
+#+END_SRC
+
+** .gpg-agent.conf
+#+BEGIN_SRC conf :export ~/.gnupg/gpg-agent.conf
+pinentry-program /usr/local/bin/pinentry-mac
+#+END_SRC

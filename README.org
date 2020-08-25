@@ -1,235 +1,154 @@
-* Emacs <> Elixir
+#+TITLE: Emacs <> Elixir
+#+STARTUP: inlineimages nofold
 
-macOS machine configuration
+Literate configuration for my MacOS development environment.
++ [[https://ohmyz.sh][Oh My Zsh]]
++ Git with GPG signing
++ [[https://elixir-lang.org][Elixir]], Erlang, NodeJS, and [[https://postgres.app][Postgres]]
++ [[https://github.com/hlissner/doom-emacs][Doom]] Emacs using [[https://github.com/elixir-lsp/elixir-ls][ElixirLS]]
 
-** antigen
-Install =antigen= for oh-my-zsh bundle management:
+* Table of Contents :TOC_3:noexport:
+- [[#macos][MacOS]]
+  - [[#package-management][Package management]]
+  - [[#window-management][Window management]]
+  - [[#terminal][Terminal]]
+- [[#git][Git]]
+- [[#asdf-vm][asdf-vm]]
+  - [[#erlang][Erlang]]
+  - [[#elixir][Elixir]]
+  - [[#nodejs][NodeJS]]
+  - [[#direnv][direnv]]
+- [[#doom][Doom]]
+  - [[#emacs][Emacs]]
+  - [[#elixirls][ElixirLS]]
+- [[#oh-my-zsh][Oh My Zsh]]
+  - [[#antigen][antigen]]
 
-#+BEGIN_SRC sh :export none :eval query
-curl -L git.io/antigen > ~/antigen.zsh
+* MacOS
+** Package management
+I use [[https://brew.sh][Homebrew]].
+
+#+BEGIN_SRC sh :export none :eval query :results silent
+/usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 #+END_SRC
-** oh-my-zsh
-Write this to =~/.zshrc=:
+** Window management
+[[https://github.com/ianyh/Amethyst][Amethyst]] is a tiling window manager for MacOS.
 
-#+BEGIN_SRC sh :tangle ~/.zshrc :eval no
-source ~/antigen.zsh
-antigen use oh-my-zsh
-
-antigen bundle asdf
-antigen bundle docker
-antigen bundle emacs
-antigen bundle git
-antigen bundle osx
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle zsh-users/zsh-completions
-
-antigen theme bureau
-
-antigen apply
-
-eval "$(direnv hook zsh)"
-
-alias ls='ls -aFG'
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew cask install amethyst
 #+END_SRC
-** brew
-Install Homebrew:
-
-#+BEGIN_SRC sh :export none :eval query
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-#+END_SRC
-
-Install command line tools:
-
-#+BEGIN_SRC sh :export none :eval query
-brew install git ripgrep fd gnutls sd gpg ctop pre-commit pinentry-mac cmake libvterm
+** Terminal
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew cask install font-hasklig font-source-code-pro iterm2
 #+END_SRC
 
-Install Docker:
-
-#+BEGIN_SRC sh :export none :eval query
-brew cask install docker
+And some CLI tools:
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew install cmake fd gnutls ripgrep sd
 #+END_SRC
-** user
-Replace my name and email with your own:
+* Git
+Make life with Git easier by installing:
 
-#+BEGIN_SRC sh :export none :eval query
-rg "Johnson Denen" --files-with-matches | xargs sd -s "Johnson Denen" "Your name"
-rg "johnson.denen@gmail.com" --files-with-matches | xargs sd -s "johnson.denen@gmail.com" "Your email"
-#+END_SRC
-** git
-Install Homebrew's Git:
++ Newer version of Git
++ Emacs friendly pinentry application
++ [[https://pre-commit.com/][pre-commit]] for managing Git hooks
 
-#+BEGIN_SRC sh :export none :eval query
-brew install git
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew install git gpg pinentry-mac pre-commit
 #+END_SRC
 
-Set Git defaults via =~/.gitconfig=:
+In Emacs, use =C-c C-c= on the following block to write Git configuration
+files to disk. See [[file:git.org][git.org]] for more details.
 
-#+BEGIN_SRC conf :tangle ~/.gitconfig
-[user]
-name = Johnson Denen
-email = johnson.denen@gmail.com
+#+BEGIN_SRC sh :export none :eval query :results silent
+~/.emacs.d/bin/org-tangle git.org
 
-[alias]
-log = log --graph
-
-[color]
-ui = true
-
-[diff]
-renames = true
-
-[fetch]
-prune = true
-
-[pull]
-rebase = true
-
-[commit]
-gpgsign = true
-
-[push]
-default = simple
-ff = false
-
-[rerere]
-enabled = true
-
-[core]
-excludesfile = ~/.gitignore
+key=$(gpg --list-secret-keys --keyid-format LONG | grep -e "^sec" | cut -d'/' -f2 | cut -d' ' -f1)
+git config --global user.signingkey $key
 #+END_SRC
+* asdf-vm
+I use [[https://asdf-vm.com][asdf]] to manage programming languages and their versions.
 
-Ignore some files by default via =~/.gitignore=:
-
-#+BEGIN_SRC conf :tangle ~/.gitignore
-.DS_Store
-.elixir_ls/
-todo.org
+#+BEGIN_SRC sh :export none :eval query :results silent
+git clone https://github.com/asdf-vm/asdf ~/.asdf --branch v0.7.8
 #+END_SRC
-*** gpg
-Create a GPG key per your requirements and grab your key's fingerprint:
-
-#+BEGIN_SRC sh :export none :eval no
-gpg --list-secret-keys --keyid-format LONG
-#+END_SRC
-
-Add it to Git's user configuration:
-
-#+BEGIN_SRC sh :export none :eval no
-git config --global user.signingkey $YOUR_KEY_FINGERPRINT
-#+END_SRC
-
-Use GUI =pinentry= for ease of use with Magit:
-
-#+BEGIN_SRC sh :export ~/.gnupg/gpg-agent.conf
-pinentry-program /usr/local/bin/pinentry-mac
-#+END_SRC
-** asdf
-Install =asdf=:
-
-#+BEGIN_SRC sh :export none :eval query
-git clone https://github.com/asdf-vm/asdf ~/.asdf
-cd ~/.asdf
-git checkout "$(git describe --abbrev=0 --tags)"
-
-echo -e "\nsource $HOME/.asdf/.asdf.sh" >> ~/.zshrc
-#+END_SRC
-** direnv
-Install =direnv=:
-
-#+BEGIN_SRC sh :export none :eval query
-asdf plugin add direnv
-asdf install direnv 2.21.3
-#+END_SRC
-** nodejs
-Install NodeJS:
-
-#+BEGIN_SRC sh :export none :eval query
-asdf plugin add nodejs
-bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
-asdf install nodejs 11.15.0
-#+END_SRC
-** postgres
-Install =postgres=, mostly for the =psql= CLI tool:
-
-#+BEGIN_SRC :export none :eval query
-asdf plugin add postgres
-asdf install postgres 10.13
-#+END_SRC
-** elixir
-Install build tools, wxWidgets (observer support), and Java (jinterface):
-
-#+BEGIN_SRC sh :export none :eval query
+** Erlang
+Need build tools. Want observer support (wxWidgets).
+#+BEGIN_SRC sh :export none :eval query :results silent
 brew install autoconf wxmac
-asdf plugin add java
-asdf install java openjdk-14.0.1
 #+END_SRC
 
-Install Erlang with doc support:
+#+BEGIN_SRC sh :export none :eval query :results silent
+default_version=23.0.2
 
-#+BEGIN_SRC sh :export none :eval query
-export KERL_BUILD_DOCS=yes
-asdf plugin add erlang
-asdf install erlang 23.0.2
+asdf plugin install erlang
+KERL_BUILD_DOCS=yes asdf install erlang "$default_version"
+asdf global erlang "$default_version"
 #+END_SRC
+** Elixir
+#+BEGIN_SRC sh :export none :eval query :results silent
+default_version=1.10.3-otp-23
 
-Install Elixir:
-
-#+BEGIN_SRC sh :export none :eval query
 asdf plugin add elixir
-asdf install elixir 1.10.3-otp-23
+asdf install elixir "$default_version"
+asdf global elixir "$default_version"
+
 mix do local.hex --force, local.rebar --force
 #+END_SRC
-** lsp
-Download and build ElixirLS:
+** NodeJS
+#+BEGIN_SRC sh :export none :eval query :results silent
+default_version=11.15.0
 
-#+BEGIN_SRC sh :export none :eval query
-git clone https://github.com/elixir-lsp/elixir-ls ~/.elixirls
-cd ~/.elixirls
-
-asdf install $(rg -N erlang .tool-versions)
-asdf install $(rg -N elixir .tool-versions)
-
-mix do deps.get, compile, elixir_ls.release -o release
+asdf plugin add nodejs
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+asdf install nodejs "${default_version}"
+asdf global nodejs "${default_version}"
 #+END_SRC
-** emacs
-Install Emacs from Homebrew:
-
-#+BEGIN_SRC sh :export none :eval query
-brew tap d12frosted/emacs-plus
-brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon
+** direnv
+#+BEGIN_SRC sh :export none :eval query :results silent
+asdf plugin add direnv
+asdf install direnv "${default_version}"
+asdf global direnv "${default_version}"
 #+END_SRC
-** doom
-Download and install =doom=:
-
-#+BEGIN_SRC :export none :eval query
+* Doom
+Install =doom-emacs= once.
+#+BEGIN_SRC sh :export none :eval query :results silent
 git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom install
 #+END_SRC
 
-Overwrite default configuration with mine:
+Doom configuration lives in [[file:doom.org][doom.org]]. Run this every time you
+make a change:
 
-#+BEGIN_SRC sh :export none :eval query
-rm ~/.doom.d/{config,init,packages}.el
-ln -s "${PWD}/config.el" ~/.doom.d/config.el
-ln -s "${PWD}/init.el" ~/.doom.d/init.el
-ln -s "${PWD}/packages.el" ~/.doom.d/packages.el
-#+END_SRC
-
-Sync =doom= packages and configuration is complete:
-
-#+BEGIN_SRC sh :export none :eval query
+#+BEGIN_SRC sh :export none :eval query :results silent
+~/.emacs.d/bin/org-tangle doom.org
 ~/.emacs.d/bin/doom sync
 #+END_SRC
-** versions
-Set global defaults with =~/.tool-versions=:
+** Emacs
+Install with JSON support (==--with-jansson==) for better LSP integration.
 
-#+BEGIN_SRC conf :tangle ~/.tool-versions
-erlang 23.0.2
-elixir 1.10.3-otp-23
-java openjdk-14.0.1
-nodejs 11.15.0
-postgres 10.13
-direnv 2.21.3
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew tap d12frosted/emacs-plus
+brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon --with-jansson
+#+END_SRC
+** ElixirLS
+Pin to =v0.5.0= for now.
+#+BEGIN_SRC sh :export none :eval query :results silent
+git clone https://github.com/elixir-lsp/elixir-ls ~/.elixirls --branch v0.5.0
+#+END_SRC
+
+Release to =~/.elixirls/release=, which is in =PATH=.
+#+BEGIN_SRC sh :export none :eval query :results silent
+mix do deps.get, compile, elixir_ls.release -o release
+#+END_SRC
+* Oh My Zsh
+In Emacs, use =C-c C-c= on the following block to write Git configuration
+files to disk. See [[file:zsh.org][zsh.org]] for more details.
+
+#+BEGIN_SRC sh :export none :eval query :results silent
+~/.emacs.d/bin/org-tangle zsh.org
+#+END_SRC
+** antigen
+#+BEGIN_SRC sh :export none :eval query :results silent
+curl -L git.io/antigen > ~/antigen.zsh
 #+END_SRC
