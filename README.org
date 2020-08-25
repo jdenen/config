@@ -13,9 +13,6 @@ Literate configuration for my MacOS development environment.
   - [[#window-management][Window management]]
   - [[#terminal][Terminal]]
 - [[#git][Git]]
-  - [[#gitconfig][gitconfig]]
-  - [[#gitignore][gitignore]]
-  - [[#gpg][gpg]]
 - [[#asdf-vm][asdf-vm]]
   - [[#erlang][Erlang]]
   - [[#elixir][Elixir]]
@@ -60,54 +57,14 @@ Make life with Git easier by installing:
 brew install git gpg pinentry-mac pre-commit
 #+END_SRC
 
-** gitconfig
-#+BEGIN_SRC conf :tangle ~/.gitconfig
-[user]
-name = Johnson Denen
-email = johnson.denen@gmail.com
+In Emacs, use =C-c C-c= on the following block to write Git configuration
+files to disk. See [[file:git.org][git.org]] for more details.
 
-[alias]
-log = log --graph
-
-[color]
-ui = true
-
-[diff]
-renames = true
-
-[fetch]
-prune = true
-
-[pull]
-rebase = true
-
-[commit]
-gpgsign = true
-
-[push]
-default = simple
-ff = false
-
-[rerere]
-enabled = true
-
-[core]
-excludesfile = ~/.gitignore
-#+END_SRC
-** gitignore
-#+BEGIN_SRC conf :tangle ~/.gitignore
-.DS_Store
-.elixir_ls/
-todo.org
-#+END_SRC
-** gpg
 #+BEGIN_SRC sh :export none :eval query :results silent
+~/.emacs.d/bin/org-tangle git.org
+
 key=$(gpg --list-secret-keys --keyid-format LONG | grep -e "^sec" | cut -d'/' -f2 | cut -d' ' -f1)
 git config --global user.signingkey $key
-#+END_SRC
-
-#+BEGIN_SRC conf :export ~/.gnupg/gpg-agent.conf
-pinentry-program /usr/local/bin/pinentry-mac
 #+END_SRC
 * asdf-vm
 I use [[https://asdf-vm.com][asdf]] to manage programming languages and their versions.
@@ -185,30 +142,12 @@ Release to =~/.elixirls/release=, which is in =PATH=.
 mix do deps.get, compile, elixir_ls.release -o release
 #+END_SRC
 * Oh My Zsh
-#+BEGIN_SRC sh :tangle ~/.zshrc :eval no
-source ~/antigen.zsh
-antigen use oh-my-zsh
+In Emacs, use =C-c C-c= on the following block to write Git configuration
+files to disk. See [[file:zsh.org][zsh.org]] for more details.
 
-antigen bundle asdf
-antigen bundle docker
-antigen bundle emacs
-antigen bundle git
-antigen bundle osx
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle zsh-users/zsh-completions
-
-antigen theme bureau
-
-antigen apply
-
-eval "$(direnv hook zsh)"
-
-alias ls='ls -aFG'
-
-export PATH="${PATH}:${HOME}/Code/bin:${HOME}/.elixirls/release"
+#+BEGIN_SRC sh :export none :eval query :results silent
+~/.emacs.d/bin/org-tangle zsh.org
 #+END_SRC
-
 ** antigen
 #+BEGIN_SRC sh :export none :eval query :results silent
 curl -L git.io/antigen > ~/antigen.zsh
