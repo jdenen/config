@@ -1,7 +1,32 @@
 #+TITLE: Doom Files
 #+STARTUP: inlineimages nofold
 
-* config.el
+From Emacs, write configuration to disk by using =C-c C-c= on the following
+code block.
+
+#+BEGIN_SRC sh :export none :results silent :eval yes
+~/.emacs.d/bin/org-tangle doom.org
+#+END_SRC
+
+You may or may not need to re-sync Doom. =C-c C-c= this block do to so.
+
+#+BEGIN_SRC sh :export none :results silent :eval yes
+~/.emacs.d/bin/doom sync
+#+END_SRC
+
+Execute this bit of Lisp to ensure configuration is reloaded in Doom. Do
+this every time you make a change to =doom.org=.
+
+#+BEGIN_SRC emacs-lisp :export none :results silent :eval yes
+(doom/reload)
+#+END_SRC
+
+** Table of Contents :TOC_3:noexport:
+  - [[#configel][config.el]]
+  - [[#packagesel][packages.el]]
+  - [[#initel][init.el]]
+
+** config.el
 Place your private configuration here. Remember, you do not need to run
 =doom sync= after modifying this file.
 
@@ -90,7 +115,7 @@ Place your private configuration here. Remember, you do not need to run
       :ne "t" #'exunit-verify-single
       :ne "u" #'exunit-verify-all-in-umbrella)
 #+END_SRC
-* packages.el
+** packages.el
 To install a package with Doom, you must declare them here and run =doom sync=
 on the command line, then restart Emacs for the changes to take effect -- or
 use =M-x doom/reload=.
@@ -104,7 +129,7 @@ use =M-x doom/reload=.
 (unpin! lsp-mode)
 #+END_SRC
 
-* init.el
+** init.el
 This file controls what Doom modules are enabled and what order they load
 in. Remember to run =doom sync= after modifying it.
 
