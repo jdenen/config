@@ -5,10 +5,16 @@ In Emacs, use =C-c C-c= on the following block or execute the commands
 in a terminal.
 #+BEGIN_SRC sh :export none :results silent :eval yes
 ~/.emacs.d/bin/org-tangle zsh.org
+chmod u+x ~/Code/bin/*
 #+END_SRC
 
 ** Table of Contents :TOC_3:noexport:
   - [[#zshrc][.zshrc]]
+  - [[#scripts][Scripts]]
+    - [[#pidport][pidport]]
+    - [[#rgenv][rgenv]]
+    - [[#rgps][rgps]]
+    - [[#rgrg][rgrg]]
 
 ** .zshrc
 #+BEGIN_SRC sh :tangle ~/.zshrc :eval no
@@ -33,4 +39,29 @@ eval "$(direnv hook zsh)"
 alias ls='ls -aFG'
 
 export PATH="${PATH}:${HOME}/Code/bin:${HOME}/.elixirls/release"
+#+END_SRC
+** Scripts
+Write some CLI helpers to =~/Code/bin=, which is on our =PATH=.
+*** pidport
+#+BEGIN_SRC sh :tangle ~/Code/bin/pidport :eval no
+lsof -n -i4TCP:$1 | rg LISTEN
+#+END_SRC
+
+*** rgenv
+#+BEGIN_SRC sh :tangle ~/Code/bin/rgenv :eval no
+#!/usr/bin/env bash
+
+env | sort | rg -i $@
+#+END_SRC
+*** rgps
+#+BEGIN_SRC sh :tangle ~/Code/bin/rgps :eval no
+ps -ax | rg -i $@ | rg -v "grep"
+#+END_SRC
+*** rgrg
+#+BEGIN_SRC sh :tangle ~/Code/bin/rgrg :eval no
+one=$1
+two=$2
+shift 2
+
+rg $one $@ | rg $two
 #+END_SRC
