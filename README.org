@@ -40,6 +40,7 @@ echo "Use C-c C-c to execute this block. Found you in ${PWD}/"
 - [ ] How to generate/import a GPG key
 - [ ] Try more doom modules (commented out in [[file:doom.org::*init.el][init.el]])
 - [ ] Fix completion
+- [ ] secret.org for non-public configuration
 * Configuration
 ** MacOS
 *** Package management
