@@ -11,7 +11,6 @@ Literate configuration for my MacOS development environment.
 - [[#macos][MacOS]]
   - [[#package-management][Package management]]
   - [[#window-management][Window management]]
-  - [[#fonts][Fonts]]
   - [[#terminal][Terminal]]
 - [[#git][Git]]
   - [[#gitconfig][gitconfig]]
@@ -41,13 +40,9 @@ I use [[https://brew.sh][Homebrew]].
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew cask install amethyst
 #+END_SRC
-** Fonts
-#+BEGIN_SRC sh :export none :eval query :results silent
-brew cask install font-hasklig font-source-code-pro
-#+END_SRC
 ** Terminal
 #+BEGIN_SRC sh :export none :eval query :results silent
-brew cask install iterm2
+brew cask install font-hasklig font-source-code-pro iterm2
 #+END_SRC
 
 And some CLI tools:
