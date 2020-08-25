@@ -150,13 +150,27 @@ brew tap d12frosted/emacs-plus
 brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon --with-jansson
 #+END_SRC
 *** ElixirLS
-Pin to =v0.5.0= for now.
+Pin to =v0.5.0= for now, as I'm experience issues with anything newer.
+=v0.5.0= pins Elixir to 1.7.4-otp-20, but that doesn't work with Elixir projects using 1.10.x.
+
+Repin to 1.8.2-otp-21 before compiling the LS.
 #+BEGIN_SRC sh :export none :eval query :results silent
+erlang_version=21.3.8.17
+elixir_version=1.8.2-otp-21
+
 git clone https://github.com/elixir-lsp/elixir-ls ~/.elixirls --branch v0.5.0
+cd ~/.elixirls
+
+asdf install erlang "${erlang_version}"
+asdf local erlang "${erlang_version}"
+
+asdf install elixir "${elixir_version}"
+asdf local elixir "${elixir_version}"
 #+END_SRC
 
 Release to =~/.elixirls/release=, which is in =PATH=.
 #+BEGIN_SRC sh :export none :eval query :results silent
+cd ~/.elixirls
 mix do deps.get, compile, elixir_ls.release -o release
 #+END_SRC
 ** Oh My Zsh
