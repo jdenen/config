@@ -2,10 +2,10 @@
 #+STARTUP: inlineimages nofold
 
 Literate configuration for my MacOS development environment.
-+ Oh My Zsh
++ [[https://ohmyz.sh][Oh My Zsh]]
 + Git with GPG signing
-+ Elixir, Erlang, NodeJS, and Postgres
-+ Doom Emacs using ElixirLS
++ [[https://elixir-lang.org][Elixir]], Erlang, NodeJS, and [[https://postgres.app][Postgres]]
++ [[https://github.com/hlissner/doom-emacs][Doom]] Emacs using [[https://github.com/elixir-lsp/elixir-ls][ElixirLS]]
 
 * Table of Contents :TOC_3:noexport:
 - [[#macos][MacOS]]
@@ -31,10 +31,13 @@ Literate configuration for my MacOS development environment.
 * MacOS
 ** Package management
 I use [[https://brew.sh][Homebrew]].
+
 #+BEGIN_SRC sh :export none :eval query :results silent
 /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 #+END_SRC
 ** Window management
+[[https://github.com/ianyh/Amethyst][Amethyst]] is a tiling window manager for MacOS.
+
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew cask install amethyst
 #+END_SRC
@@ -49,9 +52,19 @@ brew cask install iterm2
 
 And some CLI tools:
 #+BEGIN_SRC sh :export none :eval query :results silent
-brew install cmake fd git gnutls gpg pinentry-mac pre-commit ripgrep sd
+brew install cmake fd gnutls ripgrep sd
 #+END_SRC
 * Git
+Make life with Git easier by installing:
+
++ Newer version of Git
++ Emacs friendly pinentry application
++ [[https://pre-commit.com/][pre-commit]] for managing Git hooks
+
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew install git gpg pinentry-mac pre-commit
+#+END_SRC
+
 ** gitconfig
 #+BEGIN_SRC conf :tangle ~/.gitconfig
 [user]
@@ -102,6 +115,8 @@ git config --global user.signingkey $key
 pinentry-program /usr/local/bin/pinentry-mac
 #+END_SRC
 * asdf-vm
+I use [[https://asdf-vm.com][asdf]] to manage programming languages and their versions.
+
 #+BEGIN_SRC sh :export none :eval query :results silent
 git clone https://github.com/asdf-vm/asdf ~/.asdf --branch v0.7.8
 #+END_SRC
@@ -158,7 +173,7 @@ make a change:
 ~/.emacs.d/bin/doom sync
 #+END_SRC
 ** Emacs
-Install with JSON support for better LSP integration.
+Install with JSON support (==--with-jansson==) for better LSP integration.
 
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew tap d12frosted/emacs-plus
