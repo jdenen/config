@@ -1,6 +1,4 @@
-#+TITLE: .doom.d config
-#+DATE: August 24, 2020
-#+SINCE: v1.0.0
+#+TITLE: Doom Files
 #+STARTUP: inlineimages nofold
 
 * config.el
