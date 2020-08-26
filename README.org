@@ -22,6 +22,7 @@ Literate configuration for my MacOS development environment.
     - [[#nodejs][NodeJS]]
     - [[#direnv][direnv]]
   - [[#doom][Doom]]
+    - [[#editorconfig][EditorConfig]]
     - [[#emacs][Emacs]]
     - [[#elixirls][ElixirLS]]
   - [[#oh-my-zsh][Oh My Zsh]]
@@ -141,6 +142,10 @@ make a change:
 #+BEGIN_SRC sh :export none :eval query :results silent
 ~/.emacs.d/bin/org-tangle doom.org
 ~/.emacs.d/bin/doom sync
+#+END_SRC
+*** EditorConfig
+#+BEGIN_SRC sh :export none :eval query :results silent
+brew install editorconfig
 #+END_SRC
 *** Emacs
 Install with JSON support (==--with-jansson==) for better LSP integration.
