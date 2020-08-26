@@ -178,7 +178,7 @@ in. Remember to run =doom sync= after modifying it.
        (eval +overlay)                ; run code, run (also, repls)
        lookup                         ; navigate your code and its documentation
        lsp
-       magit                          ; a git porcelain for Emacs
+       (magit +forge)                 ; a git porcelain for Emacs
        ;;taskrunner                   ; taskrunner for all your projects
 
        :os
@@ -197,4 +197,3 @@ in. Remember to run =doom sync= after modifying it.
        :config
        (default +bindings +smartparens))
 #+END_SRC
-
