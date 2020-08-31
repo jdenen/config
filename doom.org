@@ -55,6 +55,29 @@ Place your private configuration here. Remember, you do not need to run
   :hook (elixir-mode . mix-minor-mode)
   :config (setq compilation-scroll-output t))
 
+(use-package! popwin
+  :config
+  (popwin-mode)
+  (push '("*exunit-compilation*"
+          :dedicated t
+          :position bottom
+          :stick t
+          :height 0.15
+          :noselect t
+          :tail t)
+        popwin:special-display-config)
+  (push '("magit\\:*"
+          :regexp t
+          :dedicated t
+          :position right
+          :width 0.30)
+        popwin:special-display-config)
+  (push '("*mix execute*"
+          :dedicated t
+          :position right
+          :width 0.30)
+      popwin:special-display-config))
+
 ;; package hooks
 (after! lsp-clients
   (let ((ignore-list (append lsp-file-watch-ignored
@@ -72,6 +95,14 @@ Place your private configuration here. Remember, you do not need to run
         lsp-ui-sideline-ignore-duplicate t))
 
 ;; functions
+(defun exunit-kill-compilation ()
+  "Kill *exunit-compilation* buffer and window."
+  (interactive)
+  (let* ((bname "*exunit-compilation*")
+         (window (get-buffer-window bname)))
+    (delete-window window)
+    (kill-buffer bname)))
+
 (defun mix/execute-task-umbrella ()
   "Run mix command in umbrella project."
   (interactive)
@@ -114,6 +145,7 @@ Place your private configuration here. Remember, you do not need to run
       :ne "<tab>" #'exunit-toggle-file-and-test
       :ne "a" #'exunit-verify-all
       :ne "b" #'exunit-verify
+      :ne "q" #'exunit-kill-compilation
       :ne "r" #'exunit-rerun
       :ne "t" #'exunit-verify-single
       :ne "u" #'exunit-verify-all-in-umbrella)
@@ -129,6 +161,7 @@ use =M-x doom/reload=.
 (package! alchemist :disable t)
 (package! exunit)
 (package! mix)
+(package! popwin)
 (unpin! lsp-mode)
 #+END_SRC
 
