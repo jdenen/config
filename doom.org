@@ -44,7 +44,7 @@ Place your private configuration here. Remember, you do not need to run
   :hook (elixir-mode . exunit-mode))
 
 (use-package! forge
-  :config (setq forge-topic-list-limit '(5 . -5)))
+  :config (setq forge-topic-list-limit '(10 . 0)))
 
 (use-package! lsp-mode
   :hook (elixir-mode . lsp)
