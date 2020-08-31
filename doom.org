@@ -112,11 +112,12 @@ Place your private configuration here. Remember, you do not need to run
 (defun mix/format-buffer ()
   "Format current buffer. Save before running formatter command."
   (interactive)
-  (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root))))
+  (let ((file-to-format (file-relative-name (buffer-file-name) (exunit-project-root)))
+        (default-directory (exunit-project-root)))
     (save-buffer)
     (shell-command (s-join " " `("mix" "format" ,file-to-format)))
     ;; reload file after possible changes
-    (find-file file-to-format)))
+    (find-file (buffer-file-name))))
 
 (defun projectile-yank-line-number ()
   "Copy current line in file to clipboard, relative to project root."
