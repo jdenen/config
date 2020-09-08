@@ -56,27 +56,15 @@ Place your private configuration here. Remember, you do not need to run
   :config (setq compilation-scroll-output t))
 
 (use-package! popwin
+  :hook (elixir-mode . popwin-mode)
   :config
-  (popwin-mode)
-  (push '("*exunit-compilation*"
-          :dedicated t
-          :position bottom
-          :stick t
-          :height 0.15
-          :noselect t
-          :tail t)
-        popwin:special-display-config)
-  (push '("magit\\:*"
-          :regexp t
-          :dedicated t
-          :position right
-          :width 0.30)
-        popwin:special-display-config)
-  (push '("*mix execute*"
-          :dedicated t
-          :position right
-          :width 0.30)
-      popwin:special-display-config))
+  (let ((buffer-pattern "magit\\:*\\|\\*Flycheck*\\|\\*exunit-*\\|\\*mix ex*"))
+    (push `(,buffer-pattern
+            :regexp t
+            :dedicated t
+            :position right
+            :width 0.30)
+          popwin:special-display-config)))
 
 ;; package hooks
 (after! lsp-clients
