@@ -117,7 +117,7 @@ Place your private configuration here. Remember, you do not need to run
     (save-buffer)
     (shell-command (s-join " " `("mix" "format" ,file-to-format)))
     ;; reload file after possible changes
-    (find-file (buffer-file-name))))
+    (revert-buffer :ignore-auto :noconfirm :preserve)))
 
 (defun projectile-yank-line-number ()
   "Copy current line in file to clipboard, relative to project root."
