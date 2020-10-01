@@ -55,6 +55,7 @@ excludesfile = ~/.gitignore
 .DS_Store
 .elixir_ls/
 todo.org
+.iex.exs
 #+END_SRC
 
 ** .gpg-agent.conf
