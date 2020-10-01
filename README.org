@@ -39,7 +39,7 @@ echo "Use C-c C-c to execute this block. Found you in ${PWD}/"
 #+END_SRC
 * TODOs
 - [ ] How to generate/import a GPG key
-- [ ] Try more doom modules (commented out in [[file:doom.org::*init.el][init.el]])
+- [X] Try more doom modules (commented out in [[file:doom.org::*init.el][init.el]])
 - [ ] Fix completion
 - [ ] secret.org for non-public configuration
 * Configuration
@@ -98,7 +98,7 @@ brew install autoconf wxmac
 #+END_SRC
 
 #+BEGIN_SRC sh :export none :eval query :results silent
-default_version=23.0.2
+EXPORT default_version=23.0.2
 
 asdf plugin install erlang
 KERL_BUILD_DOCS=yes asdf install erlang "$default_version"
@@ -106,7 +106,7 @@ asdf global erlang "$default_version"
 #+END_SRC
 *** Elixir
 #+BEGIN_SRC sh :export none :eval query :results silent
-default_version=1.10.3-otp-23
+EXPORT default_version=1.10.3-otp-23
 
 asdf plugin add elixir
 asdf install elixir "$default_version"
@@ -116,7 +116,7 @@ mix do local.hex --force, local.rebar --force
 #+END_SRC
 *** NodeJS
 #+BEGIN_SRC sh :export none :eval query :results silent
-default_version=11.15.0
+EXPORT default_version=11.15.0
 
 asdf plugin add nodejs
 bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
@@ -125,6 +125,8 @@ asdf global nodejs "${default_version}"
 #+END_SRC
 *** direnv
 #+BEGIN_SRC sh :export none :eval query :results silent
+EXPORT default_version=2.21.3
+
 asdf plugin add direnv
 asdf install direnv "${default_version}"
 asdf global direnv "${default_version}"
@@ -147,8 +149,9 @@ make a change:
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew install editorconfig
 #+END_SRC
+
 *** Emacs
-Install with JSON support (==--with-jansson==) for better LSP integration.
+Install with JSON support (=--with-jansson=) for better LSP integration.
 
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew tap d12frosted/emacs-plus
