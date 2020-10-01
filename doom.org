@@ -70,7 +70,8 @@ Place your private configuration here. Remember, you do not need to run
     (push '("magit\\:*"
             :regexp t
             :position right
-            :width 0.30))))
+            :width 0.30)
+          popwin:special-display-config)))
 
 ;; package hooks
 (after! lsp-clients
@@ -123,12 +124,12 @@ Place your private configuration here. Remember, you do not need to run
     (message from-root-with-line)))
 
 ;; keybindings
-(map! :leader :prefix "p"
-      :ne "y" #'projectile-yank-line-number)
-
-(map! :leader :prefix "w"
+(map! :leader
+      :prefix "p"
+      :ne "y" #'projectile-yank-line-number
+      :prefix "w"
       :ne "C-d" #'ace-delete-window
-      :ne "C-p" #' #'projectile-find-file-other-window)
+      :ne "C-p" #'popwin:close-popup-window)
 
 (map! :mode elixir-mode
       :localleader
