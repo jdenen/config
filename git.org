@@ -13,6 +13,7 @@ git config --global user.signingkey $key
 ** Table of Contents :TOC_3:noexport:
   - [[#gitconfig][.gitconfig]]
   - [[#gitignore][.gitignore]]
+  - [[#gitattributes][.gitattributes]]
   - [[#gpg-agentconf][.gpg-agent.conf]]
 
 ** .gitconfig
@@ -48,7 +49,7 @@ enabled = true
 
 [core]
 excludesfile = ~/.gitignore
-
+attributesfile = ~/.gitattributes
 #+END_SRC
 ** .gitignore
 #+BEGIN_SRC conf :tangle ~/.gitignore
@@ -57,7 +58,12 @@ excludesfile = ~/.gitignore
 todo.org
 .iex.exs
 #+END_SRC
-
+** .gitattributes
+#+BEGIN_SRC conf :tangle ~/.gitattributes
+*.ex  diff=elixir
+*.exs diff=elixir
+*.md  diff=markdown
+#+END_SRC
 ** .gpg-agent.conf
 #+BEGIN_SRC conf :export ~/.gnupg/gpg-agent.conf
 pinentry-program /usr/local/bin/pinentry-mac
