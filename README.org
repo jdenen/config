@@ -58,6 +58,7 @@ brew cask install amethyst
 #+END_SRC
 *** Terminal
 #+BEGIN_SRC sh :export none :eval query :results silent
+brew tap homebrew/cask-fonts
 brew cask install font-hasklig font-source-code-pro iterm2
 #+END_SRC
 
