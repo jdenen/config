@@ -152,11 +152,9 @@ brew install editorconfig
 #+END_SRC
 
 *** Emacs
-Install with JSON support (=--with-jansson=) for better LSP integration.
-
 #+BEGIN_SRC sh :export none :eval query :results silent
 brew tap d12frosted/emacs-plus
-brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon --with-jansson
+brew install emacs-plus@27 --with-no-titlebar --with-modern-sexy-v2-icon
 #+END_SRC
 *** ElixirLS
 Pin to =v0.5.0= for now, as I'm experience issues with anything newer.
