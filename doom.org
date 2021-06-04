@@ -123,6 +123,14 @@ Place your private configuration here. Remember, you do not need to run
     (kill-new from-root-with-line)
     (message from-root-with-line)))
 
+(defun elixir-trace ()
+  "Start tracing module based on user input"
+  (interactive)
+  (let* ((module (read-string "Start tracing: "))
+         (text (format "\nPath.expand(\"~/.tracer.ex\") |> Code.require_file()\nTracer.start_tracing(%s)\n" module)))
+    (insert text)
+    (mix/format-buffer)))
+
 ;; keybindings
 (map! :leader
       :prefix "p"

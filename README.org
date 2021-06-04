@@ -27,6 +27,7 @@ Literate configuration for my MacOS development environment.
     - [[#elixirls][ElixirLS]]
   - [[#oh-my-zsh][Oh My Zsh]]
     - [[#antigen][antigen]]
+  - [[#elixir-1][Elixir]]
 
 * Usage
 Each code block in this file can be evaluated in Emacs with =C-c C-c=. All blocks will prompt
@@ -190,4 +191,16 @@ files to disk. See [[file:zsh.org][zsh.org]] for more details.
 *** antigen
 #+BEGIN_SRC sh :export none :eval query :results silent
 curl -L git.io/antigen > ~/antigen.zsh
+#+END_SRC
+** Elixir
+I use the =elixir-trace= function added later to pull this code into tests/local development for tracing and debugging.
+
+#+BEGIN_SRC sh :export none :eval query :results silent
+ln -s ~/.doom.d/code/tracer.ex ~/.tracer.ex
+#+END_SRC
+
+I pull it into all iex sessions with my =~/.iex.exs= file. Run =(org-babel-tangle)=.
+
+#+BEGIN_SRC elixir :tangle ~/.iex.exs :eval no
+"~/.tracer.ex" |> Path.expand() |> Code.require_file()
 #+END_SRC
