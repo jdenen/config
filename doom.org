@@ -131,6 +131,14 @@ Place your private configuration here. Remember, you do not need to run
     (insert text)
     (mix/format-buffer)))
 
+(defun elixir-inspect ()
+  "IO.inspect"
+  (interactive)
+  (let* ((object (read-string "Inspecting: "))
+         (label (read-string "Label: "))
+         (text (format "\nIO.inspect(%s, label: \"%s\")\n" object label)))
+    (insert text)))
+
 ;; keybindings
 (map! :leader
       :prefix "p"
