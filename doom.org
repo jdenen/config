@@ -114,12 +114,22 @@ Place your private configuration here. Remember, you do not need to run
     ;; reload file after possible changes
     (revert-buffer :ignore-auto :noconfirm :preserve)))
 
+(defun projectile-relative-path ()
+  "Get file path relative to project root."
+  (file-relative-name (buffer-file-name) (projectile-project-root)))
+
+(defun projectile-yank-path ()
+  "Copy file path to clipboard, relative to project root."
+  (interactive)
+  (let ((path-from-root (projectile-relative-path)))
+    (kill-new path-from-root)
+    (message path-from-root)))
+
 (defun projectile-yank-line-number ()
   "Copy current line in file to clipboard, relative to project root."
   (interactive)
   (let* ((line-no (number-to-string (line-number-at-pos)))
-         (path-from-root (file-relative-name (buffer-file-name) (projectile-project-root)))
-         (from-root-with-line (concat path-from-root ":" line-no)))
+         (from-root-with-line (concat (projectile-relative-path) ":" line-no)))
     (kill-new from-root-with-line)
     (message from-root-with-line)))
 
@@ -128,6 +138,7 @@ Place your private configuration here. Remember, you do not need to run
   (interactive)
   (let* ((module (read-string "Start tracing: "))
          (text (format "\nPath.expand(\"~/.tracer.ex\") |> Code.require_file()\nTracer.start_tracing(%s)\n" module)))
+    (evil-open-below 1)
     (insert text)
     (mix/format-buffer)))
 
@@ -137,15 +148,29 @@ Place your private configuration here. Remember, you do not need to run
   (let* ((object (read-string "Inspecting: "))
          (label (read-string "Label: "))
          (text (format "\nIO.inspect(%s, label: \"%s\")\n" object label)))
-    (insert text)))
+    (evil-open-below 1)
+    (insert text)
+    (mix/format-buffer)))
+
+(defun elixir-remove-inspects ()
+  "Function to remove all IO.inspect/2 lines in a buffer."
+  (interactive)
+  (evil-goto-first-line)
+  (replace-regexp "IO.inspect\(.*\)$" "")
+  (mix/format-buffer))
 
 ;; keybindings
 (map! :leader
       :prefix "p"
-      :ne "y" #'projectile-yank-line-number
+      :ne "y" #'projectile-yank-path
+      :ne "Y" #'projectile-yank-line-number
       :prefix "w"
       :ne "C-d" #'ace-delete-window
-      :ne "C-p" #'popwin:close-popup-window)
+      :ne "C-p" #'popwin:close-popup-window
+      :prefix "TAB"
+      :ne "j" #'+workspace/switch-left
+      :ne "k" #'+workspace/switch-right
+      :ne "-" #'+workspace/other)
 
 (map! :mode elixir-mode
       :localleader
