@@ -76,3 +76,4 @@ git clone https://github.com/elixir-lsp/elixir-ls ~/.elixir_ls
 # ZSH
 curl -L git.io/antigen > ~/antigen.zsh
 ~/.emacs.d/bin/org-tangle zsh.org
+chmod u+x ~/Code/bin/*
