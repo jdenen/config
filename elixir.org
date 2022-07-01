@@ -1,0 +1,8 @@
+#+TITLE: Elixir
+
+#+BEGIN_SRC elixir :tangle ~/.iex.exs :eval no
+"~/Code/iex/*.ex"
+|> Path.expand()
+|> Path.wildcard()
+|> Enum.flat_map(&c/1)
+#+END_SRC
