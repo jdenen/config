@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "${1}" = "ls" ]; then
+  \ls .me
+else
+  .me/"${@}"
+fi
