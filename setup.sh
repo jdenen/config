@@ -52,6 +52,8 @@ cd ~/Code
 # EMACS
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom install
+~/.emacs.d/bin/org-tangle emacs.org
+~/.emacs.d/bin/doom sync
 
 # GIT
 ~/.emacs.d/bin/org-tangle git.org

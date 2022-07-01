@@ -1,27 +1,7 @@
-#+TITLE: Doom Files
+#+TITLE: Emacs Files
 #+STARTUP: inlineimages nofold
 
-From Emacs, write configuration to disk by using =C-c C-c= on the following
-code block.
-
-#+BEGIN_SRC sh :export none :results silent :eval yes
-~/.emacs.d/bin/org-tangle doom.org
-#+END_SRC
-
-You may or may not need to re-sync Doom. =C-c C-c= this block do to so.
-
-#+BEGIN_SRC sh :export none :results silent :eval yes
-~/.emacs.d/bin/doom sync
-#+END_SRC
-
-Execute this bit of Lisp to ensure configuration is reloaded in Doom. Do
-this every time you make a change to =doom.org=.
-
-#+BEGIN_SRC emacs-lisp :export none :results silent :eval yes
-(doom/reload)
-#+END_SRC
-
-** Table of Contents :TOC_3:noexport:
+* Table of Contents :TOC_3:noexport:
   - [[#configel][config.el]]
   - [[#packagesel][packages.el]]
   - [[#initel][init.el]]
