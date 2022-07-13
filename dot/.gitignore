@@ -1,0 +1,5 @@
+.DS_Store
+.elixir_ls/
+todo.org
+iex.exs
+.me/

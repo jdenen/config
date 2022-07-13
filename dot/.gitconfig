@@ -1,0 +1,36 @@
+[user]
+name = Johnson Denen
+email = johnson.denen@gmail.com
+
+[alias]
+log = log --graph
+
+[color]
+ui = true
+
+[diff]
+renames = true
+
+[fetch]
+prune = true
+
+[pull]
+rebase = true
+
+[commit]
+gpgsign = true
+
+[push]
+default = simple
+ff = false
+
+[rerere]
+enabled = true
+
+[core]
+editor = lvim
+excludesfile = ~/.gitignore
+attributesfile = ~/.gitattributes
+
+[github]
+user = jdenen
