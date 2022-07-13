@@ -148,6 +148,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- Additional Plugins
 lvim.plugins = {
   { "/Users/johnson/Code/yankem.nvim" },
+  { "/Users/johnson/Code/config" },
   { "TimUntersberger/neogit" },
   {
     "f-person/git-blame.nvim",
@@ -171,88 +172,13 @@ lvim.plugins = {
 --   end,
 -- })
 
-Testing = {
-  buffer = vim.api.nvim_create_buf(false, true),
-  command = nil
-}
-
-NeoYank = {}
-
-vim.api.nvim_buf_set_keymap(Testing.buffer, "n", "q", "<cmd>lua vim.api.nvim_win_close(0, false)<CR>", {})
-vim.api.nvim_buf_set_keymap(Testing.buffer, "n", "m", "<cmd>lua Testing.show_window_max()<CR>", {})
-
-Testing.clear_buffer = function()
-  vim.api.nvim_buf_set_lines(Testing.buffer, 0, -1, true, {})
-  vim.api.nvim_buf_set_lines(Testing.buffer, -1, -1, true, { Testing.command })
-end
-
-Testing.show_window_max = function()
-  local ui = vim.api.nvim_list_uis()[1]
-  local width = ui.width - 20
-  local height = ui.height - 15
-
-  vim.api.nvim_win_close(0, false)
-
-  vim.api.nvim_open_win(Testing.buffer, true,
-    { relative = "editor", anchor = "NW", row = 5, col = 10, width = width, height = height, border = "double" })
-end
-
-Testing.show_window = function()
-  local ui = vim.api.nvim_list_uis()[1]
-  local width = math.floor(ui.width / 2) - 10
-  local height = ui.height - 15
-  local column = math.floor(ui.width / 2) + 8
-
-  vim.api.nvim_open_win(Testing.buffer, true,
-    { relative = "editor", anchor = "NW", row = 5, col = column, width = width, height = height,
-      border = "double" })
-end
-
-Testing.run_tests = function(mode)
-  local cwd = vim.lsp.buf.list_workspace_folders()[1]
-  local Job = require('plenary.job')
-
-  if mode == "all" then
-    Testing.command = "mix test"
-  elseif mode == "buffer" then
-    local file = vim.fn.expand('%')
-    Testing.command = "mix test " .. file
-  elseif mode == "cursor" then
-    local file = vim.fn.expand('%')
-    local line, _ = unpack(vim.api.nvim_win_get_cursor(0))
-    Testing.command = "mix test " .. file .. ":" .. line
-  end
-
-  Testing.clear_buffer()
-  Testing.show_window()
-
-  local job = Job:new({
-    command = "/bin/zsh",
-    args = { "-c", Testing.command },
-    cwd = cwd,
-    -- env = { PATH = vim.env.PATH, ASDF_DIR = "/Users/johnson/.asdf" },
-    enable_recording = false,
-    on_stdout = vim.schedule_wrap(function(_, line)
-      vim.api.nvim_buf_set_lines(Testing.buffer, -1, -1, true, { line })
-    end),
-    on_stderr = vim.schedule_wrap(function(_, line)
-      vim.api.nvim_buf_set_lines(Testing.buffer, -1, -1, true, { line })
-    end),
-    on_exit = function(_, _)
-      vim.notify("Tests Completed", "info")
-    end,
-  })
-
-  job:start()
-end
-
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Testing",
-  a = { "<cmd>lua Testing.run_tests('all')<CR>", "all" },
-  b = { "<cmd>lua Testing.run_tests('buffer')<CR>", "buffer" },
-  r = { "<cmd>lua Testing.run_tests('rerun')<CR>", "rerun" },
-  s = { "<cmd>lua Testing.show_window()<CR>", "show results" },
-  t = { "<cmd>lua Testing.run_tests('cursor')<CR>", "test" },
+  a = { "<cmd>lua require('exunit').run_tests('all')<CR>", "all" },
+  b = { "<cmd>lua require('exunit').run_tests('buffer')<CR>", "buffer" },
+  r = { "<cmd>lua require('exunit').run_tests('rerun')<CR>", "rerun" },
+  s = { "<cmd>lua require('exunit').show_window()<CR>", "show results" },
+  t = { "<cmd>lua require('exunit').run_tests('cursor')<CR>", "test" },
 }
 
 lvim.builtin.which_key.mappings["g"] = {
