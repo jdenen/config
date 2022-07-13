@@ -25,4 +25,4 @@ alias vi=lvim
 alias vim=lvim
 
 export EDITOR=lvim
-export PATH="${PATH}:${HOME}/Code/bin:${HOME}/.local/bin"
+export PATH="${PATH}:${HOME}/Code/config/bin:${HOME}/.local/bin"

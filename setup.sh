@@ -35,6 +35,8 @@ export BREW_PKGS=(
     wxmac
 )
 
+/usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
 for cask in ${BREW_CASKS[@]}; do
     brew tap $cask
 done
@@ -45,12 +47,13 @@ for plugin in ${ASDF_PLUGINS[@]}; do
     asdf plugin add $plugin
 done
 
-curl -L git.io/antigen > ~/antigen.zsh
+mkdir -p ~/Code && cd ~/Code
+git clone https://github.com/jdenen/config && cd config
+
+chmod u+x bin
 cp dot/* ~
-mkdir -p ~/Code
-cp -r bin ~/Code
-cp -r iex ~/Code
-chmod u+x ~/Code/bin/*
+
+curl -L git.io/antigen > ~/antigen.zsh
 
 asdf install
 
