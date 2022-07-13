@@ -147,9 +147,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-  { "/Users/johnson/Code/yankem.nvim" },
   { "/Users/johnson/Code/config" },
-  { "TimUntersberger/neogit" },
   {
     "f-person/git-blame.nvim",
     config = function()
@@ -181,10 +179,8 @@ lvim.builtin.which_key.mappings["t"] = {
   t = { "<cmd>lua require('exunit').run_tests('cursor')<CR>", "test" },
 }
 
-lvim.builtin.which_key.mappings["g"] = {
-  name = "+Git",
-  g = { "<cmd>:Neogit<cr>", "Status" },
-  b = { "<cmd>:GitBlameToggle<cr>", "Blame" }
+lvim.builtin.which_key.mappings["G"] = {
+  "<cmd>:GitBlameToggle<cr>", "Blame"
 }
 
 lvim.builtin.which_key.mappings["y"] = {
