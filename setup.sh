@@ -35,8 +35,6 @@ export BREW_PKGS=(
     wxmac
 )
 
-/usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-
 for cask in ${BREW_CASKS[@]}; do
     brew tap $cask
 done
@@ -49,6 +47,7 @@ done
 
 curl -L git.io/antigen > ~/antigen.zsh
 cp dot/* ~
+mkdir -p ~/Code
 cp -r bin ~/Code
 cp -r iex ~/Code
 chmod u+x ~/Code/bin/*
