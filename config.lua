@@ -63,6 +63,7 @@ lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
+lvim.builtin.nvimtree.setup.update_cwd = true
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -147,7 +148,8 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-  { "/Users/johnson/Code/config" },
+  { "/Users/johnsondenen/Code/config" },
+  { "folke/todo-comments.nvim" },
   {
     "f-person/git-blame.nvim",
     config = function()
@@ -185,6 +187,10 @@ lvim.builtin.which_key.mappings["G"] = {
 
 lvim.builtin.which_key.mappings["y"] = {
   name = "+Yank",
-  b = { "<cmd>lua require('yankem').yank_file()<CR>", "File" },
-  B = { "<cmd>lua require('yankem').yank_line()<CR>", "Line" }
+  b = { "<cmd>lua require('yankem').yank_file()<CR>", "Root File" },
+  B = { "<cmd>lua require('yankem').yank_line()<CR>", "Root Line" },
+  u = { "<cmd>lua require('yankem').yank_app_file()<CR>", "App File" },
+  U = { "<cmd>lua require('yankem').yank_app_line()<CR>", "App Line" }
 }
+
+require('todo-comments').setup()

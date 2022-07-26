@@ -6,6 +6,10 @@ local function expand(wc)
   return vim.fn.expand(wc, true)
 end
 
+local function from_app(filename)
+  return filename:gsub("apps/[a-zA-Z_]+/", "")
+end
+
 local function vim_yank()
   vim.cmd(":y")
 end
@@ -35,6 +39,21 @@ function M.yank_absolute()
 
   yank(filename)
   print(filename)
+end
+
+function M.yank_app_file()
+  local filename = from_app(expand("%"))
+
+  yank(filename)
+  print(filename)
+end
+
+function M.yank_app_line()
+  local filename = from_app(expand("%"))
+  local line = filename .. ":" .. unpack(vim.api.nvim_win_get_cursor(0))
+
+  yank(line)
+  print(line)
 end
 
 return M
