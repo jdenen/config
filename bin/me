@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-if [ "${1}" = "ls" ]; then
-  \ls .me
-else
-  .me/"${@}"
-fi
+if [ $# -eq 0 ]; then \ls .me; else source .me/"${@}"; fi
