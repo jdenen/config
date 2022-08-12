@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+function _context {
+  case $(gum input --placeholder "switch, current, ...") in
+    s*)
+      context=$(kubectl config get-contexts -o name | gum filter)
+      exec kubectl config use-context $context
+      ;;
+
+    c*)
+      exec kubectl config current-context
+      ;;
+  esac
+}
+
+function _namespace {
+  namespace=$(kubectl get namespace -o name | cut -d'/' -f2 | gum filter)
+  exec kubectl config set-context --current --namespace=$namespace
+}
+
+case $1 in
+  cont*)
+    _context
+    ;;
+  name*)
+    _namespace
+    ;;
+esac
+
+kubectl $@

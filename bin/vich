@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cmd="${1:?Requires a script to open in vim}"
-vim $(which $cmd)
+lvim $(which $cmd)

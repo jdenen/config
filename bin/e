@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+while getopts ":s:f:" opt; do
+  case $opt in
+    s) # Search text and edit
+      exec lvim $(rg -l "$OPTARG")
+      ;;
+    f) # Search filenames and edit
+      exec lvim $(fd "$OPTARG" -t file | gum filter)
+      ;;
+  esac
+done
+
+if [ $# -eq 0 ]; then
+  file_to_edit=$(fd . -t file | gum filter)
+  exec lvim "$file_to_edit"
+fi
+
+lvim $1
