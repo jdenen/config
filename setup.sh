@@ -22,11 +22,11 @@ export BREW_PKGS=(
     docker
     fd
     font-hasklig
-    font-source-code-pro
     git
     gnutls
-    gpg
-    iterm2
+    gnupg
+    k9s
+    lazygit
     make
     pinentry-mac
     pre-commit
@@ -36,6 +36,8 @@ export BREW_PKGS=(
 )
 
 /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/johnsondenen/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 for cask in ${BREW_CASKS[@]}; do
     brew tap $cask
@@ -51,11 +53,13 @@ mkdir -p ~/Code && cd ~/Code
 git clone https://github.com/jdenen/config && cd config
 
 chmod u+x bin
-cp dot/* ~
+for f in $(ls -a dot/.*); do cp $f ~; done
 
 curl -L git.io/antigen > ~/antigen.zsh
 
 asdf install
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
 mkdir -p ~/.config/lvim/

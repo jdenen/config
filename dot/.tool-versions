@@ -2,7 +2,3 @@ direnv 2.32.1
 python 3.10.1
 rust stable
 neovim 0.7.2
-nodejs 16.13.2
-golang 1.19
-elixir 1.13.4-otp-24
-erlang 24.3.3
