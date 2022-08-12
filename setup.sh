@@ -1,5 +1,34 @@
 #!/usr/bin/env bash
 
+BREW_PACKAGES=(
+  asdf
+  cmake
+  curl
+  ddgr
+  docker
+  fd
+  font-hasklig
+  fop
+  git
+  gnutls
+  gnupg
+  gum
+  k9s
+  lazygit
+  libxslt
+  make
+  minikube
+  openssl@1.1
+  pinentry-mac
+  pre-commit
+  ripgrep
+  sd
+  tmux
+  tree
+  watch
+  wxmac
+)
+
 function _install_homebrew {
   /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/johnsondenen/.zprofile
@@ -17,9 +46,12 @@ function _install_asdf_plugins {
 }
 
 function _install_brew_packages {
-  brew install \
-    asdf autoconf cmake ddgr docker fd font-hasklig git gnutls gnupg k9s \
-    lazygit make pinentry-mac pre-commit ripgrep sd wxmac
+  brew install $BREW_PACKAGES
+}
+
+function _pin_autoconf_version {
+  brew install autoconf@2.69
+  brew link --overwrite autoconf@2.69
 }
 
 function _get_antigen {
@@ -47,7 +79,7 @@ function _asdf_install {
   )
 }
 
-function _isntall_lvim {
+function _install_lvim {
   bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
   mkdir -p ~/.config/lvim/
   cp ~/Code/config/config.lua ~/.config/lvim/
@@ -56,6 +88,7 @@ function _isntall_lvim {
 _install_homebrew
 _tap_brew_casks
 _install_brew_packages
+_pin_autoconf_version
 _install_asdf_plugins
 _get_antigen
 _clone_repo

@@ -9,12 +9,10 @@ Configuration for my MacOS development environment:
 ## Setup
 
 Run the setup script from scratch with:
-```bash
-/usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/jdenen/config/master/setup.sh)"
-```
+
+    /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/jdenen/config/master/setup.sh)"
 
 Or clone this repo down and run:
-```bash
-chmod u+x setup.sh
-./setup.sh
-```
+
+    chmod u+x setup.sh
+    ./setup.sh
