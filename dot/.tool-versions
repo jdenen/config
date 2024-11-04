@@ -1,4 +1,3 @@
 direnv 2.32.1
 python 3.10.1
 rust stable
-neovim 0.7.2
