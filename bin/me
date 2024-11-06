@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-if [ $# -eq 0 ]; then \ls .me; else source .me/"${@}"; fi
+if [ $# -eq 0 ]; then
+  [[ -d .me ]] && \ls .me
+else
+  [[ -d .me ]] && source .me/"${@}"
+fi
