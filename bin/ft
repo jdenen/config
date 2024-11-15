@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+TEST_LINE=""
+TEST_RUNS=1
+WRITE_LAST=true
+
+while getopts "hl:r:sv" opt; do
+  case $opt in
+    h)
+      echo ""
+      echo "Usage: ft [opts] [fuzzy_term]"
+      echo ""
+      echo "Find test file with fuzzy search or re-run the last test"
+      echo ""
+      echo "Opts"
+      echo "  -h      Show help"
+      echo "  -l <n>  Run test on line <n>"
+      echo "  -r <n>  Run test <n> times"
+      echo "  -s      Show the last file tested"
+      echo "  -v      Do NOT update the last file tested"
+      echo ""
+      exit 0
+      ;;
+    l)
+      TEST_LINE=":$OPTARG"
+      ;;
+    r)
+      TEST_RUNS=$OPTARG
+      ;;
+    s)
+      cat ~/.ft
+      exit 0
+      ;;
+    v)
+      WRITE_LAST=false
+      ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
+if [[ $1 ]]; then 
+  TEST_TO_RUN=$(FZF_DEFAULT_OPTS="" fzf -q "test/$1")
+else
+  TEST_TO_RUN=$(cat ~/.ft)
+fi
+
+if $WRITE_LAST; then
+  echo $TEST_TO_RUN > ~/.ft
+fi
+
+clear
+
+echo "mix test $TEST_TO_RUN$TEST_LINE"
+for i in `seq 1 $TEST_RUNS`; do 
+  echo "[$i/$TEST_RUNS]"
+  mix test $TEST_TO_RUN$TEST_LINE
+done
