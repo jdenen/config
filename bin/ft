@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
 TEST_LINE=""
+TEST_FLAGS=""
 TEST_RUNS=1
 WRITE_LAST=true
 
-while getopts "hl:r:sv" opt; do
+while getopts "fhl:r:sv" opt; do
   case $opt in
+    f)
+      TEST_FLAGS=" --failed"
+      ;;
+
     h)
       echo ""
       echo "Usage: ft [opts] [fuzzy_term]"
@@ -13,6 +18,7 @@ while getopts "hl:r:sv" opt; do
       echo "Find test file with fuzzy search or re-run the last test"
       echo ""
       echo "Opts"
+      echo "  -f      Only execute previously failed tests"
       echo "  -h      Show help"
       echo "  -l <n>  Run test on line <n>"
       echo "  -r <n>  Run test <n> times"
@@ -51,8 +57,8 @@ fi
 
 clear
 
-echo "mix test $TEST_TO_RUN$TEST_LINE"
+echo "mix test $TEST_TO_RUN$TEST_LINE$TEST_FLAGS"
 for i in `seq 1 $TEST_RUNS`; do 
   echo "[$i/$TEST_RUNS]"
-  mix test $TEST_TO_RUN$TEST_LINE
+  mix test $TEST_TO_RUN$TEST_LINE$TEST_FLAGS
 done
